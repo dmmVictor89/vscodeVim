@@ -1,3 +1,6 @@
+-- 경로
+-- C:\Neovim\bin
+
 -- 기존 packer_compiled.lua 파일 삭제
 vim.fn.delete(vim.fn.stdpath('config') .. '\\plugin\\packer_compiled.lua')
 

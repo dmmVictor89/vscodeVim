@@ -341,7 +341,7 @@ local function v_notify(cmd)
 end
 keymap('n', '<Leader>xr', notify 'references-view.findReferences', { silent = true }) -- language references
 keymap('n', '<Leader>xd', notify 'workbench.actions.view.problems', { silent = true }) -- language diagnostics
-keymap('n', 'gr', notify 'editor.action.goToReferences', { silent = true })
+-- keymap('n', 'gr', notify 'editor.action.goToReferences', { silent = true })
 keymap('n', '<Leader>rn', notify 'editor.action.rename', { silent = true })
 keymap('n', '<Leader>fm', notify 'editor.action.formatDocument', { silent = true })
 keymap('n', '<Leader>ca', notify 'editor.action.refactor', { silent = true }) -- language code actions
