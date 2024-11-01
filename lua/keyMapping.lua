@@ -67,8 +67,12 @@ vim.api.nvim_set_keymap('i', 'jj', ':call VSCodeNotify("vscode-neovim.escape")<C
 -- vim.api.nvim_set_keymap('i', 'kk', '<Esc>:echo "모드 전환됨"<CR>', { noremap = true, silent = true })
 
 
--- yu로 yaw 날리기
+-- yu로 yiw 날리기
 vim.keymap.set({'n', 'v'}, 'yu', 'yiw')
+
+
+vim.keymap.set({'n', 'v'}, '<pageup>', '<c-e>')
+vim.keymap.set({'n', 'v'}, '<pagedown>', '<c-d>')
 
 -- 탭 이동
 vim.api.nvim_set_keymap('n', 'gt', ':call VSCodeNotify("workbench.action.nextEditor")<CR>', { noremap = true, silent = true, nowait = true })
@@ -148,6 +152,13 @@ vim.keymap.set('n', 'd', '"_d')
 -- If just 'd' is pressed in visual mode, do not store in clipboard
 vim.keymap.set('v', 'd', '"_d')
 
+-- Delete to the end
+vim.keymap.set({'n','v'}, 'D', '"_D')
+
+
+-- Ctrl+e 가 diw 로 동작
+vim.keymap.set('v', '<c-e>', '"_diw')
+
 -- multiple line mode
 vim.keymap.set({'n', 'v'}, '<leader>v', '<c-v>')
 
@@ -174,6 +185,9 @@ vim.keymap.set({'n', 'v'}, '`', function()
   -- vim.cmd('redraw')              -- 화면 즉시 다시 그리기
   -- return '<leader>'              -- 리더 키의 원래 기능 유지
 end, { expr = true })
+
+-- 커서를 정확한 위치로 이동시키기 위해 `(백틱)을 '(작은 따옴표) 로 변경
+vim.keymap.set({'n', 'v'}, '\'', '`')
 
 -- ---------------------------------------------------------------------------------------------------------
 -- MACRO
@@ -339,9 +353,10 @@ end
 local function v_notify(cmd)
     return string.format("<cmd>call VSCodeNotifyVisual('%s', 1)<CR>", cmd)
 end
+-- leader2
 keymap('n', '<Leader>xr', notify 'references-view.findReferences', { silent = true }) -- language references
 keymap('n', '<Leader>xd', notify 'workbench.actions.view.problems', { silent = true }) -- language diagnostics
--- keymap('n', 'gr', notify 'editor.action.goToReferences', { silent = true })
+-- keymap('n', 'gr', notify 'editor.action.goToReferences', { silent = true )
 keymap('n', '<Leader>rn', notify 'editor.action.rename', { silent = true })
 keymap('n', '<Leader>fm', notify 'editor.action.formatDocument', { silent = true })
 keymap('n', '<Leader>ca', notify 'editor.action.refactor', { silent = true }) -- language code actions
@@ -478,10 +493,12 @@ keymap('n', '<Leader>tw', notify 'workbench.action.terminal.toggleTerminal', { s
 -- substitute :s 치환 예제
 -- \d: 숫자, \w: 모든 문자
 -- | 는 or 조건으로 사용한다
--- %s\M\(\d\)/L\1/자
--- -> sql에용 사용, M"숫자" -> L"숫자" 로 변경 \d: 숫자, \(\): 캡쳐, \1: 첫번째 캡쳐
+-- %s\M\(\d\)/L\1/g
+-- -> sql에 사용, M"숫자" -> L"숫자" 로 변경 \d: 숫자, \(\): 캡쳐, \1: 첫번째 캡쳐
+
 -- %s/\([a-zA-Z0-9]\)\n/\1, /g
 -- -> '문자열\n' -> '문자열, ' 로 변경
+
 -- %s/\(\w\)\n/\1, /g
 -- w로 사용한 버전
 -- %s/\(\w\)\n/\1, /g | %s/\n//g
