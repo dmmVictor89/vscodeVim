@@ -43,4 +43,4 @@ require("better-n").setup(
 
 require("keyMapping")
 
--- require('leap').create_default_mappings() 
+-- require('leap').create_default_mappings( )
