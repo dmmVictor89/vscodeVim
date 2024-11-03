@@ -169,11 +169,58 @@ vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
 })
 
 -- Map <leader> to also toggle relativenumber while preserving its functionality
-vim.keymap.set({'n', 'v'}, '`', function()
-  vim.opt.relativenumber = false  -- 리더 키를 눌렀을 때 relativenumber 활성화
-  -- vim.cmd('redraw')              -- 화면 즉시 다시 그리기
-  -- return '<leader>'              -- 리더 키의 원래 기능 유지
-end, { expr = true })
+-- vim.keymap.set({'n', 'v'}, '`', function()
+--   vim.opt.relativenumber = false  -- 리더 키를 눌렀을 때 relativenumber 활성화
+--   -- vim.cmd('redraw')              -- 화면 즉시 다시 그리기
+--   -- return '<leader>'              -- 리더 키의 원래 기능 유지
+-- end, { expr = true })
+
+-- ---------------------------------------------------------------------------------------------------------
+-- hop setting
+-- place this in one of your configuration file(s)
+local hop = require('hop')
+local directions = require('hop.hint').HintDirection
+
+-- set HopLine
+vim.keymap.set({'n', 'v'}, 'hh', function()
+  hop.hint_lines()
+end, {noremap=true})
+
+-- HopVertical
+vim.keymap.set({'n', 'v'}, 'hv', function()
+  hop.hint_vertical()
+end, {noremap=true})
+
+-- HopPattern
+vim.keymap.set({'n', 'v'}, 'hp', function()
+  hop.hint_patterns()
+end, {noremap=true})
+
+-- HopWord
+vim.keymap.set({'n', 'v'}, 'hw', function()
+  hop.hint_words()
+end, {noremap=true})
+
+vim.keymap.set({'n', 'v'}, 'f', function()
+  hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = false })
+end, {noremap=true})
+vim.keymap.set({'n', 'v'}, 'F', function()
+  hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = false })
+end, {noremap=true})
+vim.keymap.set({'n', 'v'}, 't', function()
+  hop.hint_char2({ direction = directions.AFTER_CURSOR, current_line_only = false, hint_offset = -1 })
+end, {noremap=true})
+vim.keymap.set({'n', 'v'}, 'T', function()
+  hop.hint_char2({ direction = directions.BEFORE_CURSOR, current_line_only = false, hint_offset = 1 })
+end, {noremap=true})
+
+-- ---------------------------------------------------------------------------------------------------------
+-- leap setting
+-- vim.keymap.set({'n', 'v'}, 'f', '<Plug>(leap-forward)')
+-- vim.keymap.set({'n', 'v'}, 'F', '<Plug>(leap-backward)')
+-- vim.keymap.set({'n', 'v'}, 'gf', '<Plug>(leap-from-window)')
+
+-- ---------------------------------------------------------------------------------------------------------
 
 -- ---------------------------------------------------------------------------------------------------------
 -- MACRO
@@ -310,12 +357,6 @@ end
 
 -- vim.keymap.set({ "n", "v", "x" }, "se", hunk_navigation.hlfPgUp)
 -- vim.keymap.set({ "n", "v", "x" }, "sd", hunk_navigation.hlfPgDown)
-
--- ---------------------------------------------------------------------------------------------------------
-
-vim.keymap.set({'n', 'v'}, 'f', '<Plug>(leap-forward)')
-vim.keymap.set({'n', 'v'}, 'F', '<Plug>(leap-backward)')
-vim.keymap.set({'n', 'v'}, 'gf', '<Plug>(leap-from-window)')
 
 -- ---------------------------------------------------------------------------------------------------------
 local M = {}

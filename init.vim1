@@ -1,0 +1,2 @@
+nnoremap 2 <Cmd>setlocal rnu<CR>2
+nnoremap j j<Cmd>setlocal nornu<CR>
