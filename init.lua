@@ -25,6 +25,14 @@ require('packer').startup({function(use)
   use 'tpope/vim-repeat' -- 매크로나 찾기등등을 모두 반복해주는 플러그인
   use "jonatan-branting/nvim-better-n"
   use 'ggandor/leap.nvim'
+  use {
+    'phaazon/hop.nvim',
+    branch = 'v2', -- optional but strongly recommended
+    config = function()
+      -- you can configure Hop the way you like here; see :h hop-config
+      require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+    end
+}
 end,
 config = {
   display = {
@@ -43,7 +51,8 @@ require("better-n").setup(
   }
 )
 ---------------------------------------------------------------------------------------------------------
-
+require'hop'.setup()
+---------------------------------------------------------------------------------------------------------
 require("keyMapping")
 
 -- require('leap').create_default_mappings()

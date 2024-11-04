@@ -326,11 +326,44 @@ end
 -- vim.keymap.set({ "n", "v", "x" }, "sd", hunk_navigation.hlfPgDown)
 
 -- ---------------------------------------------------------------------------------------------------------
-
+-- leap
 vim.keymap.set({'n', 'v'}, 'f', '<Plug>(leap-forward)')
 vim.keymap.set({'n', 'v'}, 'F', '<Plug>(leap-backward)')
 vim.keymap.set({'n', 'v'}, 'gf', '<Plug>(leap-from-window)')
 
+-- ---------------------------------------------------------------------------------------------------------
+-- hop
+local hop = require('hop')
+local directions = require('hop.hint').HintDirection
+
+vim.keymap.set('', 'hl', function()
+  hop.hint_lines()
+end, {noremap=true})
+
+vim.keymap.set('', 'hv', function()
+  hop.hint_vertical()
+end, {noremap=true})
+
+vim.keymap.set('', 'hp', function()
+  hop.hint_patterns()
+end, {noremap=true})
+
+vim.keymap.set('', 'hw', function()
+  hop.hint_words()
+end, {noremap=true})
+
+-- vim.keymap.set('', 'f', function()
+--   hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true })
+-- end, {remap=true})
+-- vim.keymap.set('', 'F', function()
+--   hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true })
+-- end, {remap=true})
+-- vim.keymap.set('', 't', function()
+--   hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true, hint_offset = -1 })
+-- end, {remap=true})
+-- vim.keymap.set('', 'T', function()
+--   hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true, hint_offset = 1 })
+-- end, {remap=true})
 -- ---------------------------------------------------------------------------------------------------------
 local M = {}
 
