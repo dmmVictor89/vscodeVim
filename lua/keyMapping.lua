@@ -1,5 +1,6 @@
 print("vim on")
 --todo //test
+-- h 매핑 g로 변경 hjkl 에는 매핑을 안 해야 한다 h 입력을 기다리면서 렉 걸림
 
 -- <leader> key
 vim.g.mapleader = ' '
@@ -39,6 +40,8 @@ vim.keymap.set({'n', 'v'}, '<leader>a', '<s-a>')
 
 -- 아래에 새로운 행 만들고 노멀모드
 -- vim.api.nvim_set_keymap('n', '<leader>o', 'o<esc>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('n', 'o', 'o<Esc>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('n', 'O', 'O<Esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>o', 'o<Esc>0"_D', { noremap = true, silent = true })
 
 -- close window
@@ -61,7 +64,7 @@ end, { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap('i', 'jj', '<Esc>', { noremap = true, silent = true })
 -- Insert 모드에서 'jj'를 눌렀을 때 Esc로 전환
 -- vim.keymap.set('i', 'jj', '<Esc>', { noremap = true, silent = true, nowait = true })
-vim.api.nvim_set_keymap('i', 'jj', ':call VSCodeNotify("vscode-neovim.escape")<CR>', { noremap = true, silent = true, nowait = true })
+-- vim.api.nvim_set_keymap('i', 'jj', ':call VSCodeNotify("vscode-neovim.escape")<CR>', { noremap = true, silent = true, nowait = true })
 -- vscode-neovim.escape
 -- 'jj' 입력 시 메시지 표시
 -- vim.api.nvim_set_keymap('i', 'kk', '<Esc>:echo "모드 전환됨"<CR>', { noremap = true, silent = true })
@@ -336,19 +339,19 @@ vim.keymap.set({'n', 'v'}, 'gf', '<Plug>(leap-from-window)')
 local hop = require('hop')
 local directions = require('hop.hint').HintDirection
 
-vim.keymap.set('', 'hl', function()
+vim.keymap.set('', 'gl', function()
   hop.hint_lines()
 end, {noremap=true})
 
-vim.keymap.set('', 'hv', function()
+vim.keymap.set('', 'gv', function()
   hop.hint_vertical()
 end, {noremap=true})
 
-vim.keymap.set('', 'hp', function()
+vim.keymap.set('', 'gp', function()
   hop.hint_patterns()
 end, {noremap=true})
 
-vim.keymap.set('', 'hw', function()
+vim.keymap.set('', 'gw', function()
   hop.hint_words()
 end, {noremap=true})
 
