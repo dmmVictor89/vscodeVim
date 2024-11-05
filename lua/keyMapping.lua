@@ -1,5 +1,6 @@
 print("vim on")
 --todo //test
+-- h 매핑 g로 변경 hjkl 에는 매핑을 안 해야 한다 h 입력을 기다리면서 렉 걸림
 
 -- <leader> key
 vim.g.mapleader = ' '
@@ -39,6 +40,8 @@ vim.keymap.set({'n', 'v'}, '<leader>a', '<s-a>')
 
 -- 아래에 새로운 행 만들고 노멀모드
 -- vim.api.nvim_set_keymap('n', '<leader>o', 'o<esc>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('n', 'o', 'o<Esc>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('n', 'O', 'O<Esc>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>o', 'o<Esc>0"_D', { noremap = true, silent = true })
 
 -- close window
@@ -61,14 +64,18 @@ end, { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap('i', 'jj', '<Esc>', { noremap = true, silent = true })
 -- Insert 모드에서 'jj'를 눌렀을 때 Esc로 전환
 -- vim.keymap.set('i', 'jj', '<Esc>', { noremap = true, silent = true, nowait = true })
-vim.api.nvim_set_keymap('i', 'jj', ':call VSCodeNotify("vscode-neovim.escape")<CR>', { noremap = true, silent = true, nowait = true })
+-- vim.api.nvim_set_keymap('i', 'jj', ':call VSCodeNotify("vscode-neovim.escape")<CR>', { noremap = true, silent = true, nowait = true })
 -- vscode-neovim.escape
 -- 'jj' 입력 시 메시지 표시
 -- vim.api.nvim_set_keymap('i', 'kk', '<Esc>:echo "모드 전환됨"<CR>', { noremap = true, silent = true })
 
 
--- yu로 yaw 날리기
+-- yu로 yiw 날리기
 vim.keymap.set({'n', 'v'}, 'yu', 'yiw')
+
+
+vim.keymap.set({'n', 'v'}, '<pageup>', '<c-e>')
+vim.keymap.set({'n', 'v'}, '<pagedown>', '<c-d>')
 
 -- 탭 이동
 vim.api.nvim_set_keymap('n', 'gt', ':call VSCodeNotify("workbench.action.nextEditor")<CR>', { noremap = true, silent = true, nowait = true })
@@ -148,6 +155,13 @@ vim.keymap.set('n', 'd', '"_d')
 -- If just 'd' is pressed in visual mode, do not store in clipboard
 vim.keymap.set('v', 'd', '"_d')
 
+-- Delete to the end
+vim.keymap.set({'n','v'}, 'D', '"_D')
+
+
+-- Ctrl+e 가 diw 로 동작
+vim.keymap.set('v', '<c-e>', '"_diw')
+
 -- multiple line mode
 vim.keymap.set({'n', 'v'}, '<leader>v', '<c-v>')
 
@@ -176,51 +190,9 @@ vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
 -- end, { expr = true })
 
 -- ---------------------------------------------------------------------------------------------------------
--- hop setting
--- place this in one of your configuration file(s)
-local hop = require('hop')
-local directions = require('hop.hint').HintDirection
 
--- set HopLine
-vim.keymap.set({'n', 'v'}, 'hh', function()
-  hop.hint_lines()
-end, {noremap=true})
-
--- HopVertical
-vim.keymap.set({'n', 'v'}, 'hv', function()
-  hop.hint_vertical()
-end, {noremap=true})
-
--- HopPattern
-vim.keymap.set({'n', 'v'}, 'hp', function()
-  hop.hint_patterns()
-end, {noremap=true})
-
--- HopWord
-vim.keymap.set({'n', 'v'}, 'hw', function()
-  hop.hint_words()
-end, {noremap=true})
-
-vim.keymap.set({'n', 'v'}, 'f', function()
-  hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = false })
-end, {noremap=true})
-vim.keymap.set({'n', 'v'}, 'F', function()
-  hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = false })
-end, {noremap=true})
-vim.keymap.set({'n', 'v'}, 't', function()
-  hop.hint_char2({ direction = directions.AFTER_CURSOR, current_line_only = false, hint_offset = -1 })
-end, {noremap=true})
-vim.keymap.set({'n', 'v'}, 'T', function()
-  hop.hint_char2({ direction = directions.BEFORE_CURSOR, current_line_only = false, hint_offset = 1 })
-end, {noremap=true})
-
--- ---------------------------------------------------------------------------------------------------------
--- leap setting
--- vim.keymap.set({'n', 'v'}, 'f', '<Plug>(leap-forward)')
--- vim.keymap.set({'n', 'v'}, 'F', '<Plug>(leap-backward)')
--- vim.keymap.set({'n', 'v'}, 'gf', '<Plug>(leap-from-window)')
-
--- ---------------------------------------------------------------------------------------------------------
+-- 커서를 정확한 위치로 이동시키기 위해 `(백틱)을 '(작은 따옴표) 로 변경
+vim.keymap.set({'n', 'v'}, '\'', '`')
 
 -- ---------------------------------------------------------------------------------------------------------
 -- MACRO
@@ -359,6 +331,45 @@ end
 -- vim.keymap.set({ "n", "v", "x" }, "sd", hunk_navigation.hlfPgDown)
 
 -- ---------------------------------------------------------------------------------------------------------
+
+vim.keymap.set({'n', 'v'}, 'f', '<Plug>(leap-forward)')
+vim.keymap.set({'n', 'v'}, 'F', '<Plug>(leap-backward)')
+vim.keymap.set({'n', 'v'}, 'gf', '<Plug>(leap-from-window)')
+
+-- ---------------------------------------------------------------------------------------------------------
+-- hop
+local hop = require('hop')
+local directions = require('hop.hint').HintDirection
+
+vim.keymap.set('', 'gl', function()
+  hop.hint_lines()
+end, {noremap=true})
+
+vim.keymap.set('', 'gv', function()
+  hop.hint_vertical()
+end, {noremap=true})
+
+vim.keymap.set('', 'gp', function()
+  hop.hint_patterns()
+end, {noremap=true})
+
+vim.keymap.set('', 'gw', function()
+  hop.hint_words()
+end, {noremap=true})
+
+-- vim.keymap.set('', 'f', function()
+--   hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true })
+-- end, {remap=true})
+-- vim.keymap.set('', 'F', function()
+--   hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true })
+-- end, {remap=true})
+-- vim.keymap.set('', 't', function()
+--   hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true, hint_offset = -1 })
+-- end, {remap=true})
+-- vim.keymap.set('', 'T', function()
+--   hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true, hint_offset = 1 })
+-- end, {remap=true})
+-- ---------------------------------------------------------------------------------------------------------
 local M = {}
 
 local augroup = vim.api.nvim_create_augroup
@@ -380,9 +391,10 @@ end
 local function v_notify(cmd)
     return string.format("<cmd>call VSCodeNotifyVisual('%s', 1)<CR>", cmd)
 end
+-- leader2
 keymap('n', '<Leader>xr', notify 'references-view.findReferences', { silent = true }) -- language references
 keymap('n', '<Leader>xd', notify 'workbench.actions.view.problems', { silent = true }) -- language diagnostics
--- keymap('n', 'gr', notify 'editor.action.goToReferences', { silent = true })
+-- keymap('n', 'gr', notify 'editor.action.goToReferences', { silent = true )
 keymap('n', '<Leader>rn', notify 'editor.action.rename', { silent = true })
 keymap('n', '<Leader>fm', notify 'editor.action.formatDocument', { silent = true })
 keymap('n', '<Leader>ca', notify 'editor.action.refactor', { silent = true }) -- language code actions
@@ -519,10 +531,12 @@ keymap('n', '<Leader>tw', notify 'workbench.action.terminal.toggleTerminal', { s
 -- substitute :s 치환 예제
 -- \d: 숫자, \w: 모든 문자
 -- | 는 or 조건으로 사용한다
--- %s\M\(\d\)/L\1/자
--- -> sql에용 사용, M"숫자" -> L"숫자" 로 변경 \d: 숫자, \(\): 캡쳐, \1: 첫번째 캡쳐
+-- %s\M\(\d\)/L\1/g
+-- -> sql에 사용, M"숫자" -> L"숫자" 로 변경 \d: 숫자, \(\): 캡쳐, \1: 첫번째 캡쳐
+
 -- %s/\([a-zA-Z0-9]\)\n/\1, /g
 -- -> '문자열\n' -> '문자열, ' 로 변경
+
 -- %s/\(\w\)\n/\1, /g
 -- w로 사용한 버전
 -- %s/\(\w\)\n/\1, /g | %s/\n//g

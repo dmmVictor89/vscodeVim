@@ -34,16 +34,6 @@ require('packer').startup({function(use)
   use {'nvim-lualine/lualine.nvim',
        requires = { 'nvim-tree/nvim-web-devicons', opt = true }}
   use 'ggandor/leap.nvim'
-  use {
-  'phaazon/hop.nvim',
-  branch = 'v2', -- optional but strongly recommended
-  config = function()
-    -- you can configure Hop the way you like here; see :h hop-config
-    require'hop'.setup { keys = 'etovxqpdygfblzhckisuran'
-    -- multi_windows = true
-  }
-  end
-  }
 end,
 config = {
   display = {
@@ -67,13 +57,40 @@ require('evil_lualine')
 ---------------------------------------------------------------------------------------------------------
 require('hop').setup()
 ---------------------------------------------------------------------------------------------------------
-
+require('lualine').setup()
+require('evil_lualine')
+---------------------------------------------------------------------------------------------------------
+require('hop').setup()
+---------------------------------------------------------------------------------------------------------
+-- require('leap').opts.safe_labels = {}
+---------------------------------------------------------------------------------------------------------
+require'hop'.setup()
+---------------------------------------------------------------------------------------------------------
 require("keyMapping")
+---------------------------------------------------------------------------------------------------------
+-- Neovim Ui Modifier
+vim.api.nvim_exec([[
+    " THEME CHANGER
+    function! SetCursorLineNrColorInsert(mode)
+        " Insert mode: blue
+        if a:mode == "i"
+            call VSCodeNotify('nvim-theme.insert')
 
--- require('leap').create_default_mappings( )
+        " Replace mode: red
+        elseif a:mode == "r"
+            call VSCodeNotify('nvim-theme.replace')
+        endif
+    endfunction
 
--- vim message 를 output 에 출력하지 않도록 설정
--- if vim.g.vscode then
---   cmdheight = 1 -- this is the new line I added
---   return
--- end
+    augroup CursorLineNrColorSwap
+        autocmd!
+        autocmd ModeChanged *:[vV\x16]* call VSCodeNotify('nvim-theme.visual')
+        autocmd ModeChanged *:[R]* call VSCodeNotify('nvim-theme.replace')
+        autocmd InsertEnter * call SetCursorLineNrColorInsert(v:insertmode)
+        autocmd InsertLeave * call VSCodeNotify('nvim-theme.normal')
+        autocmd CursorHold * call VSCodeNotify('nvim-theme.normal')
+        autocmd ModeChanged [vV\x16]*:* call VSCodeNotify('nvim-theme.normal')
+    augroup END
+]], false)
+---------------------------------------------------------------------------------------------------------
+-- require('leap').create_default_mappings()
