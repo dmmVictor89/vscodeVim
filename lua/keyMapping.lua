@@ -51,6 +51,9 @@ vim.keymap.set('n', '<leader>x', function()
       vim.fn.VSCodeNotify('workbench.action.closeActiveEditor')  -- VSCode의 창 닫기 명령 호출
   end
 end, { noremap = true, silent = true })
+
+-- join lines
+vim.api.nvim_set_keymap('n', '<leader>j', 'J', { noremap = true, silent = true })
 -- ---------------------------------------------------------------------------------------------------------
 -- motion keys (left, down, up, left)
 -- vim.keymap.set({'n', 'v'}, 'j', 'h')
@@ -99,6 +102,7 @@ vim.api.nvim_set_keymap('n', 'st', ':noh<CR>', { noremap = true, silent = true }
 
 vim.api.nvim_set_keymap('n', 'sj', ':call VSCodeNotify("workbench.action.navigateLeft")<CR>', { noremap = true, silent = true })
 
+-- window
 -- 윈도우 관련
 vim.api.nvim_set_keymap('n', 'sh', ':call VSCodeNotify("workbench.action.navigateLeft")<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', 'sj', ':call VSCodeNotify("workbench.action.navigateDown")<CR>', { noremap = true, silent = true })
@@ -127,6 +131,9 @@ vim.keymap.set('n', 'g-', '<c-x>')
 -- 에디터 좌우로 이동
 vim.keymap.set('n', 'sy', ':call VSCodeNotify("workbench.action.moveEditorToLeftGroup")<CR>')
 vim.keymap.set('n', 'su', ':call VSCodeNotify("workbench.action.moveEditorToRightGroup")<CR>')
+
+-- zen mode
+vim.api.nvim_set_keymap('n', 'sz', ':call VSCodeNotify("workbench.action.toggleZenMode")<CR>', { noremap = true, silent = true })
 
 -- change the window
 -- <leader>w를 <C-w>로 매핑, 명령어가 표시되도록 silent = false 설정
@@ -183,11 +190,11 @@ vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
 })
 
 -- Map <leader> to also toggle relativenumber while preserving its functionality
--- vim.keymap.set({'n', 'v'}, '`', function()
---   vim.opt.relativenumber = false  -- 리더 키를 눌렀을 때 relativenumber 활성화
---   -- vim.cmd('redraw')              -- 화면 즉시 다시 그리기
---   -- return '<leader>'              -- 리더 키의 원래 기능 유지
--- end, { expr = true })
+vim.keymap.set({'n', 'v'}, '`', function()
+  vim.opt.relativenumber = false  -- 리더 키를 눌렀을 때 relativenumber 활성화
+  -- vim.cmd('redraw')              -- 화면 즉시 다시 그리기
+  -- return '<leader>'              -- 리더 키의 원래 기능 유지
+end, { expr = true })
 
 -- ---------------------------------------------------------------------------------------------------------
 
@@ -336,39 +343,72 @@ vim.keymap.set({'n', 'v'}, 'f', '<Plug>(leap-forward)')
 vim.keymap.set({'n', 'v'}, 'F', '<Plug>(leap-backward)')
 vim.keymap.set({'n', 'v'}, 'gf', '<Plug>(leap-from-window)')
 
+-- Define equivalence classes for brackets and quotes, in addition to
+-- the default whitespace group.
+require('leap').opts.equivalence_classes = { ' \t\r\n', '([{', ')]}', '\'"`' }
+
+-- Use the traversal keys to repeat the previous motion without explicitly
+-- invoking Leap.
+require('leap.user').set_repeat_keys('<enter>', '<backspace>')
+
+
 -- ---------------------------------------------------------------------------------------------------------
--- hop
-local hop = require('hop')
-local directions = require('hop.hint').HintDirection
+-- leap to line 추가
+local function leap_to_line()
+  local winid = vim.api.nvim_get_current_win()
+  require('leap').leap {
+    target_windows = { winid },
+    targets = function(opts)
+      local targets = {}
+      local wininfo = vim.fn.getwininfo(winid)[1]
+      local cur_line = vim.fn.line('.')
+      
+      for line = wininfo.topline, wininfo.botline do
+        if line ~= cur_line then
+          table.insert(targets, { pos = { line, 1 } })
+        end
+      end
+      
+      return targets
+    end,
+  }
+end
 
-vim.keymap.set('', 'gl', function()
-  hop.hint_lines()
-end, {noremap=true})
+vim.keymap.set('', 'gl', leap_to_line, { desc = "Leap to line" })
 
-vim.keymap.set('', 'gv', function()
-  hop.hint_vertical()
-end, {noremap=true})
 
-vim.keymap.set('', 'gp', function()
-  hop.hint_patterns()
-end, {noremap=true})
+-- --------------------------------------------------------------------------------------------------------
+-- leap leap vertical 추가
+local function leap_vertical()
+  local winid = vim.api.nvim_get_current_win()
+  local cur_line = vim.fn.line('.')
+  local cur_col = vim.fn.col('.')
+  
+  require('leap').leap {
+    target_windows = { winid },
+    targets = function(opts)
+      local targets = {}
+      local wininfo = vim.fn.getwininfo(winid)[1]
+      
+      for line = wininfo.topline, wininfo.botline do
+        if line ~= cur_line then
+          -- 현재 라인의 길이를 확인
+          local line_length = vim.fn.strdisplaywidth(vim.fn.getline(line))
+          -- 현재 열이 라인 길이보다 길면 라인의 마지막 열을 사용
+          local col = math.min(cur_col, line_length)
+          table.insert(targets, { pos = { line, col } })
+        end
+      end
+      
+      return targets
+    end,
+  }
+end
 
-vim.keymap.set('', 'gw', function()
-  hop.hint_words()
-end, {noremap=true})
+-- 키 매핑 예시
+vim.keymap.set('n', 'gv', leap_vertical, { desc = "Leap vertical" })
 
--- vim.keymap.set('', 'f', function()
---   hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true })
--- end, {remap=true})
--- vim.keymap.set('', 'F', function()
---   hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true })
--- end, {remap=true})
--- vim.keymap.set('', 't', function()
---   hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true, hint_offset = -1 })
--- end, {remap=true})
--- vim.keymap.set('', 'T', function()
---   hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true, hint_offset = 1 })
--- end, {remap=true})
+
 -- ---------------------------------------------------------------------------------------------------------
 local M = {}
 
@@ -527,6 +567,41 @@ keymap('n', '<Leader>tw', notify 'workbench.action.terminal.toggleTerminal', { s
 -- shift + k
 -- gh
 -- hover widget
+
+
+-- ---------------------------------------------------------------------------------------------------------
+-- hop -- leap 로 대체. 미사용
+-- local hop = require('hop')
+-- local directions = require('hop.hint').HintDirection
+
+-- vim.keymap.set('', 'gl', function()
+--   hop.hint_lines()
+-- end, {noremap=true})
+
+--[[ vim.keymap.set('', 'gv', function()
+  hop.hint_vertical()
+end, {noremap=true}) ]]
+
+-- vim.keymap.set('', 'gp', function()
+--   hop.hint_patterns()
+-- end, {noremap=true})
+
+-- vim.keymap.set('', 'gw', function()
+--   hop.hint_words()
+-- end, {noremap=true})
+
+-- vim.keymap.set('', 'f', function()
+--   hop.hint_char1()
+-- end, {remap=true})
+-- vim.keymap.set('', 'F', function()
+--   hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true })
+-- end, {remap=true})
+-- vim.keymap.set('', 't', function()
+--   hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true, hint_offset = -1 })
+-- end, {remap=true})
+-- vim.keymap.set('', 'T', function()
+--   hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true, hint_offset = 1 })
+-- end, {remap=true})
 -- ---------------------------------------------------------------------------------------------------------
 -- substitute :s 치환 예제
 -- \d: 숫자, \w: 모든 문자
