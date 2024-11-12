@@ -30,10 +30,13 @@ require('packer').startup({function(use)
   -- Your plugins here
   use 'wbthomason/packer.nvim'
   use 'tpope/vim-repeat' -- 매크로나 찾기등등을 모두 반복해주는 플러그인
-  use "jonatan-branting/nvim-better-n"
+  use 'jonatan-branting/nvim-better-n'
   use {'nvim-lualine/lualine.nvim',
        requires = { 'nvim-tree/nvim-web-devicons', opt = true }}
   use 'ggandor/leap.nvim'
+  use 'ggandor/flit.nvim'
+  use 'gbprod/substitute.nvim'
+  use 'chrisgrieser/nvim-various-textobjs'
   -- use {
   --   'phaazon/hop.nvim',
   --   branch = 'v2', -- optional but strongly recommended
@@ -69,6 +72,33 @@ require('evil_lualine')
 ---------------------------------------------------------------------------------------------------------
 require('leap').setup{}
 ---------------------------------------------------------------------------------------------------------
+require('flit').setup {
+  keys = { f = 'f', F = 'F', t = 't', T = 'T' },
+  -- A string like "nv", "nvo", "o", etc.
+  labeled_modes = "v",
+  -- Repeat with the trigger key itself.
+  clever_repeat = true,
+  multiline = true,
+  -- Like `leap`s similar argument (call-specific overrides).
+  -- E.g.: opts = { equivalence_classes = {} }
+  opts = {}
+}
+---------------------------------------------------------------------------------------------------------
+require('substitute').setup({
+  highlight_substituted_text = {
+    enabled = true,
+    timer = 5000
+  }
+})
+---------------------------------------------------------------------------------------------------------
+require("various-textobjs").setup({ 
+  useDefaultKeymaps = true,
+
+	-- display notification if a text object is not found
+	notifyNotFound = true,
+
+})
+---------------------------------------------------------------------------------------------------------
 -- require('hop').setup()
 ---------------------------------------------------------------------------------------------------------
 -- require('leap').opts.safe_labels = {}
@@ -101,3 +131,4 @@ vim.api.nvim_exec([[
 ]], false)
 ---------------------------------------------------------------------------------------------------------
 -- require('leap').create_default_mappings()
+-- text-case.nvim: case 변경(upper, lower, snake, dash etc...)

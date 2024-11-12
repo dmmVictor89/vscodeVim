@@ -21,7 +21,7 @@ vim.opt.smartcase = true
 vim.cmd('nmap <leader>c :e C:\\Users\\trueTicket89\\AppData\\Local\\nvim\\init.lua')
 
 -- save
-vim.cmd('nmap <leader>s :w<cr>')
+-- vim.cmd('nmap <leader>s :w<cr>')
 
 -- J key binding 없애기
 vim.keymap.set({'n', 'v'}, 'J', '')
@@ -110,7 +110,7 @@ vim.api.nvim_set_keymap('n', 'sk', ':call VSCodeNotify("workbench.action.navigat
 vim.api.nvim_set_keymap('n', 'sl', ':call VSCodeNotify("workbench.action.navigateRight")<CR>', { noremap = true, silent = true })
 
 -- 윈도우 나누기
-vim.api.nvim_set_keymap('n', 'ss', ':split<Return>', { silent = true })
+vim.api.nvim_set_keymap('n', 'sg', ':split<Return>', { silent = true })
 vim.api.nvim_set_keymap('n', 'sv', ':vsplit<Return>', { silent = true })
 
 
@@ -409,6 +409,32 @@ end
 vim.keymap.set('n', 'gv', leap_vertical, { desc = "Leap vertical" })
 
 
+-- ---------------------------------------------------------------------------------------------------------
+-- substitue
+
+-- Lua
+-- 일반 모드 치환 연산자: 이 설정은 's' 키를 누른 후 모션을 입력하여 해당 텍스트 객체를 현재 레지스터의 내용으로 치환할 수 있게 합니다1. 예를 들어, 'siw'는 현재 단어를, 'sip'는 현재 단락을 치환합니다.
+vim.keymap.set('n', 's', require('substitute').operator, { noremap = true })
+-- 현재 줄 치환: 'ss'를 입력하면 현재 줄 전체를 레지스터의 내용으로 치환합니다
+vim.keymap.set('n', 'ss', require('substitute').line, { noremap = true })
+-- 'S'를 누르면 커서 위치부터 줄 끝까지의 텍스트를 레지스터의 내용으로 치환합니다
+vim.keymap.set('n', 'S', require('substitute').eol, { noremap = true })
+-- 비주얼 모드에서 선택한 텍스트를 's'를 눌러 레지스터의 내용으로 치환합니다
+vim.keymap.set('x', 's', require('substitute').visual, { noremap = true })
+-- 일반 모드 범위 치환 연산자: <leader>s 다음에 두 개의 모션을 입력하여 범위를 지정하고 텍스트를 치환할 수 있게 합니다. 첫 번째 모션은 치환할 텍스트를 선택하고, 두 번째 모션은 치환을 적용할 범위를 지정합니다
+-- vim.keymap.set('n', '<leader>s', require('substitute.range').operator, { noremap = true })
+-- 비주얼 모드 범위 치환: 비주얼 모드에서 텍스트를 선택한 후 <leader>s를 누르고 모션을 입력하여 선택한 텍스트를 해당 범위 내에서 치환할 수 있습니다
+-- vim.keymap.set('x', '<leader>s', require('substitute.range').visual, { noremap = true })
+-- 단어 범위 치환: <leader>ss 다음에 모션을 입력하면 커서 아래의 완전한 단어를 선택하고 지정된 범위 내에서 치환합니다. 이 기능은 complete_word 옵션이 true로 설정되어 있어 단어 경계를 요구합니다
+-- vim.keymap.set('n', '<leader>ss', require('substitute.range').word, { noremap = true })
+
+-- ---------------------------------------------------------------------------------------------------------
+-- nvim-various-textobjs
+-- anyQuote 오퍼레이터 대기 모드와 비주얼 모드에서 'iu'를 inner quote로 매핑
+vim.keymap.set({"o", "x"}, "iu", '<cmd>lua require("various-textobjs").anyQuote("inner")<CR>', { noremap = true, silent = true })
+
+-- anyQuote 오퍼레이터 대기 모드와 비주얼 모드에서 'au'를 outer quote로 매핑
+vim.keymap.set({"o", "x"}, "au", '<cmd>lua require("various-textobjs").anyQuote("outer")<CR>', { noremap = true, silent = true })
 -- ---------------------------------------------------------------------------------------------------------
 local M = {}
 
