@@ -339,8 +339,8 @@ end
 
 -- ---------------------------------------------------------------------------------------------------------
 
-vim.keymap.set({'n', 'v'}, 'f', '<Plug>(leap-forward)')
-vim.keymap.set({'n', 'v'}, 'F', '<Plug>(leap-backward)')
+vim.keymap.set({'n', 'v'}, 'ff', '<Plug>(leap-forward)')
+vim.keymap.set({'n', 'v'}, 'FF', '<Plug>(leap-backward)')
 vim.keymap.set({'n', 'v'}, 'gf', '<Plug>(leap-from-window)')
 
 -- Define equivalence classes for brackets and quotes, in addition to
