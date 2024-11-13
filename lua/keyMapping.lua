@@ -88,7 +88,7 @@ vim.api.nvim_set_keymap('n', 'gr', ':call VSCodeNotify("workbench.action.previou
 -- vim.keymap.set('n', '\'', ';')
 
 -- paste without overwriting
-vim.keymap.set('v', 'p', 'P')
+-- vim.keymap.set('v', 'p', 'P')
 
 -- redo 
 vim.keymap.set('n', 'U', '<C-r>')
@@ -435,6 +435,15 @@ vim.keymap.set({"o", "x"}, "iu", '<cmd>lua require("various-textobjs").anyQuote(
 
 -- anyQuote 오퍼레이터 대기 모드와 비주얼 모드에서 'au'를 outer quote로 매핑
 vim.keymap.set({"o", "x"}, "au", '<cmd>lua require("various-textobjs").anyQuote("outer")<CR>', { noremap = true, silent = true })
+-- ---------------------------------------------------------------------------------------------------------
+-- yanky.nvim
+vim.keymap.set({"n","x"}, "p", "<Plug>(YankyPutAfter)")
+vim.keymap.set({"n","x"}, "P", "<Plug>(YankyPutBefore)")
+vim.keymap.set({"n","x"}, "gp", "<Plug>(YankyGPutAfter)")
+vim.keymap.set({"n","x"}, "gP", "<Plug>(YankyGPutBefore)")
+
+vim.keymap.set("n", "<s-p>", "<Plug>(YankyPreviousEntry)")
+vim.keymap.set("n", "<leader>p", "<Plug>(YankyNextEntry)")
 -- ---------------------------------------------------------------------------------------------------------
 local M = {}
 

@@ -37,6 +37,7 @@ require('packer').startup({function(use)
   use 'ggandor/flit.nvim'
   use 'gbprod/substitute.nvim'
   use 'chrisgrieser/nvim-various-textobjs'
+  use("gbprod/yanky.nvim") 
   -- use {
   --   'phaazon/hop.nvim',
   --   branch = 'v2', -- optional but strongly recommended
@@ -97,6 +98,43 @@ require("various-textobjs").setup({
 	-- display notification if a text object is not found
 	notifyNotFound = true,
 
+})
+---------------------------------------------------------------------------------------------------------
+require("yanky").setup({
+  ring = {
+    history_length = 100,
+    storage = "shada",
+    storage_path = vim.fn.stdpath("data") .. "/databases/yanky.db", -- Only for sqlite storage
+    sync_with_numbered_registers = true,
+    cancel_event = "update",
+    ignore_registers = { "_" },
+    update_register_on_cycle = false,
+    permanent_wrapper = nil,
+  },
+  picker = {
+    select = {
+      action = nil, -- nil to use default put action
+    },
+    telescope = {
+      use_default_mappings = true, -- if default mappings should be used
+      mappings = nil, -- nil to use default mappings or no mappings (see `use_default_mappings`)
+    },
+  },
+  system_clipboard = {
+    sync_with_ring = true,
+    clipboard_register = nil,
+  },
+  highlight = {
+    on_put = true,
+    on_yank = true,
+    timer = 500,
+  },
+  preserve_cursor_position = {
+    enabled = true,
+  },
+  textobj = {
+   enabled = true,
+  },
 })
 ---------------------------------------------------------------------------------------------------------
 -- require('hop').setup()
