@@ -56,10 +56,11 @@ end, { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>j', 'J', { noremap = true, silent = true })
 -- ---------------------------------------------------------------------------------------------------------
 -- motion keys (left, down, up, left)
--- vim.keymap.set({'n', 'v'}, 'j', 'h')
--- vim.keymap.set({'n', 'v'}, 'k', 'j')
--- vim.keymap.set({'n', 'v'}, 'l', 'k')
--- vim.keymap.set({'n', 'v'}, ';', 'l')
+vim.keymap.set({'n', 'v'}, 'j', 'h')
+vim.keymap.set({'n', 'v'}, 'k', 'j')
+vim.keymap.set({'n', 'v'}, 'l', 'k')
+vim.keymap.set({'n', 'v'}, ';', 'l')
+vim.keymap.set({'n', 'v'}, 'h', ';')
 -- vim.keymap.set({'n', 'v'}, 'h', '\'')
 
 -- jj -> esc 
@@ -72,9 +73,15 @@ vim.api.nvim_set_keymap('n', '<leader>j', 'J', { noremap = true, silent = true }
 -- 'jj' 입력 시 메시지 표시
 -- vim.api.nvim_set_keymap('i', 'kk', '<Esc>:echo "모드 전환됨"<CR>', { noremap = true, silent = true })
 
+-- y -> u set yank
+vim.keymap.set({'n', 'v'}, 'y', 'u')
+-- u -> y set undo
+vim.keymap.set({'n', 'v'}, 'u', 'y')
+vim.keymap.set({'n', 'v'}, 'uu', 'yy')
+
 
 -- yu로 yiw 날리기
-vim.keymap.set({'n', 'v'}, 'yu', 'yiw')
+vim.keymap.set({'n', 'v'}, 'ui', 'yiw')
 
 
 vim.keymap.set({'n', 'v'}, '<pageup>', '<c-e>')
@@ -91,7 +98,7 @@ vim.api.nvim_set_keymap('n', 'gr', ':call VSCodeNotify("workbench.action.previou
 -- vim.keymap.set('v', 'p', 'P')
 
 -- redo 
-vim.keymap.set('n', 'U', '<C-r>')
+vim.keymap.set('n', 'Y', '<C-r>')
 
 -- skip folds (down, up)
 -- vim.cmd('nmap j gj')
@@ -100,14 +107,12 @@ vim.keymap.set('n', 'U', '<C-r>')
 -- :nohlsearch, :noh : serach 하이라이트 끄기
 vim.api.nvim_set_keymap('n', 'st', ':noh<CR>', { noremap = true, silent = true })
 
-vim.api.nvim_set_keymap('n', 'sj', ':call VSCodeNotify("workbench.action.navigateLeft")<CR>', { noremap = true, silent = true })
-
 -- window
 -- 윈도우 관련
-vim.api.nvim_set_keymap('n', 'sh', ':call VSCodeNotify("workbench.action.navigateLeft")<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', 'sj', ':call VSCodeNotify("workbench.action.navigateDown")<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', 'sk', ':call VSCodeNotify("workbench.action.navigateUp")<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', 'sl', ':call VSCodeNotify("workbench.action.navigateRight")<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'sj', ':call VSCodeNotify("workbench.action.navigateLeft")<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'sk', ':call VSCodeNotify("workbench.action.navigateDown")<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'sl', ':call VSCodeNotify("workbench.action.navigateUp")<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 's;', ':call VSCodeNotify("workbench.action.navigateRight")<CR>', { noremap = true, silent = true })
 
 -- 윈도우 나누기
 vim.api.nvim_set_keymap('n', 'sg', ':split<Return>', { silent = true })
