@@ -56,7 +56,7 @@ nmap - $
 vmap - $
 
 " 아래에 새로운 행을 만들고 노멀 모드로 전환
-nmap <leader>o o<Esc>0"_D
+" nmap <leader>o o<Esc>0"_D
 
 " <leader>j 를 줄 연결 명령어로 매핑
 " nmap <leader>j J
@@ -78,10 +78,10 @@ noremap sg :split<CR>
 noremap sv :vsplit<CR>
 
 " 삭제 시 클립보드에 영향을 주지 않도록 설정
-noremap d \"_d
-vnoremap d \"_d
-noremap D \"_D
-vnoremap D "_D
+" noremap d \"_d
+" vnoremap d \"_d
+" noremap D \"_D
+" vnoremap D "_D
 
 " <leader>v 를 비주얼 블록 모드로 매핑
 noremap <leader>v <C-v>
