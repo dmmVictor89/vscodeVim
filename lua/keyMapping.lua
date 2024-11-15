@@ -32,7 +32,7 @@ vim.keymap.set({'i'}, '<s-k>', '')
 -- <leader> 키 set---------------------------------------------------------------------------------------------------------
 -- VSCode 명령어로 창 이동
 -- vim.keymap.set({'n', 'v'}, '<leader>u', '0') 
-vim.api.nvim_set_keymap('n', '<leader>u', '<s-i>', { noremap = true, silent = true })
+vim.keymap.set({'n', 'v'}, '<leader>u', '<s-i>')
 vim.api.nvim_set_keymap('n', '0', ':call VSCodeNotify("cursorHome")<CR>', { noremap = true, silent = true })
 vim.keymap.set({'n', 'v'}, '<leader>i', '<s-a>')
 vim.keymap.set({'n', 'v'}, '-', '$')
@@ -81,7 +81,7 @@ vim.keymap.set({'n', 'v'}, 'uu', 'yy')
 
 
 -- yu로 yiw 날리기
-vim.keymap.set({'n', 'v'}, 'ui', 'yiw')
+vim.keymap.set({'n', 'v'}, 'uj', 'yiw')
 
 
 vim.keymap.set({'n', 'v'}, '<pageup>', '<c-e>')
@@ -447,7 +447,7 @@ vim.keymap.set({"n","x"}, "P", "<Plug>(YankyPutBefore)")
 vim.keymap.set({"n","x"}, "gp", "<Plug>(YankyGPutAfter)")
 vim.keymap.set({"n","x"}, "gP", "<Plug>(YankyGPutBefore)")
 
-vim.keymap.set("n", "<s-p>", "<Plug>(YankyPreviousEntry)")
+vim.keymap.set("n", "<c-p>", "<Plug>(YankyPreviousEntry)")
 vim.keymap.set("n", "<leader>p", "<Plug>(YankyNextEntry)")
 -- ---------------------------------------------------------------------------------------------------------
 local M = {}
