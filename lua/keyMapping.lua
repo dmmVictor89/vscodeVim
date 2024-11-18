@@ -79,6 +79,29 @@ vim.keymap.set({'n', 'v'}, 'y', 'u')
 vim.keymap.set({'n', 'v'}, 'u', 'y')
 vim.keymap.set({'n', 'v'}, 'uu', 'yy')
 
+-- todo 비주얼모드 복사도 이동하지 않도록 수정
+-- 복사 후 커서 제자리
+if vim.g.vscode then
+  local api = vim.api
+  local g = api.nvim_create_augroup("user/keep_yank_position", { clear = true })
+
+  api.nvim_create_autocmd("ModeChanged", {
+    pattern = { "n:no", "no:n" },
+    group = g,
+    callback = function(ev)
+      if vim.v.operator == "y" then
+        if ev.match == "n:no" then
+          vim.b.user_yank_last_pos = vim.fn.getpos(".")
+        else
+          if vim.b.user_yank_last_pos then
+            vim.fn.setpos(".", vim.b.user_yank_last_pos)
+            vim.b.user_yank_last_pos = nil
+          end
+        end
+      end
+    end,
+  })
+end
 
 -- yu로 yiw 날리기
 vim.keymap.set({'n', 'v'}, 'uj', 'yiw')
