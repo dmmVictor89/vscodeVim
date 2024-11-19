@@ -76,25 +76,39 @@ vim.keymap.set({'n', 'v'}, 'h', ';')
 -- y -> u set yank
 vim.keymap.set({'n', 'v'}, 'y', 'u')
 -- u -> y set undo
-vim.keymap.set({'n', 'v'}, 'u', 'y')
-vim.keymap.set({'n', 'v'}, 'uu', 'yy')
+-- vim.keymap.set({'n', 'v'}, 'u', 'y')
+-- vim.keymap.set({'n', 'v'}, 'uu', 'yy')
+
+-- yu로 yiw 날리기
+vim.keymap.set({'n', 'v'}, 'uj', 'yiw')
+
+vim.keymap.set({'n','x'}, 'u', '<Plug>(YankyYank)')
+vim.keymap.set({'n', 'x'}, 'uu', function()
+  local mode = vim.api.nvim_get_mode().mode
+  if mode == 'n' then
+      -- normal 모드에서는 현재 라인을 선택
+      vim.cmd('normal! V')
+  end
+  -- YankyYank 실행
+  vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>(YankyYank)', true, true, true), 'x')
+end, { noremap = true, silent = true })
 
 -- todo 비주얼모드 복사도 이동하지 않도록 수정
 -- 복사 후 커서 제자리
 if vim.g.vscode then
   local api = vim.api
-  local g = api.nvim_create_augroup("user/keep_yank_position", { clear = true })
+  local g = api.nvim_create_augroup('user/keep_yank_position', { clear = true })
 
-  api.nvim_create_autocmd("ModeChanged", {
-    pattern = { "n:no", "no:n" },
+  api.nvim_create_autocmd('ModeChanged', {
+    pattern = { 'n:no', 'no:n' },
     group = g,
     callback = function(ev)
-      if vim.v.operator == "y" then
-        if ev.match == "n:no" then
-          vim.b.user_yank_last_pos = vim.fn.getpos(".")
+      if vim.v.operator == 'y' then
+        if ev.match == 'n:no' then
+          vim.b.user_yank_last_pos = vim.fn.getpos('.')
         else
           if vim.b.user_yank_last_pos then
-            vim.fn.setpos(".", vim.b.user_yank_last_pos)
+            vim.fn.setpos('.', vim.b.user_yank_last_pos)
             vim.b.user_yank_last_pos = nil
           end
         end
@@ -102,10 +116,6 @@ if vim.g.vscode then
     end,
   })
 end
-
--- yu로 yiw 날리기
-vim.keymap.set({'n', 'v'}, 'uj', 'yiw')
-
 
 vim.keymap.set({'n', 'v'}, '<pageup>', '<c-e>')
 vim.keymap.set({'n', 'v'}, '<pagedown>', '<c-d>')
@@ -225,7 +235,8 @@ vim.keymap.set({'n', 'v'}, '`', function()
 end, { expr = true })
 
 -- ---------------------------------------------------------------------------------------------------------
-
+-- 마킹 관련
+vim.keymap.set({'n', 'v'}, '<leader>m', '`m')
 -- 커서를 정확한 위치로 이동시키기 위해 `(백틱)을 '(작은 따옴표) 로 변경
 vim.keymap.set({'n', 'v'}, '\'', '`')
 
@@ -366,19 +377,10 @@ end
 -- vim.keymap.set({ "n", "v", "x" }, "sd", hunk_navigation.hlfPgDown)
 
 -- ---------------------------------------------------------------------------------------------------------
-
+-- leap plugin set
 vim.keymap.set({'n', 'v'}, 'ff', '<Plug>(leap-forward)')
 vim.keymap.set({'n', 'v'}, 'FF', '<Plug>(leap-backward)')
 vim.keymap.set({'n', 'v'}, 'gf', '<Plug>(leap-from-window)')
-
--- Define equivalence classes for brackets and quotes, in addition to
--- the default whitespace group.
-require('leap').opts.equivalence_classes = { ' \t\r\n', '([{', ')]}', '\'"`' }
-
--- Use the traversal keys to repeat the previous motion without explicitly
--- invoking Leap.
-require('leap.user').set_repeat_keys('<enter>', '<backspace>')
-
 
 -- ---------------------------------------------------------------------------------------------------------
 -- leap to line 추가

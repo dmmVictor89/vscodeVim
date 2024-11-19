@@ -71,10 +71,32 @@ require("better-n").setup(
 require('lualine').setup()
 require('evil_lualine')
 ---------------------------------------------------------------------------------------------------------
-require('leap').setup{}
+require('leap').setup{
+    labels = { 's', 'f', 'n', 'j', 'k', 'l', 'h', 'o', 'd', 'w', 'e', 'm', 'y', 't', 'g', 'i', 'a', 'r', 'c',
+               'S', 'F', 'N', 'J', 'K', 'L', 'H', 'O', 'D', 'W', 'E', 'M', 'Y', 'T', 'G', 'I', 'A', 'R', 'C' },
+    equivalence_classes = { ' \t\r\n', '([{', ')]}', '\'"`' },
+    special_keys = {
+      -- next_target = '<;>',
+      next_target = '<Tab>',
+      prev_target = '<S-Tab>',
+      next_group = '<Enter>',
+      prev_group = '<S-Enter>',
+      multi_accept = '<CR>',
+      multi_revert = '<BS>',
+    },
+}
+require('leap').create_default_mappings()
+-- Use the traversal keys to repeat the previous motion without explicitly
+-- invoking Leap.
+require('leap.user').set_repeat_keys('<tab>, <enter>', '<backspace>')
+
+-- Define equivalence classes for brackets and quotes, in addition to
+-- the default whitespace group.
+require('leap').opts.equivalence_classes = { ' \t\r\n', '([{', ')]}', '\'"`' }
 ---------------------------------------------------------------------------------------------------------
 require('flit').setup {
   keys = { f = 'f', F = 'F', t = 't', T = 'T' },
+  -- keys = { f = 'f', F = 'F', t = 'z', T = 'Z' },
   -- A string like "nv", "nvo", "o", etc.
   labeled_modes = "v",
   -- Repeat with the trigger key itself.
@@ -82,7 +104,10 @@ require('flit').setup {
   multiline = true,
   -- Like `leap`s similar argument (call-specific overrides).
   -- E.g.: opts = { equivalence_classes = {} }
-  opts = {}
+  opts = {},
+ -- u를 제외하기 위해서 flit.lua 에서 //241118 u 제외 목록에 추가
+  labels = { 's', 'f', 'n', 'j', 'k', 'l', 'h', 'o', 'd', 'w', 'e', 'm', 'y', 't', 'g', 'i', 'a', 'r', 'c',
+             'S', 'F', 'N', 'J', 'K', 'L', 'H', 'O', 'D', 'W', 'E', 'M', 'Y', 'T', 'G', 'I', 'A', 'R', 'C' },
 }
 ---------------------------------------------------------------------------------------------------------
 require('substitute').setup({
@@ -168,5 +193,4 @@ vim.api.nvim_exec([[
     augroup END
 ]], false)
 ---------------------------------------------------------------------------------------------------------
--- require('leap').create_default_mappings()
 -- text-case.nvim: case 변경(upper, lower, snake, dash etc...)

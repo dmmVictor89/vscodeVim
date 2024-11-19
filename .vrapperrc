@@ -34,7 +34,8 @@ vnoremap y u
 nnoremap ui yiw 
 " u -> y set undo
 nnoremap u y 
-vnoremap u y 
+" vnoremap u ygv 
+vnoremap u y`> 
 nnoremap uu yy 
 vnoremap uu yy 
 
