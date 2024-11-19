@@ -242,7 +242,21 @@ vim.keymap.set({'n', 'v'}, '\'', '`')
 
 -- ---------------------------------------------------------------------------------------------------------
 -- MACRO
-vim.keymap.set('n', '<leader>ma', function()
+-- k0f=^[;vt;u
+-- 라는 macro 가 a에 저장돼 있을 때,
+-- reg a하면 내용을 볼 수 있고,
+-- 직접수정하고 싶다면 수정하고 난 다음 블록 지정을 하고
+-- "au
+-- "a 레지스터에 u 복사한다 는 의미
+
+-- ---------------------------------------------------------------------------------------------------------
+-- 간단 매크로 
+vim.keymap.set('n', '<leader>a', function()
+  vim.cmd('normal! jyy')
+  -- vim.api.nvim_feedkeys('jyy', 'n', true)
+end, {noremap = true, silent = true})
+
+vim.keymap.set('n', '<leader>mb', function()
   -- 패턴 검색
   local search_result = vim.fn.search("<ws:deviceTokenCookie>.*</ws:deviceTokenCookie>", "w")
 
