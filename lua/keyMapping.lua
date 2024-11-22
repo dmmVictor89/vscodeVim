@@ -2,6 +2,10 @@ print("vim on")
 --todo //test
 -- h 매핑 g로 변경 hjkl 에는 매핑을 안 해야 한다 h 입력을 기다리면서 렉 걸림
 
+-- 새로운 줄에서 제일 앞으로 가지 않도록 함
+-- vim.opt.virtualedit = "onemore"
+vim.opt.virtualedit = "onemore"
+
 -- <leader> key
 vim.g.mapleader = ' '
 
@@ -42,6 +46,7 @@ vim.keymap.set({'n', 'v'}, '<leader>a', '<s-a>')
 -- vim.api.nvim_set_keymap('n', '<leader>o', 'o<esc>', { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap('n', 'o', 'o<Esc>', { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap('n', 'O', 'O<Esc>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', 'o', '$a<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>o', 'o<Esc>0"_D', { noremap = true, silent = true })
 
 -- close window

@@ -1,6 +1,8 @@
 " 리더 키 설정
 let mapleader=" "
 
+:set virtualedit=onemore
+
 " 시스템 클립보드 사용
 set clipboard=unnamedplus
 
@@ -39,8 +41,14 @@ vnoremap u y`>
 nnoremap uu yy 
 vnoremap uu yy 
 
+nnoremap p "0p
+vnoremap p "0p
+
+nnoremap P "0P
+vnoremap P "0P
 
 " <leader>u 를 'I'로 매핑 (줄의 시작으로 이동하여 입력 모드)
+
 nmap <leader>u I
 vmap <leader>u I
 
@@ -55,6 +63,9 @@ vmap <leader>a A
 " '-' 키를 '$'로 매핑 (줄의 끝으로 이동)
 nmap - $
 vmap - $
+
+" 아래에 새로운 행 생성
+nmap o $a<Enter>
 
 " 아래에 새로운 행을 만들고 노멀 모드로 전환
 " nmap <leader>o o<Esc>0"_D
