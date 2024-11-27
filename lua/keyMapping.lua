@@ -257,8 +257,21 @@ vim.keymap.set({'n', 'v'}, '\'', '`')
 -- ---------------------------------------------------------------------------------------------------------
 -- 간단 매크로 
 vim.keymap.set('n', '<leader>a', function()
-  vim.cmd('normal! jyy')
-  -- vim.api.nvim_feedkeys('jyy', 'n', true)
+  -- 1.
+  -- vim.cmd('normal! jyy')
+  local success, _ = pcall(function() -- pcall(protected call) return 함수 실행 성공 여부(boolean), 함수의 반환값 또는 오류메시지
+    -- 2. tab 키 개행으로 변경
+    -- vim.cmd(':%s/	/\\r/g')
+    -- 3. 개행을 tab 키로 변경
+    vim.cmd(':%s/\\n/\\t/g')
+  end )
+  print('Macro \'a\' is called')
+
+  if not success then 
+    print("pattern not found")
+  else
+    print("macro excuted")
+  end
 end, {noremap = true, silent = true})
 
 vim.keymap.set('n', '<leader>mb', function()
@@ -701,3 +714,6 @@ end, {noremap=true}) ]]
 -- %s/\(\w\)\n/\1, /g | %s/\n//g
 -- 두개의 치환을 동시에 사용할 수 있음
 -- 앞에 문자열이 있고 개행문자가 있는 경우는 ', ' 로 개행문자만 있는 경우는 ''로 치환
+
+-- %s/	/\\r/g
+-- 엑셀 tab으로 구분돼있는 컬럼을 pivot 하기 위함
