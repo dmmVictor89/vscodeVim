@@ -1,0 +1,94 @@
+" 시작모드 설정
+set initmode = r
+
+" 시스템 클립보드 사용
+set clipboard=unnamedplus
+
+set cmd_fontname = hack 
+
+" 타임아웃 설정 (밀리초 단위)
+set timeoutlen=500
+
+" cmd 설정
+set cmd_fontsize=30
+set cmd_xmargin=100
+set cmd_ymargin=180
+
+" 마우스 속도 설정
+set cursor_accel=15
+set cursor_resolution=250
+set window_velocity=50
+
+inoremap <ctrl-shift-f> <easyclick><click_left>
+inoremap <ctrl-shift-s> <switch_window><easyclick><click_left>
+noremap <ctrl-1> :!notepad<cr>
+
+set easyclick_fontname = hack
+
+map <esc-b> <to_command>
+rmap <esc-b> <to_command>
+imap <esc-b> <to_command>
+
+map <esc-h> <to_command>
+rmap <esc-h> <to_command>
+imap <esc-h> <to_command>
+
+map <esc-j> <to_gui_normal>
+rmap <esc-j> <to_gui_normal>
+imap <esc-j> <to_gui_normal>
+
+map <esc-;> <to_edi_normal>
+rmap <esc-;> <to_edi_normal>
+imap <esc-;> <to_edi_normal>
+
+map <esc-k> <to_resident>
+rmap <esc-k> <to_resident>
+imap <esc-k> <to_resident>
+
+map <esc-l> <to_insert>
+rmap <esc-l> <to_insert>
+imap <esc-l> <to_insert>
+
+" 각 비주얼 모드에서 esc 누르면 normal 모드로
+gvmap <esc> <to_gui_normal>
+evmap <esc> <to_edi_normal>
+
+" insert 모드에서 esc 로 각 normal 모드로 전환
+imap <esc> <to_edi_normal>
+" 쉬프트 + ESC를 누르면 GUI Normal 모드로 전환
+imap <s-esc> <to_gui_normal>
+
+nnoremap h ; 
+vnoremap h ; 
+nnoremap j h
+vnoremap j h
+nnoremap k j
+vnoremap k j
+nnoremap l k
+vnoremap l k
+nnoremap ; l 
+vnoremap ; l 
+nnoremap h ; 
+vnoremap h ; 
+
+" y -> u set yank
+nnoremap y u 
+vnoremap y u 
+" yu로 yiw 날리기
+nnoremap ui yiw 
+" u -> y set undo
+nnoremap u y 
+vnoremap u ygv 
+vnoremap u y`> 
+nnoremap uu yy 
+vnoremap uu yy 
+
+" nnoremap p "0p
+" vnoremap p "0p
+
+" nnoremap P "0P
+" vnoremap P "0P
+
+" '-' 키를 '$'로 매핑 (줄의 끝으로 이동)
+nmap - $
+vmap - $
