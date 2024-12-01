@@ -58,6 +58,35 @@ imap <esc> <to_edi_normal>
 " 쉬프트 + ESC를 누르면 GUI Normal 모드로 전환
 imap <s-esc> <to_gui_normal>
 
+" alt+tab 세팅
+" nmap <a-tab> <a-tab>
+map <a-tab> <switch_window>
+
+
+" <select_left_window>: 왼쪽 창 선택
+" <select_right_window>: 오른쪽 창 선택
+" <select_upper_window>: 위쪽 창 선택
+" <select_lower_window>: 아래쪽 창 선택
+
+map sj <select_left_window>
+map s; <select_right_window>
+map sl <select_upper_window>
+map sk <select_lower_window>
+
+
+" Equivalent to conventional dedicate_to_window
+" 메모장을 켜면 edit_normal 모드로 변경
+autocmd AppEnter */notepad.exe <to_edi_normal>
+
+" 메모를 켜면 edit_normal 모드로 변경
+" autocmd AppEnter */Memoit.exe <to_edi_normal>
+
+" VS Code로 전환할 때 Resident 모드로 변경
+autocmd AppEnter */Code.exe <to_resident>
+
+" Naver Whale로 전환할 때 Resident 모드로 변경
+autocmd AppEnter */whale.exe <to_resident>
+
 nnoremap h ; 
 vnoremap h ; 
 nnoremap j h
