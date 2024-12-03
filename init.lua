@@ -71,11 +71,27 @@ require("better-n").setup(
 require('lualine').setup()
 require('evil_lualine')
 ---------------------------------------------------------------------------------------------------------
+local labels = {
+    's', 'f', 'n', 'j', 'k', 'l', 'h', 'o', 'd', 'w', 'e', 'm', 'y', 't', 'g', 'i', 'a', 'r', 'c',
+}
+for i = 1, #labels do
+    if labels[i]:match("%l") then  -- 소문자인 경우만 처리
+        for j = 1, #labels do
+            if labels[j]:match("%l") then  -- 두 번째 소문자도 확인
+                table.insert(labels, labels[i]..labels[j])  -- 두 소문자 조합 추가
+            end
+        end
+    end
+end
+local labelsAdd = {
+    'S', 'F', 'N', 'J', 'K', 'L', 'H', 'O', 'D', 'W', 'E', 'M', 'Y', 'T', 'G', 'I', 'A', 'R', 'C',
+    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+}
+-- 두 레이블 합치기
+table.insert(labels, labelsAdd)
+
 require('leap').setup{
-    labels = { 's', 'f', 'n', 'j', 'k', 'l', 'h', 'o', 'd', 'w', 'e', 'm', 'y', 't', 'g', 'i', 'a', 'r', 'c',
-               'S', 'F', 'N', 'J', 'K', 'L', 'H', 'O', 'D', 'W', 'E', 'M', 'Y', 'T', 'G', 'I', 'A', 'R', 'C', 
-             '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'
-            },
+    labels = labels,
     equivalence_classes = { ' \t\r\n', '([{', ')]}', '\'"`' },
     special_keys = {
       -- next_target = '<;>',
@@ -108,10 +124,7 @@ require('flit').setup {
   -- E.g.: opts = { equivalence_classes = {} }
   opts = {},
  -- u를 제외하기 위해서 flit.lua 에서 //241118 u 제외 목록에 추가
-  labels = { 's', 'f', 'n', 'j', 'k', 'l', 'h', 'o', 'd', 'w', 'e', 'm', 'y', 't', 'g', 'i', 'a', 'r', 'c',
-             'S', 'F', 'N', 'J', 'K', 'L', 'H', 'O', 'D', 'W', 'E', 'M', 'Y', 'T', 'G', 'I', 'A', 'R', 'C',
-             '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'
-            },
+  labels = labels,
 }
 ---------------------------------------------------------------------------------------------------------
 require('substitute').setup({

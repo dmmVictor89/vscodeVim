@@ -33,6 +33,9 @@ vim.keymap.set({'n', 'v'}, 'J', '')
 -- shift + k binding 없애기
 vim.keymap.set({'i'}, '<s-k>', '')
 
+-- shift + a binding
+vim.keymap.set({'n', 'v'}, '<s-a>', '<s-v>')
+
 -- <leader> 키 set---------------------------------------------------------------------------------------------------------
 -- VSCode 명령어로 창 이동
 -- vim.keymap.set({'n', 'v'}, '<leader>u', '0') 
@@ -156,6 +159,13 @@ vim.api.nvim_set_keymap('n', 's;', ':call VSCodeNotify("workbench.action.navigat
 vim.api.nvim_set_keymap('n', 'sg', ':split<Return>', { silent = true })
 vim.api.nvim_set_keymap('n', 'sv', ':vsplit<Return>', { silent = true })
 
+-- 패널 창 호출
+-- side pannel
+vim.api.nvim_set_keymap('n', 'sp', ':call VSCodeNotify("workbench.action.toggleSidebarVisibility")<CR>', { noremap = true, silent = true })
+-- explorer
+vim.api.nvim_set_keymap('n', 'se', ':call VSCodeNotify("workbench.view.explorer")<CR>', { noremap = true, silent = true })
+-- project manager
+vim.api.nvim_set_keymap('n', 'sm', ':call VSCodeNotify("workbench.view.extension.project-manager")<CR>', { noremap = true, silent = true })
 
 -- -- 창 크기 조절
 -- vim.api.nvim_set_keymap('n', 's=', '<c-w>>', { noremap = true, silent = true })
@@ -359,8 +369,8 @@ vim.keymap.set('n', '<leader>c', ':MyCommand<CR>', { noremap = true, silent = tr
 -- ---------------------------------------------------------------------------------------------------------
 -- sd 매핑 
 -- 반페이지 page 이동
-vim.keymap.set({'n', 'v'}, 'se', '<c-u>') -- up
-vim.keymap.set({'n', 'v'}, 'sd', '<c-d>') -- down
+-- vim.keymap.set({'n', 'v'}, 'se', '<c-u>') -- up
+-- vim.keymap.set({'n', 'v'}, 'sd', '<c-d>') -- down
 -- vim-repeat과 호환되도록 사용자 정의 명령 설정
 local function sd_command()
   -- 현재 줄을 대문자로 변환
@@ -416,6 +426,26 @@ vim.keymap.set({'n', 'v'}, 'gf', '<Plug>(leap-from-window)')
 
 -- ---------------------------------------------------------------------------------------------------------
 -- leap to line 추가
+-- local function leap_to_line()
+--   local winid = vim.api.nvim_get_current_win()
+--   require('leap').leap {
+--     target_windows = { winid },
+--     targets = function(opts)
+--       local targets = {}
+--       local wininfo = vim.fn.getwininfo(winid)[1]
+--       local cur_line = vim.fn.line('.')
+      
+--       for line = wininfo.topline, wininfo.botline do
+--         if line ~= cur_line then
+--           table.insert(targets, { pos = { line, 1 } })
+--         end
+--       end
+      
+--       return targets
+--     end,
+--   }
+-- end
+
 local function leap_to_line()
   local winid = vim.api.nvim_get_current_win()
   require('leap').leap {
@@ -425,12 +455,35 @@ local function leap_to_line()
       local wininfo = vim.fn.getwininfo(winid)[1]
       local cur_line = vim.fn.line('.')
       
-      for line = wininfo.topline, wininfo.botline do
-        if line ~= cur_line then
-          table.insert(targets, { pos = { line, 1 } })
+      -- 소문자 한 개 라벨
+      local single_labels = { 's', 'f', 'n', 'j', 'k', 'l', 'h', 'o', 'd', 'w', 'e', 'm', 'y', 't', 'g', 'i', 'a', 'r', 'c' }
+
+      -- 소문자 두 개 조합 라벨 생성
+      local double_labels = {}
+      for i = 1, #single_labels do
+        for j = 1, #single_labels do
+          table.insert(double_labels, single_labels[i] .. single_labels[j])
         end
       end
-      
+
+      -- 라벨 목록 (소문자 한 개와 두 개 조합된 라벨을 합친 것)
+      local labels = vim.tbl_extend('force', single_labels, double_labels)
+
+      -- 보이는 라인들 중 커서 라인 제외
+      local label_index = 1  -- 라벨을 순차적으로 할당하기 위한 인덱스
+      for line = wininfo.topline, wininfo.botline do
+        if line ~= cur_line then
+          -- 라벨을 하나씩 순차적으로 할당
+          table.insert(targets, { pos = { line, 1 }, label = labels[label_index] })
+          label_index = label_index + 1
+          
+          -- 라벨 인덱스가 초과하면 처음으로 돌아가도록 설정
+          if label_index > #labels then
+            label_index = 1
+          end
+        end
+      end
+
       return targets
     end,
   }
