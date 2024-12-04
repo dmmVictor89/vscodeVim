@@ -73,22 +73,25 @@ require('evil_lualine')
 ---------------------------------------------------------------------------------------------------------
 local labels = {
     's', 'f', 'n', 'j', 'k', 'l', 'h', 'o', 'd', 'w', 'e', 'm', 'y', 't', 'g', 'i', 'a', 'r', 'c',
-}
-for i = 1, #labels do
-    if labels[i]:match("%l") then  -- 소문자인 경우만 처리
-        for j = 1, #labels do
-            if labels[j]:match("%l") then  -- 두 번째 소문자도 확인
-                table.insert(labels, labels[i]..labels[j])  -- 두 소문자 조합 추가
-            end
-        end
-    end
-end
-local labelsAdd = {
-    'S', 'F', 'N', 'J', 'K', 'L', 'H', 'O', 'D', 'W', 'E', 'M', 'Y', 'T', 'G', 'I', 'A', 'R', 'C',
     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+    'S', 'F', 'N', 'J', 'K', 'L', 'H', 'O', 'D', 'W', 'E', 'M', 'Y', 'T', 'G', 'I', 'A', 'R', 'C',
 }
--- 두 레이블 합치기
-table.insert(labels, labelsAdd)
+-- for i = 1, #labels do
+--     if labels[i]:match("%l") then  -- 소문자인 경우만 처리
+--         for j = 1, #labels do
+--             if labels[j]:match("%l") then  -- 두 번째 소문자도 확인
+--                 table.insert(labels, labels[i]..labels[j])  -- 두 소문자 조합 추가
+--             end
+--         end
+--     end
+-- end
+-- local labelsAdd = {
+--     'S', 'F', 'N', 'J', 'K', 'L', 'H', 'O', 'D', 'W', 'E', 'M', 'Y', 'T', 'G', 'I', 'A', 'R', 'C',
+--     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+-- }
+-- -- 두 레이블 합치기
+-- table.insert(labels, labelsAdd)
+-- table.remove(labels, 1)
 
 require('leap').setup{
     labels = labels,
