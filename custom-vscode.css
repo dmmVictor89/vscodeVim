@@ -21,6 +21,11 @@
     border-radius: 0px !important;
 } 
 
+/* 고정하기 위해서 glennraya 가 알려준 방법 -> 첫 입력시 살짝 줄어들게 됨 */
+/* .quick-input-list, .quick-input-list .list_id_6 {
+    min-height: 400px !important;
+} */
+
 /* command pallete search line border */
 .monaco-workbench {
     --vscode-focusBorder: #00FF00 !important;  /* 원하는 색상으로 변경 */
