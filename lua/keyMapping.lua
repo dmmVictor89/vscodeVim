@@ -491,7 +491,7 @@ local function leap_to_line()
   }
 end
 
-vim.keymap.set('', 'gl', leap_to_line, { desc = "Leap to line" })
+vim.keymap.set('', 'gv', leap_to_line, { desc = "Leap to line" })
 
 
 -- --------------------------------------------------------------------------------------------------------
@@ -523,7 +523,7 @@ local function leap_vertical()
 end
 
 -- 키 매핑 예시
-vim.keymap.set('n', 'gv', leap_vertical, { desc = "Leap vertical" })
+vim.keymap.set('n', 'gl', leap_vertical, { desc = "Leap vertical" })
 
 
 -- ---------------------------------------------------------------------------------------------------------
