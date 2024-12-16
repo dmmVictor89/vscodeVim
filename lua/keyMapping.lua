@@ -523,7 +523,7 @@ local function leap_vertical()
 end
 
 -- 키 매핑 예시
-vim.keymap.set('n', 'gl', leap_vertical, { desc = "Leap vertical" })
+vim.keymap.set({'n', 'v'}, 'gl', leap_vertical, { desc = "Leap vertical" })
 
 
 -- ---------------------------------------------------------------------------------------------------------

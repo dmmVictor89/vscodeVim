@@ -214,3 +214,37 @@ vim.api.nvim_exec([[
 ]], false)
 ---------------------------------------------------------------------------------------------------------
 -- text-case.nvim: case 변경(upper, lower, snake, dash etc...)
+
+-- IDE 에 따라서 설정 변경 sample 
+-- -- IDE 확인
+-- local function is_vscode()
+--   return vim.g.vscode ~= nil
+-- end
+
+-- local function is_intellij()
+--   return vim.g.intellij ~= nil
+-- end
+
+-- -- 공통 설정
+-- -- 여기에 모든 환경에서 사용할 설정을 작성합니다
+
+-- -- VSCode 전용 설정
+-- if is_vscode() then
+--   -- VSCode Neovim 확장에서 사용할 설정을 여기에 작성합니다
+--   vim.g.mapleader = " "
+--   -- VSCode 전용 키 매핑 등
+-- end
+
+-- -- IntelliJ 전용 설정
+-- if is_intellij() then
+--   -- IntelliJ에서 IdeaVim 또는 Neovim 플러그인을 사용할 때의 설정을 여기에 작성합니다
+--   vim.opt.clipboard = "unnamedplus"
+--   -- IntelliJ 전용 키 매핑 등
+-- end
+
+-- -- Neovim 단독 실행 시 설정
+-- if not is_vscode() and not is_intellij() then
+--   -- Neovim을 단독으로 실행할 때 사용할 설정을 여기에 작성합니다
+--   require('plugins')
+--   -- 플러그인 설정 등
+-- end
