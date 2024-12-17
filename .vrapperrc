@@ -118,6 +118,6 @@ nnoremap sk <C-w>k
 nnoremap s; <C-w>l
 
 " ge 로 = '' 입력하기
-noremap ge a = '';<ESC>hi
+noremap ge a = ''<ESC>hi
 " gi 로 in ('', '') 입력하기
 noremap gi a in ('', '')<ESC>hhhhhi
