@@ -276,6 +276,8 @@ vim.keymap.set('n', '<leader>a', function()
     -- vim.cmd(':%s/	/\\r/g')
     -- 3. 개행을 tab 키로 변경
     vim.cmd(':%s/\\n/\\t/g')
+    -- 4. test
+    -- vim.cmd('echom "echo called"')
   end )
   print('Macro \'a\' is called')
 
@@ -519,6 +521,57 @@ vim.keymap.set({"n","x"}, "gP", "<Plug>(YankyGPutBefore)")
 
 vim.keymap.set("n", "<c-p>", "<Plug>(YankyPreviousEntry)")
 vim.keymap.set("n", "<leader>p", "<Plug>(YankyNextEntry)")
+-- ---------------------------------------------------------------------------------------------------------
+local Hydra = require('hydra')
+
+-- 마지막 이동 명령을 저장할 변수
+local last_motion = nil
+
+-- local hint = [[
+-- _r_: repeat last motion
+-- _<Esc>_: exit
+-- ]]
+--
+
+local my_hydra = Hydra({
+  name = 'Repeat Last Motion',
+  mode = 'n',
+  -- body를 지정하지 않고 여기서는 없음
+  heads = {
+    {
+      'r', function()
+        if last_motion then
+          vim.cmd('normal ' .. last_motion)
+        else
+          vim.notify("No last motion recorded", vim.log.levels.WARN)
+        end
+      end,
+      { desc = 'repeat last motion' }
+    },
+    { '<Esc>', nil, { exit = true, desc = 'exit Hydra'} },
+  }
+})
+
+-- <leader>h 키를 Hydra로 진입하는 대신, 진입 전에 원하는 일을 하고 activate()
+vim.keymap.set('n', '<leader><leader>', function()
+  vim.notify("My custom on_enter logic before hydra")
+
+  local input = vim.fn.input('Enter the motion (e.g., 10j): ')
+  if input ~= '' then
+    last_motion = input
+    vim.cmd('normal ' .. last_motion)
+  else
+    vim.notify("No motion entered", vim.log.levels.WARN)
+    -- 빈 입력이면 Hydra 모드 즉시 종료
+    vim.schedule(function()
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', false)
+    end)
+  end
+
+  my_hydra:activate()  -- Hydra 모드 진입
+end)
+
+
 -- ---------------------------------------------------------------------------------------------------------
 local M = {}
 
