@@ -37,6 +37,67 @@ require('packer').startup({function(use)
   use 'ggandor/flit.nvim'
   use 'gbprod/substitute.nvim'
   use 'chrisgrieser/nvim-various-textobjs'
+  use 'anuvyklack/hydra.nvim' 
+  use("gbprod/yanky.nvim") 
+  -- use {
+  --   'phaazon/hop.nvim',
+  --   branch = 'v2', -- optional but strongly recommended
+  --   config = function()
+  --     -- you can configure Hop the way you like here; see :h hop-config
+  --     require'hop'.setup {
+  --       keys = 'hfgetovxqpdyblzhckisuran',
+  --       -- hint_char1 = 'j'  -- 기본 j 
+
+  --     }
+  --   end
+  -- }
+end,
+config = {
+  display = {
+    open_fn = function()
+      return require('packer.util').float({ border = 'single' })
+    end
+  }
+}})-- 경로
+-- 회사용
+-- C:\Neovim\bin
+-- 경로 설정 직접 가능
+-- {
+--   "neovim.path": "/path/to/neovim", // 예: "C:/Program Files/Neovim/bin/nvim.exe"
+--   "neovim.initVimPaths": ["~/.config/nvim/init.lua"] // init.lua 경로를 지정
+-- }
+
+
+-- 기존 packer_compiled.lua 파일 삭제
+vim.fn.delete(vim.fn.stdpath('config') .. '\\plugin\\packer_compiled.lua')
+
+-- Packer 부트스트랩 코드
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
+end
+
+local packer_bootstrap = ensure_packer()
+
+---------------------------------------------------------------------------------------------------------
+require('packer').startup({function(use)
+  -- Your plugins here
+  use 'wbthomason/packer.nvim'
+  use 'tpope/vim-repeat' -- 매크로나 찾기등등을 모두 반복해주는 플러그인
+  use 'jonatan-branting/nvim-better-n'
+  use {'nvim-lualine/lualine.nvim',
+       requires = { 'nvim-tree/nvim-web-devicons', opt = true }}
+  use 'ggandor/leap.nvim'
+  use 'ggandor/flit.nvim'
+  use 'gbprod/substitute.nvim'
+  use 'chrisgrieser/nvim-various-textobjs'
+  use 'anuvyklack/hydra.nvim' 
   use("gbprod/yanky.nvim") 
   -- use {
   --   'phaazon/hop.nvim',
@@ -106,7 +167,8 @@ require('leap').setup{
       multi_revert = '<BS>',
     },
 }
-require('leap').create_default_mappings()
+-- substitute 와 s키 중복 오류로 사용 안 함    
+-- require('leap').create_default_mappings()
 -- Use the traversal keys to repeat the previous motion without explicitly
 -- invoking Leap.
 require('leap.user').set_repeat_keys('<tab>, <enter>', '<backspace>')
@@ -138,12 +200,14 @@ require('substitute').setup({
 })
 ---------------------------------------------------------------------------------------------------------
 require("various-textobjs").setup({ 
-  useDefaultKeymaps = true,
-
-	-- display notification if a text object is not found
-	notifyNotFound = true,
-
+  keymaps = {
+    useDefaults = true
+  },
+  notify = {
+    whenObjectNotFound = true
+  }
 })
+
 ---------------------------------------------------------------------------------------------------------
 require("yanky").setup({
   ring = {

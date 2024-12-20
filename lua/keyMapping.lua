@@ -428,26 +428,6 @@ vim.keymap.set({'n', 'v'}, 'gf', '<Plug>(leap-from-window)')
 
 -- ---------------------------------------------------------------------------------------------------------
 -- leap to line 추가
--- local function leap_to_line()
---   local winid = vim.api.nvim_get_current_win()
---   require('leap').leap {
---     target_windows = { winid },
---     targets = function(opts)
---       local targets = {}
---       local wininfo = vim.fn.getwininfo(winid)[1]
---       local cur_line = vim.fn.line('.')
-      
---       for line = wininfo.topline, wininfo.botline do
---         if line ~= cur_line then
---           table.insert(targets, { pos = { line, 1 } })
---         end
---       end
-      
---       return targets
---     end,
---   }
--- end
-
 local function leap_to_line()
   local winid = vim.api.nvim_get_current_win()
   require('leap').leap {
@@ -457,39 +437,17 @@ local function leap_to_line()
       local wininfo = vim.fn.getwininfo(winid)[1]
       local cur_line = vim.fn.line('.')
       
-      -- 소문자 한 개 라벨
-      local single_labels = { 's', 'f', 'n', 'j', 'k', 'l', 'h', 'o', 'd', 'w', 'e', 'm', 'y', 't', 'g', 'i', 'a', 'r', 'c' }
-
-      -- 소문자 두 개 조합 라벨 생성
-      local double_labels = {}
-      for i = 1, #single_labels do
-        for j = 1, #single_labels do
-          table.insert(double_labels, single_labels[i] .. single_labels[j])
-        end
-      end
-
-      -- 라벨 목록 (소문자 한 개와 두 개 조합된 라벨을 합친 것)
-      local labels = vim.tbl_extend('force', single_labels, double_labels)
-
-      -- 보이는 라인들 중 커서 라인 제외
-      local label_index = 1  -- 라벨을 순차적으로 할당하기 위한 인덱스
       for line = wininfo.topline, wininfo.botline do
         if line ~= cur_line then
-          -- 라벨을 하나씩 순차적으로 할당
-          table.insert(targets, { pos = { line, 1 }, label = labels[label_index] })
-          label_index = label_index + 1
-          
-          -- 라벨 인덱스가 초과하면 처음으로 돌아가도록 설정
-          if label_index > #labels then
-            label_index = 1
-          end
+          table.insert(targets, { pos = { line, 1 } })
         end
       end
-
+      
       return targets
     end,
   }
 end
+
 
 vim.keymap.set('', 'gv', leap_to_line, { desc = "Leap to line" })
 
