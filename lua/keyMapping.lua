@@ -554,6 +554,7 @@ local my_hydra = Hydra({
 
 -- <leader>h 키를 Hydra로 진입하는 대신, 진입 전에 원하는 일을 하고 activate()
 vim.keymap.set('n', '<leader><leader>', function()
+-- vim.keymap.set('n', '<leader>h', function()
   vim.notify("My custom on_enter logic before hydra")
 
   local input = vim.fn.input('Enter the motion (e.g., 10j): ')

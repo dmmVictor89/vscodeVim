@@ -7,6 +7,10 @@
 --   "neovim.initVimPaths": ["~/.config/nvim/init.lua"] // init.lua 경로를 지정
 -- }
 
+-- 플러그인 업데이트하는 방법
+-- :PackerSync
+-- vim restart: ctrl + alt + shift + i 
+
 
 -- 기존 packer_compiled.lua 파일 삭제
 vim.fn.delete(vim.fn.stdpath('config') .. '\\plugin\\packer_compiled.lua')
