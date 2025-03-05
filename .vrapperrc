@@ -5,7 +5,6 @@ let mapleader=" "
 
 " 시스템 클립보드 사용
 set clipboard=unnamedplus
-set clipboard=unnamed
 
 " 대소문자 무시 검색 설정
 set ignorecase

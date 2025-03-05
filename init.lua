@@ -1,3 +1,4 @@
+print("init.lua load start")
 -- 경로
 -- 회사용
 -- C:\Neovim\bin
@@ -7,102 +8,69 @@
 --   "neovim.initVimPaths": ["~/.config/nvim/init.lua"] // init.lua 경로를 지정
 -- }
 
+-- init.lua reload
+-- :source $MYVIMRC
+-- vim restart: ctrl + alt + shift + i 
+-- vim stop: ctrl + alt + v
+
 -- 플러그인 업데이트하는 방법
 -- :PackerSync
--- vim restart: ctrl + alt + shift + i 
+
+---------------------------------------------------------------------------------------------------------
+vim.defer_fn(function()
+  vim.o.iminsert = 0
+  vim.o.imsearch = 0
+end, 100)
 
 
 -- 기존 packer_compiled.lua 파일 삭제
-vim.fn.delete(vim.fn.stdpath('config') .. '\\plugin\\packer_compiled.lua')
+-- vim.fn.delete(vim.fn.stdpath('config') .. '\\plugin\\packer_compiled.lua')
 
--- Packer 부트스트랩 코드
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
+-- -- Packer 부트스트랩 코드
+-- local ensure_packer = function()
+--   local fn = vim.fn
+--   local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+--   if fn.empty(fn.glob(install_path)) > 0 then
+--     fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+--     vim.cmd [[packadd packer.nvim]]
+--     return true
+--   end
+--   return false
+-- end
+
+-- local packer_bootstrap = ensure_packer()
+
+
+-- packer.nvim 자동 설치 (최적화 버전)
+local packer_bootstrap = false
+local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
+
+if not vim.loop.fs_stat(install_path) then
+  packer_bootstrap = true
+  vim.fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
+  vim.cmd("packadd packer.nvim")
 end
-
-local packer_bootstrap = ensure_packer()
 
 ---------------------------------------------------------------------------------------------------------
 require('packer').startup({function(use)
   -- Your plugins here
   use 'wbthomason/packer.nvim'
-  use 'tpope/vim-repeat' -- 매크로나 찾기등등을 모두 반복해주는 플러그인
-  use 'jonatan-branting/nvim-better-n'
-  use {'nvim-lualine/lualine.nvim',
-       requires = { 'nvim-tree/nvim-web-devicons', opt = true }}
+  -- use 'tpope/vim-repeat' -- 매크로나 찾기등등을 모두 반복해주는 플러그인
+  -- use 'jonatan-branting/nvim-better-n'
+
   use 'ggandor/leap.nvim'
   use 'ggandor/flit.nvim'
   use 'gbprod/substitute.nvim'
   use 'chrisgrieser/nvim-various-textobjs'
   use 'anuvyklack/hydra.nvim' 
   use("gbprod/yanky.nvim") 
-  -- use {
-  --   'phaazon/hop.nvim',
-  --   branch = 'v2', -- optional but strongly recommended
-  --   config = function()
-  --     -- you can configure Hop the way you like here; see :h hop-config
-  --     require'hop'.setup {
-  --       keys = 'hfgetovxqpdyblzhckisuran',
-  --       -- hint_char1 = 'j'  -- 기본 j 
 
-  --     }
-  --   end
-  -- }
-end,
-config = {
-  display = {
-    open_fn = function()
-      return require('packer.util').float({ border = 'single' })
-    end
-  }
-}})-- 경로
--- 회사용
--- C:\Neovim\bin
--- 경로 설정 직접 가능
--- {
---   "neovim.path": "/path/to/neovim", // 예: "C:/Program Files/Neovim/bin/nvim.exe"
---   "neovim.initVimPaths": ["~/.config/nvim/init.lua"] // init.lua 경로를 지정
--- }
-
-
--- 기존 packer_compiled.lua 파일 삭제
-vim.fn.delete(vim.fn.stdpath('config') .. '\\plugin\\packer_compiled.lua')
-
--- Packer 부트스트랩 코드
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
-end
-
-local packer_bootstrap = ensure_packer()
-
----------------------------------------------------------------------------------------------------------
-require('packer').startup({function(use)
-  -- Your plugins here
-  use 'wbthomason/packer.nvim'
-  use 'tpope/vim-repeat' -- 매크로나 찾기등등을 모두 반복해주는 플러그인
-  use 'jonatan-branting/nvim-better-n'
+  -- vs code 가 아닐 때만 로드
+  if not vim.g.vscode then
   use {'nvim-lualine/lualine.nvim',
        requires = { 'nvim-tree/nvim-web-devicons', opt = true }}
-  use 'ggandor/leap.nvim'
-  use 'ggandor/flit.nvim'
-  use 'gbprod/substitute.nvim'
-  use 'chrisgrieser/nvim-various-textobjs'
-  use 'anuvyklack/hydra.nvim' 
-  use("gbprod/yanky.nvim") 
+  end
+
   -- use {
   --   'phaazon/hop.nvim',
   --   branch = 'v2', -- optional but strongly recommended
@@ -123,18 +91,23 @@ config = {
     end
   }
 }})
+
 ---------------------------------------------------------------------------------------------------------
-require("better-n").setup(
-  {
-    -- These are default values, which can be omitted.
-    -- By default, the following mappings are made repeatable using `n` and `<S-n>`:
-    -- `f`, `F`, `t`, `T`, `*`, `#`, `/`, `?`
-    disable_default_mappings = false,
-  }
-)
+-- require("better-n").setup(
+--   {
+--     -- These are default values, which can be omitted.
+--     -- By default, the following mappings are made repeatable using `n` and `<S-n>`:
+--     -- `f`, `F`, `t`, `T`, `*`, `#`, `/`, `?`
+--     disable_default_mappings = false,
+--   }
+-- )
 ---------------------------------------------------------------------------------------------------------
+-- vscode 가 아닐 때만 실행 전용
+if not vim.g.vscode then 
 require('lualine').setup()
+  -- use { 'nvim-tree/nvim-web-devicons', opt = true }
 require('evil_lualine')
+end
 ---------------------------------------------------------------------------------------------------------
 local labels = {
     's', 'f', 'n', 'j', 'k', 'l', 'h', 'o', 'd', 'w', 'e', 'm', 'y', 't', 'g', 'i', 'a', 'r', 'c',
@@ -157,6 +130,20 @@ local labels = {
 -- -- 두 레이블 합치기
 -- table.insert(labels, labelsAdd)
 -- table.remove(labels, 1)
+
+local leap = require("leap")
+
+-- require("leap").add_default_mappings()
+leap.add_default_mappings()
+
+-- `t`를 `s`처럼 동작하도록 설정 (화면 전체 검색)
+vim.keymap.set({ "n", "x", "o" }, "e", function()
+  leap.leap({ target_windows = { vim.fn.win_getid() } })
+end, { desc = "Leap using 't'" })
+
+-- leap 가 x(잘라내기)를 점유하지 않도록 설정
+vim.api.nvim_del_keymap("x", "x")  -- Visual 모드에서 leap의 x 매핑 제거
+
 
 require('leap').setup{
     labels = labels,
@@ -182,7 +169,7 @@ require('leap.user').set_repeat_keys('<tab>, <enter>', '<backspace>')
 require('leap').opts.equivalence_classes = { ' \t\r\n', '([{', ')]}', '\'"`' }
 ---------------------------------------------------------------------------------------------------------
 require('flit').setup {
-  keys = { f = 'f', F = 'F', t = 't', T = 'T' },
+  keys = { f = 'f', F = 'F' , t = 't', T = 'T' }, -- t는 leap 에서 사용하도록 변경
   -- keys = { f = 'f', F = 'F', t = 'z', T = 'Z' },
   -- A string like "nv", "nvo", "o", etc.
   labeled_modes = "v",
@@ -255,31 +242,9 @@ require("yanky").setup({
 -- require('leap').opts.safe_labels = {}
 ---------------------------------------------------------------------------------------------------------
 require("keyMapping")
----------------------------------------------------------------------------------------------------------
--- Neovim Ui Modifier
-vim.api.nvim_exec([[
-    " THEME CHANGER
-    function! SetCursorLineNrColorInsert(mode)
-        " Insert mode: blue
-        if a:mode == "i"
-            call VSCodeNotify('nvim-theme.insert')
-
-        " Replace mode: red
-        elseif a:mode == "r"
-            call VSCodeNotify('nvim-theme.replace')
-        endif
-    endfunction
-
-    augroup CursorLineNrColorSwap
-        autocmd!
-        autocmd ModeChanged *:[vV\x16]* call VSCodeNotify('nvim-theme.visual')
-        autocmd ModeChanged *:[R]* call VSCodeNotify('nvim-theme.replace')
-        autocmd InsertEnter * call SetCursorLineNrColorInsert(v:insertmode)
-        autocmd InsertLeave * call VSCodeNotify('nvim-theme.normal')
-        autocmd CursorHold * call VSCodeNotify('nvim-theme.normal')
-        autocmd ModeChanged [vV\x16]*:* call VSCodeNotify('nvim-theme.normal')
-    augroup END
-]], false)
+-- if vim.g.vscode then 
+    -- require("vsCodeKeyMapping")
+-- end
 ---------------------------------------------------------------------------------------------------------
 -- text-case.nvim: case 변경(upper, lower, snake, dash etc...)
 
@@ -298,9 +263,9 @@ vim.api.nvim_exec([[
 
 -- -- VSCode 전용 설정
 -- if is_vscode() then
---   -- VSCode Neovim 확장에서 사용할 설정을 여기에 작성합니다
---   vim.g.mapleader = " "
---   -- VSCode 전용 키 매핑 등
+  -- VSCode Neovim 확장에서 사용할 설정을 여기에 작성합니다
+  -- vim.g.mapleader = " "
+  -- VSCode 전용 키 매핑 등
 -- end
 
 -- -- IntelliJ 전용 설정
