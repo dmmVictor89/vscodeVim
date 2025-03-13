@@ -4,7 +4,8 @@ let mapleader=" "
 " :set virtualedit=onemore
 
 " 시스템 클립보드 사용
-set clipboard=unnamedplus
+set clipboard=unnamed
+" set clipboard=unnamedplus
 
 " 대소문자 무시 검색 설정
 set ignorecase
@@ -45,11 +46,11 @@ vnoremap u y`>
 nnoremap uu yy 
 vnoremap uu yy 
 
-nnoremap p "0p
-vnoremap p "0p
+vnoremap p "+p
+nnoremap p "+p
 
-nnoremap P "0P
-vnoremap P "0P
+nnoremap P "+P
+vnoremap P "+P
 
 " <leader>u 를 'I'로 매핑 (줄의 시작으로 이동하여 입력 모드)
 

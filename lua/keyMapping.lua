@@ -94,6 +94,7 @@ vim.keymap.set({ 'n', 'v' }, '<pagedown>', '<c-d>')
 
 -- paste without overwriting
 -- vim.keymap.set('v', 'p', 'P')
+-- vim.keymap.set({ 'n', 'v', 'x'}, "p", '_dP')
 
 -- redo
 vim.keymap.set('n', 'Y', '<C-r>')
@@ -148,13 +149,17 @@ vim.keymap.set('n', 'g-', '<c-x>')
 -- vim.keymap.set('n', '<leader>d', '"+d')
 
 -- If just 'd' is pressed in normal mode, do not store in clipboard
-vim.keymap.set('n', 'd', '"_d')
+vim.keymap.set({ 'n', 'v' }, 'd', '"_d')
 
 -- If just 'd' is pressed in visual mode, do not store in clipboard
-vim.keymap.set('v', 'd', '"_d')
+-- vim.keymap.set('v', 'd', '"_d')
+
+vim.keymap.set({ 'n', 'v' }, 'x', '"_x')
 
 -- Delete to the end
 vim.keymap.set({ 'n', 'v' }, 'D', '"_D')
+
+
 
 
 -- Ctrl+e 가 diw 로 동작
@@ -636,10 +641,10 @@ vim.keymap.set({ "o", "x" }, "au", '<cmd>lua require("various-textobjs").anyQuot
   { noremap = true, silent = true })
 -- ---------------------------------------------------------------------------------------------------------
 -- yanky.nvim
-vim.keymap.set({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
-vim.keymap.set({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
-vim.keymap.set({ "n", "x" }, "gp", "<Plug>(YankyGPutAfter)")
-vim.keymap.set({ "n", "x" }, "gP", "<Plug>(YankyGPutBefore)")
+vim.keymap.set({ "n", "x" }, "p", '<Plug>(YankyPutAfter)')
+vim.keymap.set({ "n", "x" }, "P", '<Plug>(YankyPutBefore)')
+vim.keymap.set({ "n", "x" }, "gp", '<Plug>(YankyGPutAfter)')
+vim.keymap.set({ "n", "x" }, "gP", '<Plug>(YankyGPutBefore)')
 
 vim.keymap.set("n", "<c-p>", "<Plug>(YankyPreviousEntry)")
 vim.keymap.set("n", "<leader>p", "<Plug>(YankyNextEntry)")
