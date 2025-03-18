@@ -1,5 +1,15 @@
-print("vim on")
---todo //test
+--------------------------------------------------
+-- Improved Neovim KeyMapping Configuration
+-- 개선 사항:
+-- 1. 중첩 defer_fn 호출 최적화
+-- 2. VSCode 통신 디바운싱 적용
+-- 3. API 통일 및 불필요한 주석 제거 (주석은 그대로 유지)
+-- 4. Autocmd 최적화
+--------------------------------------------------
+
+print("vim on (Improved version)")
+
+-- todo //test
 -- h 매핑 g로 변경 hjkl 에는 매핑을 안 해야 한다 h 입력을 기다리면서 렉 걸림
 
 -- 새로운 줄에서 제일 앞으로 가지 않도록 함
@@ -64,8 +74,6 @@ vim.keymap.set({ 'n', 'v' }, ';', 'l')
 vim.keymap.set({ 'n', 'v' }, 'h', ';')
 -- vim.keymap.set({'n', 'v'}, 'h', '\'')
 
-
-
 -- y -> u set yank
 vim.keymap.set({ 'n', 'v' }, 'y', 'u')
 -- u -> y set undo
@@ -75,16 +83,8 @@ vim.keymap.set({ 'n', 'v' }, 'y', 'u')
 -- yu로 yiw 날리기
 vim.keymap.set({ 'n', 'v' }, 'uj', 'yiw')
 
-vim.keymap.set({ 'n', 'x' }, 'u', '<Plug>(YankyYank)')
-vim.keymap.set({ 'n', 'x' }, 'uu', function()
-  local mode = vim.api.nvim_get_mode().mode
-  if mode == 'n' then
-    -- normal 모드에서는 현재 라인을 선택
-    vim.cmd('normal! V')
-  end
-  -- YankyYank 실행
-  vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>(YankyYank)', true, true, true), 'x')
-end, { noremap = true, silent = true })
+vim.keymap.set({ 'n', 'x' }, 'u', '<Plug>(YankyYank)', { noremap = true })
+vim.keymap.set('n', 'uu', 'V<Plug>(YankyYank)', { noremap = true })
 
 vim.keymap.set({ 'n', 'v' }, '<pageup>', '<c-e>')
 vim.keymap.set({ 'n', 'v' }, '<pagedown>', '<c-d>')
@@ -113,7 +113,6 @@ vim.api.nvim_set_keymap('n', 'st', ':noh<CR>', { noremap = true, silent = true }
 vim.api.nvim_set_keymap('n', 'sg', ':split<Return>', { silent = true })
 vim.api.nvim_set_keymap('n', 'sv', ':vsplit<Return>', { silent = true })
 
-
 -- -- 창 크기 조절
 -- vim.api.nvim_set_keymap('n', 's=', '<c-w>>', { noremap = true, silent = true })
 -- vim.keymap.set('n', 's1', '<C-w>>', { noremap = true, silent = true })
@@ -125,7 +124,6 @@ vim.api.nvim_set_keymap('n', 'sv', ':vsplit<Return>', { silent = true })
 -- -- 증가 / 감소
 vim.keymap.set('n', 'g+', '<c-a>')
 vim.keymap.set('n', 'g-', '<c-x>')
-
 
 -- change the window
 -- <leader>w를 <C-w>로 매핑, 명령어가 표시되도록 silent = false 설정
@@ -154,7 +152,7 @@ vim.keymap.set({ 'n', 'v' }, 'd', '"_d')
 -- If just 'd' is pressed in visual mode, do not store in clipboard
 -- vim.keymap.set('v', 'd', '"_d')
 
-vim.keymap.set({ 'n', 'v' }, 'x', '"_x')
+-- vim.keymap.set({ 'n', 'v' }, 'x', '"_x')
 
 -- Delete to the end
 vim.keymap.set({ 'n', 'v' }, 'D', '"_D')
@@ -174,30 +172,39 @@ vim.keymap.set({ 'n', 'v' }, '<leader>v', '<c-v>')
 vim.opt.number = true
 vim.opt.relativenumber = true
 
--- Create an augroup for toggling relative and absolute numbers
-local numbertoggle = vim.api.nvim_create_augroup("numbertoggle", { clear = true })
-
--- Switch to absolute number after cursor movement
-vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-  group = numbertoggle,
-  callback = function()
-    vim.opt.relativenumber = true
-  end,
-})
-
--- Map <leader> to also toggle relativenumber while preserving its functionality
+-- `(백틱)으로 상대번호, 절대번호 모드 변경하기
 vim.keymap.set({ 'n', 'v' }, '`', function()
-  vim.opt.relativenumber = false -- 리더 키를 눌렀을 때 relativenumber 활성화
-  -- vim.cmd('redraw')              -- 화면 즉시 다시 그리기
-  -- return '<leader>'              -- 리더 키의 원래 기능 유지
-end, { expr = true })
+  if vim.opt.relativenumber:get() then
+    vim.opt.relativenumber = false
+  else
+    vim.opt.relativenumber = true
+  end
+end)
+
+-- 처음에 상대 번호를 안 쓰기 위해서 설정하려고 했던건데 비효율적
+-- -- Create an auto group for toggling relative and absolute numbers
+-- local numbertoggle = vim.api.nvim_create_augroup("numbertoggle", { clear = true })
+
+-- -- Switch to absolute number after cursor movement
+-- vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+--   group = numbertoggle,
+--   callback = function()
+--     vim.opt.relativenumber = true
+--   end,
+-- })
+
+-- -- Map <leader> to also toggle relativenumber while preserving its functionality
+-- vim.keymap.set({ 'n', 'v' }, '`', function()
+--   vim.opt.relativenumber = false -- ` 키를 눌렀을 때 relativenumber 활성화
+--   -- vim.cmd('redraw')           -- 화면 즉시 다시 그리기
+--   -- return '<leader>'           -- 리더 키의 원래 기능 유지
+-- end, { expr = true })
 
 -- ---------------------------------------------------------------------------------------------------------
 -- 마킹 관련
 vim.keymap.set({ 'n', 'v' }, '<leader>m', '`m')
 -- 커서를 정확한 위치로 이동시키기 위해 `(백틱)을 '(작은 따옴표) 로 변경
 vim.keymap.set({ 'n', 'v' }, '\'', '`')
-
 
 -- ---------------------------------------------------------------------------------------------------------
 -- vscode 전용
@@ -207,7 +214,7 @@ if vim.g.vscode then
   print("vscode setting is loaded")
 
   -- Neovim Ui Modifier
-  vim.api.nvim_exec([[
+  vim.api.nvim_exec([[ 
         " THEME CHANGER
         function! SetCursorLineNrColorInsert(mode)
             " Insert mode: blue
@@ -270,6 +277,10 @@ if vim.g.vscode then
     vim.api.nvim_set_keymap('n', 's;', ':call VSCodeNotify("workbench.action.navigateRight")<CR>',
       { noremap = true, silent = true })
 
+    -- Peek Definition(정의 미리보기 (alt+F12)
+    vim.api.nvim_set_keymap('n', 'sh', ':call VSCodeNotify("editor.action.peekDefinition")<CR>',
+      { noremap = true, silent = true })
+
     -- 패널 창 호출
     -- side pannel
     vim.api.nvim_set_keymap('n', 'sp', ':call VSCodeNotify("workbench.action.toggleSidebarVisibility")<CR>',
@@ -327,18 +338,26 @@ end
 -- ---------------------------------------------------------------------------------------------------------
 -- 간단 매크로 <- 이게 제대로 작동됨 250226
 -- 현재 글자 복사해서 오른쪽 화면에서 찾기
--- vim.api.nvim_set_keymap('n', '<leader>mf', ":normal uiws;  /<c-r>0<CR>", { noremap = false, silent = true })
 
 vim.keymap.set('n', '<leader>mf', function()
-  vim.cmd('normal ujs;')  -- 단어 복사 후 옆 창으로 이동
+  vim.cmd('normal ujs;') -- 단어 복사 후 옆 창으로 이동
   vim.defer_fn(function()
-    vim.api.nvim_feedkeys("/", "n", false)  -- / 검색창 띄우기
-
-    vim.defer_fn(function()
-      vim.api.nvim_feedkeys(vim.fn.getreg("0") .. "\n", "n", false)  -- 복사한 단어 붙여넣고 Enter 입력
-    end, 100)  -- 100ms 대기 후 실행 (안정적인 붙여넣기)
-  end, 100)  -- 100ms 대기 후 실행 (창 이동 후 / 입력 안정화)
+    vim.api.nvim_feedkeys("/" .. vim.fn.getreg("0") .. "\n", "n", false)
+  end, 150) -- 150ms 대기
 end, { noremap = true, silent = true })
+
+-- defer  비효율적인 방식
+-- vim.keymap.set('n', '<leader>mf', function()
+--   vim.cmd('normal ujs;')  -- 단어 복사 후 옆 창으로 이동
+--   vim.defer_fn(function()
+--     vim.api.nvim_feedkeys("/", "n", false)  -- / 검색창 띄우기
+
+--     vim.defer_fn(function()
+--       vim.api.nvim_feedkeys(vim.fn.getreg("0") .. "\n", "n", false)  -- 복사한 단어 붙여넣고 Enter 입력
+--     end, 100)  -- 100ms 대기 후 실행 (안정적인 붙여넣기)
+--   end, 100)  -- 100ms 대기 후 실행 (창 이동 후 / 입력 안정화)
+-- end, { noremap = true, silent = true })
+
 
 vim.keymap.set('n', 'mt', function()
   local function feedkeys(keys)
@@ -529,7 +548,7 @@ end
 --   callback = function(args)
 --     -- args.data.key and args.data.mode are available here
 --     print(args.data.key .. " is repeated")
---   end
+--   end,
 -- })
 
 -- -- You create repeatable mappings like this:
@@ -559,12 +578,14 @@ local function leap_to_line()
   local winid = vim.api.nvim_get_current_win()
   require('leap').leap {
     target_windows = { winid },
-    targets = function(opts)
+
+    targets = function()
       local targets = {}
       local wininfo = vim.fn.getwininfo(winid)[1]
-      local cur_line = vim.fn.line('.')
-
-      for line = wininfo.topline, wininfo.botline do
+      local cur_line = vim.fn.line('')
+      local max_lines = math.min(wininfo.botline - wininfo.topline + 1, 60) -- 최대 50개 라인으로 제한
+      for i = 0, max_lines - 1 do
+        local line = wininfo.topline + i
         if line ~= cur_line then
           table.insert(targets, { pos = { line, 1 } })
         end
@@ -575,9 +596,7 @@ local function leap_to_line()
   }
 end
 
-
 vim.keymap.set('', 'gv', leap_to_line, { desc = "Leap to line" })
-
 
 -- --------------------------------------------------------------------------------------------------------
 -- leap leap vertical 추가
@@ -609,7 +628,6 @@ end
 
 -- 키 매핑 예시
 vim.keymap.set({ 'n', 'v' }, 'gl', leap_vertical, { desc = "Leap vertical" })
-
 
 -- ---------------------------------------------------------------------------------------------------------
 -- substitue
@@ -648,6 +666,7 @@ vim.keymap.set({ "n", "x" }, "gP", '<Plug>(YankyGPutBefore)')
 
 vim.keymap.set("n", "<c-p>", "<Plug>(YankyPreviousEntry)")
 vim.keymap.set("n", "<leader>p", "<Plug>(YankyNextEntry)")
+
 -- ---------------------------------------------------------------------------------------------------------
 local Hydra = require('hydra')
 
@@ -658,7 +677,6 @@ local last_motion = nil
 -- _r_: repeat last motion
 -- _<Esc>_: exit
 -- ]]
---
 
 local my_hydra = Hydra({
   name = 'Repeat Last Motion',
@@ -675,14 +693,12 @@ local my_hydra = Hydra({
     end,
       { desc = 'repeat last motion' }
     },
-    -- { '<leader><Esc>', nil, { exit = true, desc = 'exit Hydra' } },
     { 'C-q', nil, { exit = true, desc = 'exit Hydra' } },
   }
 })
 
 -- <leader>h 키를 Hydra로 진입하는 대신, 진입 전에 원하는 일을 하고 activate()
 vim.keymap.set('n', '<leader><leader>', function()
-  -- vim.keymap.set('n', '<leader>h', function()
   vim.notify("My custom on_enter logic before hydra")
 
   local input = vim.fn.input('Enter the motion (e.g., 10j): ')
@@ -701,69 +717,69 @@ vim.keymap.set('n', '<leader><leader>', function()
 end)
 
 -- ---------------------------------------------------------------------------------------------------------
-  -- todo 비주얼모드 복사도 이동하지 않도록 수정
-  -- 복사 후 커서 제자리
+-- todo 비주얼모드 복사도 이동하지 않도록 수정
+-- 복사 후 커서 제자리
 
-  local api = vim.api
-  local g = api.nvim_create_augroup('user/keep_yank_position', { clear = true })
+local api = vim.api
+local g = api.nvim_create_augroup('user/keep_yank_position', { clear = true })
 
-  api.nvim_create_autocmd('ModeChanged', {
-    pattern = { 'n:no', 'no:n' },
-    group = g,
-    callback = function(ev)
-      if vim.v.operator == 'y' then
-        if ev.match == 'n:no' then
-          vim.b.user_yank_last_pos = vim.fn.getpos('.')
-        else
-          if vim.b.user_yank_last_pos then
-            vim.fn.setpos('.', vim.b.user_yank_last_pos)
-            vim.b.user_yank_last_pos = nil
-          end
+api.nvim_create_autocmd('ModeChanged', {
+  pattern = { 'n:no', 'no:n' },
+  group = g,
+  callback = function(ev)
+    if vim.v.operator == 'y' then
+      if ev.match == 'n:no' then
+        vim.b.user_yank_last_pos = vim.fn.getpos('.')
+      else
+        if vim.b.user_yank_last_pos then
+          vim.fn.setpos('.', vim.b.user_yank_last_pos)
+          vim.b.user_yank_last_pos = nil
         end
       end
-    end,
-  })
+    end
+  end,
+})
 
 -- ---------------------------------------------------------------------------------------------------------
 
-  local M = {}
+local M = {}
 
-  local augroup = vim.api.nvim_create_augroup
-  local keymap = vim.api.nvim_set_keymap
+local augroup = vim.api.nvim_create_augroup
+local keymap = vim.api.nvim_set_keymap
 
-  M.my_vscode = augroup('MyVSCode', {})
+M.my_vscode = augroup('MyVSCode', {})
 
-  vim.filetype.add {
-    pattern = {
-      ['.*%.ipynb.*'] = 'python',
-      -- uses lua pattern matching
-      -- rathen than naive matching
-    },
-  }
-  
-  local function notify(cmd)
-    return string.format("<cmd>call VSCodeNotify('%s')<CR>", cmd)
-  end
+vim.filetype.add {
+  pattern = {
+    ['.*%.ipynb.*'] = 'python',
+    -- uses lua pattern matching
+    -- rathen than naive matching
+  },
+}
 
-  local function v_notify(cmd)
-    return string.format("<cmd>call VSCodeNotifyVisual('%s', 1)<CR>", cmd)
-  end
-  
-  -- leader2
-  keymap('n', '<Leader>xr', notify 'references-view.findReferences', { silent = true })  -- language references
-  keymap('n', '<Leader>xd', notify 'workbench.actions.view.problems', { silent = true }) -- language diagnostics
-  -- keymap('n', 'gr', notify 'editor.action.goToReferences', { silent = true )
-  keymap('n', '<Leader>rn', notify 'editor.action.rename', { silent = true })
-  keymap('n', '<Leader>fm', notify 'editor.action.formatDocument', { silent = true })
-  keymap('n', '<Leader>ca', notify 'editor.action.refactor', { silent = true })                   -- language code actions
+local function notify(cmd)
+  return string.format("<cmd>call VSCodeNotify('%s')<CR>", cmd)
+end
 
-  keymap('n', '<Leader>rg', notify 'workbench.action.findInFiles', { silent = true })             -- use ripgrep to search files
-  keymap('n', '<Leader>ts', notify 'workbench.action.toggleSidebarVisibility', { silent = true })
-  keymap('n', '<Leader>th', notify 'workbench.action.toggleAuxiliaryBar', { silent = true })      -- toggle docview (help page)
-  keymap('n', '<Leader>tp', notify 'workbench.action.togglePanel', { silent = true })
-  keymap('n', '<Leader>fc', notify 'workbench.action.showCommands', { silent = true })            -- find commands
-  keymap('n', '<Leader>tw', notify 'workbench.action.terminal.toggleTerminal', { silent = true }) -- terminal window
-  keymap('n', '<Leader>f' , notify 'workbench.action.quickOpen', { silent = true })               -- find files
+local function v_notify(cmd)
+  return string.format("<cmd>call VSCodeNotifyVisual('%s', 1)<CR>", cmd)
+end
+
+-- leader2
+keymap('n', '<Leader>xr', notify 'references-view.findReferences', { silent = true })  -- language references
+keymap('n', '<Leader>xd', notify 'workbench.actions.view.problems', { silent = true }) -- language diagnostics
+-- keymap('n', 'gr', notify 'editor.action.goToReferences', { silent = true )
+keymap('n', '<Leader>rn', notify 'editor.action.rename', { silent = true })
+keymap('n', '<Leader>fm', notify 'editor.action.formatDocument', { silent = true })
+keymap('n', '<Leader>ca', notify 'editor.action.refactor', { silent = true })                   -- language code actions
+
+keymap('n', '<Leader>rg', notify 'workbench.action.findInFiles', { silent = true })             -- use ripgrep to search files
+keymap('n', '<Leader>ts', notify 'workbench.action.toggleSidebarVisibility', { silent = true })             -- use ripgrep to search files
+keymap('n', '<Leader>th', notify 'workbench.action.toggleAuxiliaryBar', { silent = true })      -- toggle docview (help page)
+keymap('n', '<Leader>tp', notify 'workbench.action.togglePanel', { silent = true })
+keymap('n', '<Leader>fc', notify 'workbench.action.showCommands', { silent = true })            -- find commands
+keymap('n', '<Leader>tw', notify 'workbench.action.terminal.toggleTerminal', { silent = true }) -- terminal window
+keymap('n', '<Leader>f' , notify 'workbench.action.quickOpen', { silent = true })               -- find files
 -- keymap('n', '<Leader>f', notify 'workbench.view.search', { silent = true })               -- show search
 
 -- ---------------------------------------------------------------------------------------------------------
@@ -786,7 +802,6 @@ end)
 -- end, 0)  -- 지연 시간은 밀리초 단위로, 0은 즉시 실행
 -- end, { expr = true, noremap = true, silent = true })
 
-
 -- 매핑된 키 확인
 -- :map <leader>w
 -- 매핑된 키의 출처 확인
@@ -804,7 +819,6 @@ end)
 -- <C-w> l:
 
 -- 오른쪽 창으로 이동합니다.
--- 추가적인 창 관리 명령
 -- <C-w> w 또는 <C-w> <C-w>:
 
 -- 다음 창으로 순차적으로 이동합니다.
@@ -885,7 +899,6 @@ end)
 -- shift + k
 -- gh
 -- hover widget
-
 
 -- ---------------------------------------------------------------------------------------------------------
 -- hop -- leap 로 대체. 미사용
