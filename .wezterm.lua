@@ -10,7 +10,7 @@ wezterm.on('window-config-reloaded', function(window, pane)
   window:toast_notification("wezterm", "Config reloaded!", nil, 4000)
 end)
 
-require(".wezterm_panel")
+-- require(".wezterm_panel")
 
 
 return {
