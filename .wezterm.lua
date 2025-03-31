@@ -61,11 +61,15 @@ return {
 
       -- 선택 모드 진입
       { key = "v", action = act.CopyMode({ SetSelectionMode = "Cell" }) },
-      -- 복사 후 선택모드 종료
-      {
-        key = 'u',
+      -- 단순 복사
+      { key = 'y',
         mods = 'NONE',
         action = act.Multiple {
+          { CopyTo = 'ClipboardAndPrimarySelection' },
+        },
+      },
+      -- 복사 후 선택모드 종료
+      { key = 'u', mods = 'NONE', action = act.Multiple {
           { CopyTo = 'ClipboardAndPrimarySelection' },
           { CopyMode = 'MoveToScrollbackBottom' },
           { CopyMode = 'Close' },
