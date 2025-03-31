@@ -1,9 +1,17 @@
+-- wezterm.lua의 상단에 추가
+package.path = package.path .. ";C:/Users/이진표/AppData/Local/nvim/?.lua"
+
+local panel = require("wezterm_panel")
+
 local wezterm = require 'wezterm'
 local act = wezterm.action
 
 wezterm.on('window-config-reloaded', function(window, pane)
   window:toast_notification("wezterm", "Config reloaded!", nil, 4000)
 end)
+
+require(".wezterm_panel")
+
 
 return {
   default_prog = { "C:\\My Program Files\\Git\\bin\\bash.exe", "-l"},
@@ -24,11 +32,21 @@ return {
     { key = "k", mods = "ALT", action = act.ActivatePaneDirection("Down") },
     { key = "l", mods = "ALT", action = act.ActivatePaneDirection("Up") },
     { key = ";", mods = "ALT", action = act.ActivatePaneDirection("Right") },
+
+    -- pane 크기 조절 (Alt + 방향키)
+    { key = "LeftArrow",  mods = "ALT", action = act.AdjustPaneSize({ "Left", 10 }) },
+    { key = "RightArrow", mods = "ALT", action = act.AdjustPaneSize({ "Right", 10 }) },
+    { key = "UpArrow",    mods = "ALT", action = act.AdjustPaneSize({ "Up", 10 }) },
+    { key = "DownArrow",  mods = "ALT", action = act.AdjustPaneSize({ "Down", 10 }) },
     
     -- { key = "x", mods = "ALT|SHIFT", action = act.ActivateCopyMode},
     { key = "c", mods = "LEADER", action = act.ActivateCopyMode},
     { key = 'v', mods = "LEADER", action = act.PasteFrom 'Clipboard' },
     -- { key = 'v', mods = 'NONE', action = act.CopyMode { SetSelectionMode = 'Cell' } }, -- 선택 모드
+    
+  -- 단축키로 메뉴 띄우기 (예: Ctrl+Shift+L)
+    { key = "l", mods = "CTRL|SHIFT", action = wezterm.action.ShowLauncher,
+    },
 
     
   },
