@@ -16,11 +16,12 @@ print("init.lua load start")
 -- 플러그인 업데이트하는 방법
 -- :PackerSync
 
----------------------------------------------------------------------------------------------------------
-vim.defer_fn(function()
-  vim.o.iminsert = 0
-  vim.o.imsearch = 0
-end, 100)
+if vim.g.vscode then
+  vim.schedule(function()
+    vim.o.iminsert = 0
+    vim.o.imsearch = 0
+  end)
+end
 
 
 -- 기존 packer_compiled.lua 파일 삭제
@@ -45,52 +46,44 @@ end, 100)
 local packer_bootstrap = false
 local install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 
-if not vim.loop.fs_stat(install_path) then
-  packer_bootstrap = true
-  vim.fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
-  vim.cmd("packadd packer.nvim")
+-- Packer 설치 여부를 캐시로 확인
+local function ensure_packer()
+  if vim.g.packer_installed ~= nil then return vim.g.packer_installed end
+  if not vim.loop.fs_stat(install_path) then
+    packer_bootstrap = true
+    vim.fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
+    vim.cmd("packadd packer.nvim")
+    vim.g.packer_installed = true
+  else
+    vim.g.packer_installed = false
+  end
+  return packer_bootstrap
 end
 
+packer_bootstrap = ensure_packer()
+
 ---------------------------------------------------------------------------------------------------------
-require('packer').startup({function(use)
-  -- Your plugins here
-  use 'wbthomason/packer.nvim'
-  -- use 'tpope/vim-repeat' -- 매크로나 찾기등등을 모두 반복해주는 플러그인
-  -- use 'jonatan-branting/nvim-better-n'
+---https://github.com/akiyosi/goneovim todo: gui 버전의 neovim 한번 사용해 보기
+require('packer').startup({
+  function(use)
+    use 'wbthomason/packer.nvim'
+    use { 'ggandor/leap.nvim', config = function() require('leap').add_default_mappings() end }
+    use { 'ggandor/flit.nvim', config = function() require('flit').setup() end }
+    use { 'gbprod/substitute.nvim', config = function() require('substitute').setup() end }
+    use { 'chrisgrieser/nvim-various-textobjs', event = "BufEnter", config = function() require("various-textobjs").setup() end }
+    use { 'anuvyklack/hydra.nvim', opt = true, cmd = "Hydra" }
+    use { 'gbprod/yanky.nvim', event = "TextYankPost", config = function() require("yanky").setup() end }
 
-  use 'ggandor/leap.nvim'
-  use 'ggandor/flit.nvim'
-  use 'gbprod/substitute.nvim'
-  use 'chrisgrieser/nvim-various-textobjs'
-  use 'anuvyklack/hydra.nvim' 
-  use("gbprod/yanky.nvim") 
-
-  -- vs code 가 아닐 때만 로드
-  if not vim.g.vscode then
-  use {'nvim-lualine/lualine.nvim',
-       requires = { 'nvim-tree/nvim-web-devicons', opt = true }}
-  end
-
-  -- use {
-  --   'phaazon/hop.nvim',
-  --   branch = 'v2', -- optional but strongly recommended
-  --   config = function()
-  --     -- you can configure Hop the way you like here; see :h hop-config
-  --     require'hop'.setup {
-  --       keys = 'hfgetovxqpdyblzhckisuran',
-  --       -- hint_char1 = 'j'  -- 기본 j 
-
-  --     }
-  --   end
-  -- }
-end,
-config = {
-  display = {
-    open_fn = function()
-      return require('packer.util').float({ border = 'single' })
+    if not vim.g.vscode then
+      use { 'nvim-lualine/lualine.nvim', requires = { 'nvim-tree/nvim-web-devicons', opt = true }, config = function() require('lualine').setup() end }
     end
+
+    if packer_bootstrap then require('packer').sync() end
+  end,
+  config = {
+    display = { open_fn = function() return require('packer.util').float({ border = 'single' }) end }
   }
-}})
+})
 
 ---------------------------------------------------------------------------------------------------------
 -- require("better-n").setup(
@@ -104,10 +97,22 @@ config = {
 ---------------------------------------------------------------------------------------------------------
 -- vscode 가 아닐 때만 실행 전용
 if not vim.g.vscode then 
-require('lualine').setup()
-  -- use { 'nvim-tree/nvim-web-devicons', opt = true }
-require('evil_lualine')
+  require('lualine').setup()
+    -- use { 'nvim-tree/nvim-web-devicons', opt = true }
+  require('evil_lualine')
 end
+
+---------------------------------------------------------------------------------------------------------
+-- swapfile, backup 을 사용하지 않을 때 성능을 위해서 꺼두는게 좋음
+-- vim.opt.swapfile = false
+-- vim.opt.backup = false
+
+
+---------------------------------------------------------------------------------------------------------
+-- 입력 지연 관련 설정
+vim.opt.ttimeout = true
+vim.opt.ttimeoutlen = 10  -- 키 코드 처리 대기 시간을 10ms로 설정
+
 ---------------------------------------------------------------------------------------------------------
 -- vim.keymap.set({ 'i', 'x' }, '<esc>', function()
 
@@ -116,6 +121,8 @@ end
 --   vim.cmd("normal! \27")
 -- end, { noremap = true, silent = true })
 ---------------------------------------------------------------------------------------------------------
+local leap = require("leap")
+
 local labels = {
     's', 'f', 'n', 'j', 'k', 'l', 'h', 'o', 'd', 'w', 'e', 'm', 'y', 't', 'g', 'i', 'a', 'r', 'c',
     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
@@ -124,29 +131,8 @@ local labels = {
 }
 
 -- Leap 설정에 라벨 적용
-require('leap').opts.labels = labels
+leap.opts.labels = labels
 
-
--- for i = 1, #labels do
---     if labels[i]:match("%l") then  -- 소문자인 경우만 처리
---         for j = 1, #labels do
---             if labels[j]:match("%l") then  -- 두 번째 소문자도 확인
---                 table.insert(labels, labels[i]..labels[j])  -- 두 소문자 조합 추가
---             end
---         end
---     end
--- end
--- local labelsAdd = {
---     'S', 'F', 'N', 'J', 'K', 'L', 'H', 'O', 'D', 'W', 'E', 'M', 'Y', 'T', 'G', 'I', 'A', 'R', 'C',
---     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
--- }
--- -- 두 레이블 합치기
--- table.insert(labels, labelsAdd)
--- table.remove(labels, 1)
-
-local leap = require("leap")
-
--- require("leap").add_default_mappings()
 leap.add_default_mappings()
 
 -- `t`를 `s`처럼 동작하도록 설정 (화면 전체 검색)
@@ -158,9 +144,8 @@ end, { desc = "Leap using 't'" })
 vim.api.nvim_del_keymap("x", "x")  -- Visual 모드에서 leap의 x 매핑 제거
 
 
-require('leap').setup{
+leap.setup{
     labels = labels,
-    equivalence_classes = { ' \t\r\n', '([{', ')]}', '\'"`' },
     special_keys = {
       -- next_target = '<;>',
       next_target = '<Tab>',
@@ -179,7 +164,7 @@ require('leap.user').set_repeat_keys('<tab>, <enter>', '<backspace>')
 
 -- Define equivalence classes for brackets and quotes, in addition to
 -- the default whitespace group.
-require('leap').opts.equivalence_classes = { ' \t\r\n', '([{', ')]}', '\'"`' }
+leap.opts.equivalence_classes = { ' \t\r\n', '([{', ')]}', '\'"`' }
 ---------------------------------------------------------------------------------------------------------
 require('flit').setup {
   keys = { f = 'f', F = 'F' , t = 't', T = 'T' }, -- t는 leap 에서 사용하도록 변경

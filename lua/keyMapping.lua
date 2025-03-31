@@ -7,7 +7,11 @@
 -- 4. Autocmd 최적화
 --------------------------------------------------
 
-print("vim on (Improved version)")
+-- print("vim on (Improved version)")
+
+
+-- 기존 print를 vim.notify로 변경 (중간 로그)
+vim.notify("vim on (Improved version)", vim.log.levels.INFO)
 
 -- todo //test
 -- h 매핑 g로 변경 hjkl 에는 매핑을 안 해야 한다 h 입력을 기다리면서 렉 걸림
@@ -32,7 +36,8 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- open config
-vim.cmd('nmap <leader>cf :e C:\\Users\\이진표\\AppData\\Local\\nvim\\init.lua')
+-- 기존 :nmap -> lua style 매핑
+vim.keymap.set('n', '<leader>cf', ':e C:\\Users\\이진표\\AppData\\Local\\nvim\\init.lua', { noremap = true })
 
 -- save
 -- vim.cmd('nmap <leader>s :w<cr>')
@@ -57,14 +62,10 @@ vim.keymap.set({ 'n', 'v' }, '-', '$')
 vim.keymap.set({ 'n', 'v' }, '<leader>a', '<s-a>')
 
 -- 아래에 새로운 행 만들고 노멀모드
--- vim.api.nvim_set_keymap('n', '<leader>o', 'o<esc>', { noremap = true, silent = true })
--- vim.api.nvim_set_keymap('n', 'o', 'o<Esc>', { noremap = true, silent = true })
--- vim.api.nvim_set_keymap('n', 'O', 'O<Esc>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', 'o', '$a<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<leader>o', 'o<Esc>0"_D', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>o', 'o<Esc>0"_D', { noremap = true, silent = true })
 
 -- join lines
-vim.api.nvim_set_keymap('n', '<leader>j', 'J', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>j', 'J', { noremap = true, silent = true })
 -- ---------------------------------------------------------------------------------------------------------
 -- motion keys (left, down, up, left)
 vim.keymap.set({ 'n', 'v' }, 'j', 'h')
@@ -73,6 +74,9 @@ vim.keymap.set({ 'n', 'v' }, 'l', 'k')
 vim.keymap.set({ 'n', 'v' }, ';', 'l')
 vim.keymap.set({ 'n', 'v' }, 'h', ';')
 -- vim.keymap.set({'n', 'v'}, 'h', '\'')
+
+vim.keymap.set({ 'n', 'v' }, 'H', 'b')
+vim.keymap.set({ 'n', 'v' }, 'L', 'w')
 
 -- y -> u set yank
 vim.keymap.set({ 'n', 'v' }, 'y', 'u')
@@ -104,7 +108,7 @@ vim.keymap.set('n', 'Y', '<C-r>')
 -- vim.cmd('nmap k gk')
 
 -- :nohlsearch, :noh : serach 하이라이트 끄기
-vim.api.nvim_set_keymap('n', 'st', ':noh<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', 'st', ':noh<CR>', { noremap = true, silent = true })
 
 -- window
 -- 윈도우 관련
@@ -210,9 +214,12 @@ vim.keymap.set({ 'n', 'v' }, '\'', '`')
 -- vscode 전용
 -- vscode 인지 판단
 if vim.g.vscode then 
-  -- vscode 
-  print("vscode setting is loaded")
-
+  
+  -- vscode
+  vim.notify("vscode setting is loaded", vim.log.levels.INFO) 
+  
+  local vscode = require('vscode')
+  
   -- Neovim Ui Modifier
   vim.api.nvim_exec([[ 
         " THEME CHANGER
@@ -238,8 +245,28 @@ if vim.g.vscode then
         augroup END
     ]], false)
 
-    -- VSCode 환경에서 사용할 keymapping 설정 로드
-    vim.api.nvim_set_keymap('n', '0', ':call VSCodeNotify("cursorHome")<CR>', { noremap = true, silent = true })
+    -- o 설정
+    vim.keymap.set('n', 'o', function()
+        vim.fn.VSCodeNotify('editor.action.insertLineAfter')
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('A', true, false, true), 'n', false)
+    end, { noremap = true, silent = true, desc = "Insert line after with VS Code indent" })
+
+    --  fixed cursor scroll
+    vim.keymap.set({ 'n', 'v' }, 'J', function()
+        for _ = 1, 10 do
+            vim.fn.VSCodeNotify('vscode-neovim.ctrl-e') -- fixed cursor & scroll down
+        end
+    end, { noremap = true, desc = "Scroll down 10 lines" })
+
+    vim.keymap.set({ 'n', 'v' }, 'K', function()
+        for _ = 1, 10 do
+            vim.fn.VSCodeNotify('vscode-neovim.ctrl-y') -- fixed cursor & scroll up
+        end
+    end)
+
+    vim.keymap.set('n', '0', function()
+      vim.fn.VSCodeNotify("cursorHome")
+    end, { noremap = true, silent = true })
 
     -- close window
     vim.keymap.set('n', '<leader>x', function()
@@ -248,6 +275,13 @@ if vim.g.vscode then
         vim.fn.VSCodeNotify('workbench.action.closeActiveEditor')   -- VSCode의 창 닫기 명령 호출
       end
     end, { noremap = true, silent = true })
+
+    -- multi cursor
+    vim.keymap.set({ "n", "x", "i" }, "<C-i>", function()
+      vscode.with_insert(function()
+        vscode.action("editor.action.addSelectionToNextFindMatch")
+      end)
+    end)
 
     -- jj -> esc
     -- vim.keymap.set('i', 'jj', '<Esc>')
@@ -260,57 +294,43 @@ if vim.g.vscode then
     -- vim.api.nvim_set_keymap('i', 'kk', '<Esc>:echo "모드 전환됨"<CR>', { noremap = true, silent = true })
 
     -- 탭 이동
-    vim.api.nvim_set_keymap('n', 'gt', ':call VSCodeNotify("workbench.action.nextEditor")<CR>',
-      { noremap = true, silent = true, nowait = true })
-    vim.api.nvim_set_keymap('n', 'gr', ':call VSCodeNotify("workbench.action.previousEditor")<CR>',
-      { noremap = true, silent = true, nowait = true })
-
+    vim.keymap.set('n', 'gt', function() vim.fn.VSCodeNotify("workbench.action.nextEditor") end, { noremap = true, silent = true, nowait = true })
+    vim.keymap.set('n', 'gr', function() vim.fn.VSCodeNotify("workbench.action.previousEditor") end, { noremap = true, silent = true, nowait = true })
 
     -- 윈도우 관련
 
-    vim.api.nvim_set_keymap('n', 'sj', ':call VSCodeNotify("workbench.action.navigateLeft")<CR>',
-      { noremap = true, silent = true })
-    vim.api.nvim_set_keymap('n', 'sk', ':call VSCodeNotify("workbench.action.navigateDown")<CR>',
-      { noremap = true, silent = true })
-    vim.api.nvim_set_keymap('n', 'sl', ':call VSCodeNotify("workbench.action.navigateUp")<CR>',
-      { noremap = true, silent = true })
-    vim.api.nvim_set_keymap('n', 's;', ':call VSCodeNotify("workbench.action.navigateRight")<CR>',
-      { noremap = true, silent = true })
+    vim.keymap.set('n', 'sj', function() vim.fn.VSCodeNotify("workbench.action.navigateLeft") end, { noremap = true, silent = true })
+    vim.keymap.set('n', 'sk', function() vim.fn.VSCodeNotify("workbench.action.navigateDown") end, { noremap = true, silent = true })
+    vim.keymap.set('n', 'sl', function() vim.fn.VSCodeNotify("workbench.action.navigateUp") end, { noremap = true, silent = true })
+    vim.keymap.set('n', 's;', function() vim.fn.VSCodeNotify("workbench.action.navigateRight") end, { noremap = true, silent = true })
 
     -- Peek Definition(정의 미리보기 (alt+F12)
-    vim.api.nvim_set_keymap('n', 'sh', ':call VSCodeNotify("editor.action.peekDefinition")<CR>',
-      { noremap = true, silent = true })
+    vim.keymap.set('n', 'sh', function() vim.fn.VSCodeNotify("editor.action.peekDefinition") end, { noremap = true, silent = true })
 
     -- 패널 창 호출
-    -- side pannel
-    vim.api.nvim_set_keymap('n', 'sp', ':call VSCodeNotify("workbench.action.toggleSidebarVisibility")<CR>',
-      { noremap = true, silent = true })
+    vim.keymap.set('n', 'sp', function() vim.fn.VSCodeNotify("workbench.action.toggleSidebarVisibility") end, { noremap = true, silent = true })
     -- explorer
-    vim.api.nvim_set_keymap('n', 'se', ':call VSCodeNotify("workbench.view.explorer")<CR>', { noremap = true, silent = true })
+    vim.keymap.set('n', 'se', function() vim.fn.VSCodeNotify("workbench.view.explorer") end, { noremap = true, silent = true })
     -- project manager
-    vim.api.nvim_set_keymap('n', 'sm', ':call VSCodeNotify("workbench.view.extension.project-manager")<CR>',
-      { noremap = true, silent = true })
+    vim.keymap.set('n', 'sm', function() vim.fn.VSCodeNotify("workbench.view.extension.project-manager") end, { noremap = true, silent = true })
 
     -- 창 크기 조절
-    vim.keymap.set('n', 's=', ':call VSCodeNotify("workbench.action.increaseViewSize")<CR>')
-    vim.keymap.set('n', 's-', ':call VSCodeNotify("workbench.action.decreaseViewSize")<CR>')
+    vim.keymap.set('n', 's=', function() vim.fn.VSCodeNotify("workbench.action.increaseViewSize") end)
+    vim.keymap.set('n', 's-', function() vim.fn.VSCodeNotify("workbench.action.decreaseViewSize") end)
 
     -- 에디터 좌우로 이동
-    vim.keymap.set('n', 'sy', ':call VSCodeNotify("workbench.action.moveEditorToLeftGroup")<CR>')
-    vim.keymap.set('n', 'su', ':call VSCodeNotify("workbench.action.moveEditorToRightGroup")<CR>')
+    vim.keymap.set('n', 'sy', function() vim.fn.VSCodeNotify("workbench.action.moveEditorToLeftGroup") end)
+    vim.keymap.set('n', 'su', function() vim.fn.VSCodeNotify("workbench.action.moveEditorToRightGroup") end)
 
     -- zen mode
-    vim.api.nvim_set_keymap('n', 'sz', ':call VSCodeNotify("workbench.action.toggleZenMode")<CR>',
-      { noremap = true, silent = true })
+    vim.keymap.set('n', 'sz', function() vim.fn.VSCodeNotify("workbench.action.toggleZenMode") end, { noremap = true, silent = true })
 
     -- boolean toggle
-    vim.api.nvim_set_keymap('n', 'sb', ':call VSCodeNotify("extension.toggleBool")<CR>', { noremap = true, silent = true })
+    vim.keymap.set('n', 'sb', function() vim.fn.VSCodeNotify("extension.toggleBool") end, { noremap = true, silent = true })
 
     -- console
-    vim.api.nvim_set_keymap('n', 'mtl', ':call VSCodeNotify("turboConsoleLog.displayLogMessage")<CR>',
-      { noremap = true, silent = true })
-    vim.api.nvim_set_keymap('n', 'mtd', ':call VSCodeNotify("turboConsoleLog.deleteAllLogMessages")<CR>',
-      { noremap = true, silent = true })
+    vim.keymap.set('n', 'mtl', function() vim.fn.VSCodeNotify("turboConsoleLog.displayLogMessage") end, { noremap = true, silent = true })
+    vim.keymap.set('n', 'mtd', function() vim.fn.VSCodeNotify("turboConsoleLog.deleteAllLogMessages") end, { noremap = true, silent = true })
       
 
 end
@@ -486,7 +506,6 @@ local function my_custom_command2()
   -- vim-repeat과 호환되도록 repeat#set 호출 (Vimscript 형식)
   vim.cmd([[silent! call repeat#set("\<Cmd>MyCommand2\<CR>")]])
 
-  print("test3")
 end
 
 -- 사용자 정의 명령 생성
@@ -505,7 +524,6 @@ local function my_custom_command()
   -- vim-repeat과 호환되도록 repeat#set 호출 (Vimscript 형식)
   vim.cmd([[silent! call repeat#set("\<Cmd>MyCommand\<CR>")]])
 
-  print("test1")
 end
 
 -- 사용자 정의 명령 생성
