@@ -1,30 +1,41 @@
--- wezterm.lua의 상단에 추가
-package.path = package.path .. ";C:/Users/이진표/AppData/Local/nvim/?.lua"
-
-local panel = require("wezterm_panel")
 
 local wezterm = require 'wezterm'
 local act = wezterm.action
 
-wezterm.on('window-config-reloaded', function(window, pane)
-  window:toast_notification("wezterm", "Config reloaded!", nil, 4000)
-end)
+-- 환경구분을 위해서 hostname 호출
+-- home: DESKTOP-LEKLO7C
+local hostname = wezterm.hostname()
 
--- require(".wezterm_panel")
+local prog = ""
+-- wezterm.lua의 상단에 추가
+if hostname == "DESKTOP-LEKLO7C" then
+  package.path = package.path .. ";C:/Users/trueticket89/AppData/Local/nvim/wezterm/?.lua"
+  prog = "D:\\My Program Files\\Git\\bin\\bash.exe"
+else
+  package.path = package.path .. ";C:/Users/이진표/AppData/Local/nvim/wezterm/?.lua"
+  prog = "C:\\My Program Files\\Git\\bin\\bash.exe"
+end
+
+local panel = require("wezterm_panel")
+require("plugin")
 
 
-return {
-  default_prog = { "C:\\My Program Files\\Git\\bin\\bash.exe", "-l"},
+local resurrect = wezterm.plugin.require("https://github.com/MLFlexer/resurrect.wezterm")
 
-  font_size = 12.0,
-  font = wezterm.font("D2Coding"),
-  color_scheme = 'Catppuccin Mocha',
+wezterm.on("gui-startup", resurrect.state_manager.resurrect_on_gui_startup)
 
-  -- leader 키 설정
-  leader = { mods = "CTRL", key = " ", timeout_milliseconds = 2000 },
 
-  keys = {
+local config = wezterm.config_builder()
 
+config.default_prog = { prog, "-l" }
+config.font_size = 12.0
+config.font = wezterm.font("D2Coding")
+config.color_scheme = 'Catppuccin Mocha'
+
+config.leader = { mods = "CTRL", key = " ", timeout_milliseconds = 2000, }
+
+local general_keys = {
+  
     { key = "Enter", mods = "ALT|SHIFT", action = act.SplitVertical{domain="CurrentPaneDomain"} },
     { key = "Enter", mods = "CTRL|SHIFT", action = act.SplitHorizontal{domain="CurrentPaneDomain"} },
     { key = "x", mods = "ALT", action = act.CloseCurrentPane { confirm = true } },
@@ -48,10 +59,9 @@ return {
     { key = "l", mods = "CTRL|SHIFT", action = wezterm.action.ShowLauncher,
     },
 
-    
-  },
+}
 
-  key_tables = {
+config.key_tables = {
     copy_mode = {
       -- 방향키 변경: jkl;로 매핑
       { key = "j", action = act.CopyMode("MoveLeft") },
@@ -98,6 +108,13 @@ return {
       -- 복사 및 종료
       -- { key = "u", action = act.CopyMode("CopyAndClose") },
     },
-  },
-
 }
+
+local plugin_keys = require("plugin")
+
+-- 키 바인딩 합치기
+config.keys = {}
+for _, k in ipairs(general_keys) do table.insert(config.keys, k) end
+for _, k in ipairs(plugin_keys) do table.insert(config.keys, k) end
+
+return config
