@@ -1,30 +1,81 @@
 local wezterm = require 'wezterm'
-
+local act = wezterm.action
 
 wezterm.on('window-config-reloaded', function(window, pane)
   window:toast_notification("wezterm", "Config reloaded!", nil, 4000)
 end)
 
-
-
 return {
-  default_prog = { "D:\\My Program Files\\Git\\bin\\bash.exe", "-l"},
+  default_prog = { "C:\\My Program Files\\Git\\bin\\bash.exe", "-l"},
 
   font_size = 12.0,
   font = wezterm.font("D2Coding"),
   color_scheme = 'Catppuccin Mocha',
 
+  -- leader 키 설정
+  leader = { mods = "CTRL", key = " ", timeout_milliseconds = 2000 },
+
   keys = {
-    { key = "Enter", mods = "ALT|SHIFT", action = wezterm.action.SplitVertical{domain="CurrentPaneDomain"} },
-    { key = "Enter", mods = "CTRL|SHIFT", action = wezterm.action.SplitHorizontal{domain="CurrentPaneDomain"} },
-    { key = "x", mods = "ALT", action = wezterm.action.CloseCurrentPane { confirm = true } },
-    { key = "j", mods = "ALT", action = wezterm.action.ActivatePaneDirection("Left") },
-    { key = "k", mods = "ALT", action = wezterm.action.ActivatePaneDirection("Down") },
-    { key = "l", mods = "ALT", action = wezterm.action.ActivatePaneDirection("Up") },
-    { key = ";", mods = "ALT", action = wezterm.action.ActivatePaneDirection("Right") },
+
+    { key = "Enter", mods = "ALT|SHIFT", action = act.SplitVertical{domain="CurrentPaneDomain"} },
+    { key = "Enter", mods = "CTRL|SHIFT", action = act.SplitHorizontal{domain="CurrentPaneDomain"} },
+    { key = "x", mods = "ALT", action = act.CloseCurrentPane { confirm = true } },
+    { key = "j", mods = "ALT", action = act.ActivatePaneDirection("Left") },
+    { key = "k", mods = "ALT", action = act.ActivatePaneDirection("Down") },
+    { key = "l", mods = "ALT", action = act.ActivatePaneDirection("Up") },
+    { key = ";", mods = "ALT", action = act.ActivatePaneDirection("Right") },
+    
+    -- { key = "x", mods = "ALT|SHIFT", action = act.ActivateCopyMode},
+    { key = "c", mods = "LEADER", action = act.ActivateCopyMode},
+    { key = 'v', mods = "LEADER", action = act.PasteFrom 'Clipboard' },
+    -- { key = 'v', mods = 'NONE', action = act.CopyMode { SetSelectionMode = 'Cell' } }, -- 선택 모드
+
+    
   },
 
-  -- config_reload_watchlist = {
-  --   wezterm.config_dir .. "/wezterm.lua",
-  -- },
+  key_tables = {
+    copy_mode = {
+      -- 방향키 변경: jkl;로 매핑
+      { key = "j", action = act.CopyMode("MoveLeft") },
+      { key = "k", action = act.CopyMode("MoveDown") },
+      { key = "l", action = act.CopyMode("MoveUp") },
+      { key = ";", action = act.CopyMode("MoveRight") },
+
+      -- 선택 모드 진입
+      { key = "v", action = act.CopyMode({ SetSelectionMode = "Cell" }) },
+      -- 복사 후 선택모드 종료
+      {
+        key = 'u',
+        mods = 'NONE',
+        action = act.Multiple {
+          { CopyTo = 'ClipboardAndPrimarySelection' },
+          { CopyMode = 'MoveToScrollbackBottom' },
+          { CopyMode = 'Close' },
+        },
+      },
+      -- 종료
+      { key = "q", action = act.CopyMode("Close") },
+
+      -- 단어이동
+      { key = 'w', mods = 'NONE', action = act.CopyMode 'MoveForwardWord' },
+      { key = 'b', mods = 'NONE', action = act.CopyMode 'MoveBackwardWord' },
+      
+      { key = 'PageUp', mods = 'NONE', action = act.CopyMode 'PageUp' },
+      { key = 'PageDown', mods = 'NONE', action = act.CopyMode 'PageDown' },
+      { key = 'End', mods = 'NONE', action = act.CopyMode 'MoveToEndOfLineContent', },
+      { key = 'Home', mods = 'NONE', action = act.CopyMode 'MoveToStartOfLine', },
+      { key = 'd', mods = 'CTRL', action = act.CopyMode { MoveByPage = 0.5 }, },
+      { key = 'e', mods = 'CTRL', action = act.CopyMode { MoveByPage = -0.5 }, },
+      
+      { key = 'g', mods = 'NONE', action = act.CopyMode 'MoveToScrollbackTop', },
+      { key = 'g', mods = 'SHIFT', action = act.CopyMode 'MoveToScrollbackBottom', },
+      
+      { key = 'Enter', mods = 'NONE', action = act.CopyMode 'MoveToStartOfNextLine', },
+      { key = 'Escape', mods = 'NONE', action = act.Multiple { { CopyMode = 'MoveToScrollbackBottom' }, { CopyMode = 'Close' }, }, },
+
+      -- 복사 및 종료
+      -- { key = "u", action = act.CopyMode("CopyAndClose") },
+    },
+  },
+
 }
