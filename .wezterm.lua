@@ -56,8 +56,10 @@ local general_keys = {
     -- { key = 'v', mods = 'NONE', action = act.CopyMode { SetSelectionMode = 'Cell' } }, -- 선택 모드
     
   -- 단축키로 메뉴 띄우기 (예: Ctrl+Shift+L)
-    { key = "l", mods = "CTRL|SHIFT", action = wezterm.action.ShowLauncher,
-    },
+    { key = "l", mods = "CTRL|SHIFT", action = wezterm.action.ShowLauncher, },
+
+  -- 로깅
+  { key = 'L', mods = 'CTRL|ALT', action = wezterm.action.TogglePaneLogging, },
 
 }
 
