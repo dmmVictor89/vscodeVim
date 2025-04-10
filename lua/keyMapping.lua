@@ -298,7 +298,6 @@ if vim.g.vscode then
     vim.keymap.set('n', 'gr', function() vim.fn.VSCodeNotify("workbench.action.previousEditor") end, { noremap = true, silent = true, nowait = true })
 
     -- 윈도우 관련
-
     vim.keymap.set('n', 'sj', function() vim.fn.VSCodeNotify("workbench.action.navigateLeft") end, { noremap = true, silent = true })
     vim.keymap.set('n', 'sk', function() vim.fn.VSCodeNotify("workbench.action.navigateDown") end, { noremap = true, silent = true })
     vim.keymap.set('n', 'sl', function() vim.fn.VSCodeNotify("workbench.action.navigateUp") end, { noremap = true, silent = true })
@@ -331,9 +330,24 @@ if vim.g.vscode then
     -- console
     vim.keymap.set('n', 'mtl', function() vim.fn.VSCodeNotify("turboConsoleLog.displayLogMessage") end, { noremap = true, silent = true })
     vim.keymap.set('n', 'mtd', function() vim.fn.VSCodeNotify("turboConsoleLog.deleteAllLogMessages") end, { noremap = true, silent = true })
-      
+
+  -- noevim native 에서 사용할 것
+  else
+    
+    -- 윈도우 관련
+    vim.keymap.set('n', 'sj', '<C-w>h', { noremap = true, silent = true })
+    vim.keymap.set('n', 'sk', '<C-w>j', { noremap = true, silent = true })
+    vim.keymap.set('n', 'sl', '<C-w>k', { noremap = true, silent = true })
+    vim.keymap.set('n', 's;', '<C-w>l', { noremap = true, silent = true })
+
+    -- 창 크기 조절
+    vim.keymap.set('n', 's=', ':vertical resize +10<CR>')
+    vim.keymap.set('n', 's-', ':vertical resize -10<CR>')
+    vim.keymap.set('n', 's9', ':resize +10<CR>')
+    vim.keymap.set('n', 's0', ':resize -10<CR>')
 
 end
+
 
 -- ---------------------------------------------------------------------------------------------------------
 -- 매크로
@@ -979,6 +993,9 @@ end, {noremap=true}) ]]
 -- 5. %s/	/\r/g
 -- 엑셀 tab으로 구분돼있는 컬럼을 pivot 하기 위함
 
+-- 6. \\((\\d+)(?:,\\d+)?\\)
+--    	"SEQ" NUMBER(12,0) NOT NULL ENABLE, 
+-- 여기서 괄호 안의 숫자만 뽑아내기
 
 
 

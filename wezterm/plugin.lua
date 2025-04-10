@@ -6,9 +6,9 @@ local resurrect = wezterm.plugin.require("https://github.com/MLFlexer/resurrect.
 wezterm.on("gui-startup", resurrect.state_manager.resurrect_on_gui_startup)
 
 -- print("resurrect load start")
-wezterm.on('window-config-reloaded', function(window, pane)
-  window:toast_notification("Resurrect", "test", nil, 4000)
-end)
+-- wezterm.on('window-config-reloaded', function(window, pane)
+--   window:toast_notification("Resurrect", "test", nil, 4000)
+-- end)
 
 -- local config = wezterm.config_builder()
 
