@@ -20,10 +20,6 @@ else
   prog = "C:\\My Program Files\\Git\\bin\\bash.exe"
 end
 
-local panel = require("wezterm_panel")
-require("plugin")
-
-
 local resurrect = wezterm.plugin.require("https://github.com/MLFlexer/resurrect.wezterm")
 
 wezterm.on("gui-startup", resurrect.state_manager.resurrect_on_gui_startup)
@@ -41,6 +37,11 @@ config.font = wezterm.font_with_fallback({
 config.color_scheme = 'Catppuccin Mocha'
 
 config.leader = { mods = "CTRL", key = " ", timeout_milliseconds = 2000, }
+
+local panel = require("wezterm_panel")
+require("plugin")
+config.launch_menu = panel.launch_menu
+panel.show_launcher_on_startup()
 
 local general_keys = {
   
@@ -64,8 +65,82 @@ local general_keys = {
     -- { key = 'v', mods = 'NONE', action = act.CopyMode { SetSelectionMode = 'Cell' } }, -- 선택 모드
     
     -- 단축키로 메뉴 띄우기 (예: Ctrl+Shift+L)
-    { key = "l", mods = "CTRL|SHIFT", action = wezterm.action.ShowLauncher,
+    { key = "l", mods = "CTRL|SHIFT",
+      action = wezterm.action.InputSelector {
+        title = "SSH 연결 선택",
+        choices = panel.selector_choices,
+        action = wezterm.action_callback(function(window, pane, selected_id)
+          if selected_id and type(selected_id) == "string" and selected_id ~= "" then
+            local command_args = panel.commands_by_id[selected_id]
+      
+            if command_args then
+              local command_string = table.concat(command_args, " ")
+      
+              -- 액션 목록을 wezterm.action.Multiple로 감싸줍니다.
+              window:perform_action(
+                wezterm.action.Multiple {
+                  -- 실행할 액션들을 테이블 안에 순서대로 나열
+                  wezterm.action.SendString(command_string),
+                  wezterm.action.SendKey{key="Enter"}
+                },
+                pane -- 액션을 실행할 대상 Pane
+              )
+      
+            else
+              -- wezterm.log_error("Command args not found for ID: " .. selected_id)
+            end
+          else
+            -- ... (취소 또는 에러 로그)
+          end
+        end),
+      }
     },
+-- 새탭에서    
+--[[     { key = "l", mods = "CTRL|SHIFT"
+    -- , action = wezterm.action.ShowLauncher,
+    , action = wezterm.action.InputSelector {
+      title = "SSH 연결 선택",
+      choices = panel.selector_choices,
+      -- 콜백 함수의 세 번째 인자를 'choice' 대신 'selected_id'로 명명 (가독성)
+      action = wezterm.action_callback(function(window, pane, selected_id)
+        wezterm.log_info("InputSelector callback started.")
+    
+        -- selected_id가 nil이 아니고 비어있지 않은 문자열인지 확인
+        if selected_id and type(selected_id) == "string" and selected_id ~= "" then
+          -- 이제 selected_id는 "ssh_snlnas" 같은 문자열 ID 자체임
+          wezterm.log_info("Selected choice ID: " .. selected_id)
+    
+          -- selected_id를 직접 사용하여 명령어 조회
+          local command_args = panel.commands_by_id[selected_id]
+    
+          if command_args then
+            wezterm.log_info("Found command_args (JSON): " .. wezterm.json_encode(command_args))
+            wezterm.log_info("Attempting to perform action SpawnCommandInNewTab...")
+    
+            window:perform_action(
+              wezterm.action.SpawnCommandInNewTab {
+                args = command_args
+              },
+              pane
+            )
+            wezterm.log_info("SpawnCommandInNewTab action performed.")
+          else
+            -- 매핑 테이블에 ID가 없는 경우
+            wezterm.log_error("Command args not found for ID: " .. selected_id)
+          end
+        else
+          -- 선택이 취소되었거나 예상치 못한 타입인 경우
+          if selected_id == nil then
+            wezterm.log_info("InputSelector choice was cancelled (nil).")
+          else
+            -- nil도 아니고 문자열도 아닌 경우 (예상치 못한 상황)
+            wezterm.log_error("InputSelector returned unexpected data: " .. wezterm.json_encode(selected_id))
+          end
+        end
+      end),
+
+    },
+  }, ]]
 
     -- 검색
     { key = "/", mods = "CTRL|ALT", action = wezterm.action.Search("CurrentSelectionOrEmptyString") },
