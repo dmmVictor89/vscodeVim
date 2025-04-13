@@ -299,6 +299,34 @@ config.key_tables = {
       -- 복사 및 종료
       -- { key = "u", action = act.CopyMode("CopyAndClose") },
     },
+    search_mode = {
+      
+      
+      -- 기본 'j' (아래로 이동) 동작을 'k' 키로 매핑
+      -- { key = 'k', mods = 'NONE', action = act.CopyMode 'MoveDown' }, -- 또는 act.SelectNext
+      { key = "k", action = act.CopyMode("MoveDown") },
+      
+      -- 기본 'k' (위로 이동) 동작을 'l' 키로 매핑
+      -- { key = 'l', mods = 'NONE', action = act.CopyMode 'MoveUp' }, -- 또는 act.SelectPrev
+      { key = "l", action = act.CopyMode("MoveUp") },
+      
+      -- 참고: 기본 런처/선택기 UI는 수직 목록인 경우가 많아
+      -- 'h'(왼쪽) 와 'l'(오른쪽)에 해당하는 기본 동작이 없을 수 있습니다.
+      -- 따라서 아래 매핑은 효과가 없을 수 있습니다.
+      -- { key = 'j', mods = 'NONE', action = act.CopyMode 'MoveLeft' }, -- 만약 좌우 이동이 있다면
+      -- { key = ';', mods = 'NONE', action = act.CopyMode 'MoveRight' }, -- 만약 좌우 이동이 있다면
+
+      -- (선택) 원치 않는 기본 키 바인딩 비활성화 (예: 원래 j, k)
+      { key = 'j', mods = 'NONE', action = act.DisableDefaultAssignment },
+      -- { key = 'k', mods = 'NONE', action = act.DisableDefaultAssignment }, -- 이미 위에서 'k'에 새 액션을 할당했으므로 덮어쓰여짐
+      -- { key = 'h', mods = 'NONE', action = act.DisableDefaultAssignment },
+      -- { key = 'l', mods = 'NONE', action = act.DisableDefaultAssignment }, -- 이미 위에서 'l'에 새 액션을 할당했으므로 덮어쓰여짐
+
+      -- 다른 search_mode 키 바인딩 유지 또는 추가
+      -- 예: Enter로 선택, Esc로 취소 등은 기본값을 따르거나 여기서 재정의 가능
+      -- { key = 'Enter', mods = 'NONE', action = act.CopyMode 'PriorMode' }, -- 선택 완료 동작 (예시)
+      -- { key = 'Escape', mods = 'NONE', action = act.CopyMode 'Close' },   -- 취소 동작 (예시)
+    },
 }
 
 local plugin_keys = require("plugin")

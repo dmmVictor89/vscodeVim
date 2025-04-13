@@ -15,12 +15,16 @@ M.selector_choices = {
     label = "🖥️  [dev] eContract, wholeSale(192.168.20.8)",
   },
   {
-    id = "ssh_agent", -- 고유 ID
+    id = "active_ssh_agent", -- 고유 ID
     label = "🖥️  [dev] agent(192.168.10.26)",
   },
   {
-    id = "ssh_lordsystem", -- 고유 ID
-    label = "🖥️  [dev] LordSystem(192.168.10.26)",
+    id = "active_ssh_lordsystem_active", -- 고유 ID
+    label = "🖥️  [dev] active_LordSystem(192.168.10.26)",
+  },
+  {
+    id = "standby_ssh_lordsystem_standby", -- 고유 ID
+    label = "🖥️  [dev] standby_LordSystem(192.168.10.27)",
   },
   -- 다른 서버 정보도 유사하게 추가 (고유 id 부여)
   -- {
@@ -36,7 +40,8 @@ M.selector_choices = {
 -- ID를 실제 명령어 인자(args)와 매핑하는 테이블
 M.commands_by_id = {
     ssh_eContract = { "ssh", "devec" },
-    ssh_lordsystem = { "ssh", "dev26lord"},
+    active_ssh_lordsystem_active = { "ssh", "dev26lord"},
+    standby_ssh_lordsystem_standby = { "ssh", "dev27lord"},
     ssh_snlnas = { "ssh", "snlnas" },
     ssh_agent = { "ssh", "dev26agent" },
     -- ssh_lordsystem = { "ssh", "-p", "22", "lordsystem@192.168.10.26" }, -- -p 옵션 사용!
