@@ -23,6 +23,30 @@ if vim.g.vscode then
   end)
 end
 
+-- 줄 바꿈(line wrapping) 기능 비활성화
+vim.o.wrap = false
+-- 또는 vim.opt 네임스페이스 사용:
+-- vim.opt.wrap = false
+
+-- 들여쓰기 및 탭 관련 설정 (스페이스 4칸 사용)
+
+-- 탭 문자의 시각적 너비 설정
+vim.o.tabstop = 4
+
+-- 자동 들여쓰기 및 >, < 명령어 너비 설정
+vim.o.shiftwidth = 4
+
+-- Insert 모드에서 Tab/Backspace 동작 너비 설정
+vim.o.softtabstop = 4
+
+-- Tab 키 입력 시 스페이스 사용 설정 (가장 중요)
+vim.o.expandtab = true
+
+-- (선택 사항, 권장) 자동 들여쓰기 활성화
+vim.o.autoindent = true
+vim.o.smartindent = true -- 또는 파일 타입별 설정을 위해 아래 사용
+-- vim.cmd('filetype plugin indent on') -- 파일 타입에 맞는 들여쓰기 자동 로드
+
 
 -- 기존 packer_compiled.lua 파일 삭제
 -- vim.fn.delete(vim.fn.stdpath('config') .. '\\plugin\\packer_compiled.lua')
@@ -70,12 +94,29 @@ require('packer').startup({
     use { 'ggandor/leap.nvim', config = function() require('leap').add_default_mappings() end }
     use { 'ggandor/flit.nvim', config = function() require('flit').setup() end }
     use { 'gbprod/substitute.nvim', config = function() require('substitute').setup() end }
-    use { 'chrisgrieser/nvim-various-textobjs', event = "BufEnter", config = function() require("various-textobjs").setup() end }
-    use { 'anuvyklack/hydra.nvim', opt = true, cmd = "Hydra" }
-    use { 'gbprod/yanky.nvim', event = "TextYankPost", config = function() require("yanky").setup() end }
+    use { 'chrisgrieser/nvim-various-textobjs'
+    -- , event = "BufEnter" -- lazy loading 
+    , config = function() require("various-textobjs").setup() end }
+    use { 'anuvyklack/hydra.nvim'
+    -- , opt = true, cmd = "Hydra" -- lazy loading
+   }
+    use { 'gbprod/yanky.nvim'
+    -- , event = "TextYankPost" -- lazy loading
+    , config = function() require("yanky").setup() end }
 
     if not vim.g.vscode then
       use { 'nvim-lualine/lualine.nvim', requires = { 'nvim-tree/nvim-web-devicons', opt = true }, config = function() require('lualine').setup() end }
+      
+      -- 컬러테마 플러그인 추가 (예: tokyonight)
+      use { 'folke/tokyonight.nvim'
+        , config = function()
+          -- Packer가 플러그인을 로드한 후 실행될 코드
+          -- Neovim 시작 시 이 테마를 적용
+          vim.cmd('colorscheme tokyonight')
+          -- 배경 설정 (옵션)
+          vim.o.background = 'dark'
+        end
+      }
     end
 
     if packer_bootstrap then require('packer').sync() end

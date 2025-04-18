@@ -25,7 +25,11 @@ local resurrect = wezterm.plugin.require("https://github.com/MLFlexer/resurrect.
 wezterm.on("gui-startup", resurrect.state_manager.resurrect_on_gui_startup)
 
 
+-- 설정 -----------------------------
 local config = wezterm.config_builder()
+
+
+config.enable_csi_u_key_encoding = true
 
 config.default_prog = { prog, "-l" }
 config.font_size = 12.0
