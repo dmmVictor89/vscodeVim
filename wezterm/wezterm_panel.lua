@@ -67,6 +67,15 @@ M.selector_choices = {
   },
   -- --------------------------------------------------------------------------------------------------------------------------------
   {
+    id = "prd_DB1_ssh", -- 고유 ID
+    label = "🖥️  [prd] DB1_pharmpay(192.168.10.31)",
+  },
+  {
+    id = "prd_db2_ssh", -- 고유 ID
+    label = "🖥️  [prd] DB2_pharmpay(192.168.10.32)",
+  },
+  -- --------------------------------------------------------------------------------------------------------------------------------
+  {
     id = "ssh_snlnas", -- 고유 ID
     label = "🖥️  snlnas (183.98.219.170)", -- 사용자에게 보여줄 레이블
   },
@@ -101,9 +110,12 @@ M.commands_by_id = {
     prd_active_ssh_nxcomm              = { "ssh", "prd26nxcomm" },
     prd_standby_ssh_nxcomm             = { "ssh", "prd27nxcomm" },
     
-    prd_active_ssh_lordsystem_active   = { "ssh", "prd13lord"},
-    prd_standby_ssh_lordsystem_standby = { "ssh", "prd14lord"},
+    prd_active_ssh_lordsystem          = { "ssh", "prd13lord"},
+    prd_standby_ssh_lordsystem         = { "ssh", "prd14lord"},
 
+    prd_DB1_ssh                        = { "ssh", "prd31db"},
+    prd_db2_ssh                        = { "ssh", "prd32db"},
+    
     ssh_snlnas                     = { "ssh", "snlnas" },
     -- ssh_lordsystem = { "ssh", "-p", "22", "lordsystem@192.168.10.26" }, -- -p 옵션 사용!
     -- 다른 항목들도 모두 -p 형식으로 수정

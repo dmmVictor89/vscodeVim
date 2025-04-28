@@ -117,6 +117,14 @@ require('packer').startup({
           vim.o.background = 'dark'
         end
       }
+
+      -- 주석 처리 comment
+      use { 'numToStr/Comment.nvim'
+           , config = function()
+             require('Comment').setup()
+             end
+      }
+
     end
 
     if packer_bootstrap then require('packer').sync() end

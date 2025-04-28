@@ -1,99 +1,86 @@
 
 local wezterm = require 'wezterm'
-
 local resurrect = wezterm.plugin.require("https://github.com/MLFlexer/resurrect.wezterm")
-
+-- resurrect json file 경로
+-- C:\Users\이진표\AppData\Roaming\wezterm\plugins\httpssCssZssZsgithubsDscomsZsMLFlexersZsresurrectsDswezterm\state\
+-- 플러그인 위치
+-- C:\Users\이진표\AppData\Roaming\wezterm\plugins\httpssCssZssZsgithubsDscomsZsMLFlexersZsresurrectsDswezterm\plugin\resurrect
+local pane_tree_mod = require("resurrect.pane_tree")
 wezterm.on("gui-startup", resurrect.state_manager.resurrect_on_gui_startup)
 
--- print("resurrect load start")
--- wezterm.on('window-config-reloaded', function(window, pane)
---   window:toast_notification("Resurrect", "test", nil, 4000)
--- end)
+local logger = wezterm.plugin.require("https://github.com/sei40kr/wez-logging.git")
+-- wez logging 설정은 wez-logging 폴더의 init.lua
 
--- local config = wezterm.config_builder()
+local act = wezterm.action
+
+
+local function get_tab_state(tab)
+	local panes = tab:panes_with_info()
+
+	local function is_zoomed()
+		for _, pane in ipairs(panes) do
+			if pane.is_zoomed then
+				return true
+			end
+		end
+		return false
+	end
+
+	local tab_state = {
+		title = tab:get_title(),
+		is_zoomed = is_zoomed(),
+		pane_tree = pane_tree_mod.create_pane_tree(panes),
+	}
+
+	return tab_state
+
+end
 
 return {
-  {
-      key = "s",
-      mods = "ALT",
-      action = wezterm.action.PromptInputLine {
-        description = "워크스페이스 이름을 입력하세요 (예: my-workspace):",
-        action = wezterm.action_callback(function(window, pane, line)
-          -- 입력이 없거나 취소되면 종료
-          if not line or line == "" then
-            window:toast_notification("Resurrect", "저장 취소됨 🚫", nil, 100)
-            return
-          end
 
-          -- 워크스페이스 이름 정규화 (공백 제거, 파일명 안전하게)
-          local workspace_name = line:gsub("%s+", "-"):gsub("[^%w%-]", "")
+  { key = "l", mods = "ALT|SHIFT", action = logger.action.CaptureScrollback },
+  -- { key = "l", mods = "CTRL|ALT|SHIFT",       action = logger.action.CaptureViewport },
 
-          -- 워크스페이스 상태 저장
-          local state = resurrect.workspace_state.get_workspace_state()
-          resurrect.state_manager.save_state(state, "workspace", workspace_name)
 
-          -- 저장 완료 알림
-          window:toast_notification("Resurrect", "워크스페이스 저장 완료 ✅: " .. workspace_name, nil, 100)
-        end),
-      }
-  },
-  -- {
-  --   key = "s",
-  --   mods = "ALT",
-  --   action = wezterm.action_callback(function(win, pane)
-  --     resurrect.state_manager.save_state(resurrect.workspace_state.get_workspace_state())
-  --     win:toast_notification("Resurrect", "워크스페이스 저장 완료 ✅", nil, 100)
-  --   end),
-  -- },
+{
+  key = 's',
+  mods = 'ALT',
+  action = wezterm.action_callback(function(window, pane)
+    -- C:\Users\이진표\AppData\Roaming\wezterm\plugins\httpssCssZssZsgithubsDscomsZsMLFlexersZsresurrectsDswezterm\plugin\resurrect\tab_state.luaC:\Users\이진표\AppData\Roaming\wezterm\plugins\httpssCssZssZsgithubsDscomsZsMLFlexersZsresurrectsDswezterm\plugin\resurrect\tab_state.lua
+    -- function pub.save_tab_action()
+--  
+    local pub = {}
 
-  {
-  key = "r",
-  mods = "ALT",
-  action = wezterm.action_callback(function(win, pane)
-    resurrect.fuzzy_loader.fuzzy_load(win, pane, function(id, label)
-      local type = string.match(id, "^([^/]+)") -- match before '/'
-      id = string.match(id, "([^/]+)$") -- match after '/'
-      id = string.match(id, "(.+)%..+$") -- remove file extension
-      local opts = {
-        window = pane:window(),
-        on_pane_restore = resurrect.tab_state.default_on_pane_restore,
-        relative = true,
-        restore_text = true,
-      }
-      if type == "workspace" then
-        local state = resurrect.state_manager.load_state(id, "workspace")
-        resurrect.workspace_state.restore_workspace(state, opts)
-      elseif type == "window" then
-        local state = resurrect.state_manager.load_state(id, "window")
-        resurrect.window_state.restore_window(pane:window(), state, opts)
-      elseif type == "tab" then
-        local state = resurrect.state_manager.load_state(id, "tab")
-        resurrect.tab_state.restore_tab(pane:tab(), state, opts)
-      end
-      win:toast_notification("Resurrect", "워크스페이스 복원 완료 🔄 type: " .. type, nil, 100)
-    end)
-  end),
-  },
-  --[[{
+    local ws = resurrect.workspace_state.get_workspace_state()
+
+		local tab = pane:tab()
+    local title = ws.workspace
+    wezterm.log_info("-------------------------- workspace: " .. wezterm.json_encode(ws) )
+    wezterm.log_info("-------------------------- title: " .. ws.workspace)
+
+    local state = get_tab_state(tab)
+    wezterm.log_info("-------------------------- state: " .. wezterm.json_encode(state))
+    state.title = title
+    resurrect.state_manager.save_state(state)
+    
+    resurrect.tab_state.save_tab_action();
+    window:toast_notification('Resurrect', 'Tab 저장됨 ✅', nil, 100);
+  end
+  ),
+},
+{
     key = "r",
     mods = "ALT",
     action = wezterm.action_callback(function(win, pane)
-      
       resurrect.fuzzy_loader.fuzzy_load(win, pane, function(id, label)
         local type = string.match(id, "^([^/]+)") -- match before '/'
         id = string.match(id, "([^/]+)$") -- match after '/'
         id = string.match(id, "(.+)%..+$") -- remove file extention
-        -- local opts = {
-        --   relative = true,
-        --   restore_text = true,
-        --   on_pane_restore = resurrect.tab_state.default_on_pane_restore,
-        -- }
-        
         local opts = {
-          window = pane:window(),
-          on_pane_restore = resurrect.tab_state.default_on_pane_restore,
           relative = true,
           restore_text = true,
+          close_open_panes = true, -- 복원 전에 현재 탭의 모든 pane을 닫고 복원할 pane만 유지함. tab 복원 시 유용.
+          on_pane_restore = resurrect.tab_state.default_on_pane_restore,
         }
         if type == "workspace" then
           local state = resurrect.state_manager.load_state(id, "workspace")
@@ -103,11 +90,13 @@ return {
           resurrect.window_state.restore_window(pane:window(), state, opts)
         elseif type == "tab" then
           local state = resurrect.state_manager.load_state(id, "tab")
+          wezterm.log_info("stat: " .. wezterm.json_encode(state))
+          wezterm.log_info("Current pane_id: " .. tostring(pane:pane_id()))
+          
           resurrect.tab_state.restore_tab(pane:tab(), state, opts)
         end
-
-        win:toast_notification("Resurrect", "워크스페이스 복원 완료 🔄 type: ".. type, nil, 100)
       end)
     end),
-  }, ]]
+  },
+
 }

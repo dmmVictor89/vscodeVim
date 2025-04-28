@@ -20,16 +20,30 @@ else
   prog = "C:\\My Program Files\\Git\\bin\\bash.exe"
 end
 
-local resurrect = wezterm.plugin.require("https://github.com/MLFlexer/resurrect.wezterm")
-
-wezterm.on("gui-startup", resurrect.state_manager.resurrect_on_gui_startup)
-
 
 -- 설정 -----------------------------
 local config = wezterm.config_builder()
 
+-- 로컬 mux 도메인 자동 실행
+-- config.default_domain = "DefaultDomain"
+
+-- Mux domain 활성화
+config.unix_domains = {
+  {
+    name = "DefaultDomain", -- 윈도우에서도 사용 가능
+  },
+}
+
+-- 기본 도메인으로 연결
+config.default_gui_startup_args = { "connect", "DefaultDomain" }
 
 config.enable_csi_u_key_encoding = true
+config.use_dead_keys = false -- 데드 키 기능을 끄고, ', ~, ``` 등 조합 없이 즉시 입력되도록 함
+config.scrollback_lines = 1999999 -- 탭당 유지할 히스토리 라인
+-- 닫기 버튼 누를 때 확인창 없이 바로 종료
+config.window_close_confirmation = "NeverPrompt"
+-- tab_bar 하단으로
+-- config.tab_bar_at_bottom = true
 
 config.default_prog = { prog, "-l" }
 config.font_size = 12.0
@@ -42,8 +56,24 @@ config.color_scheme = 'Catppuccin Mocha'
 
 config.leader = { mods = "CTRL", key = " ", timeout_milliseconds = 2000, }
 
+-- Make it look like tabs, with better GUI controls
+config.use_fancy_tab_bar = true
+-- Don't let any individual tab name take too much room
+config.tab_max_width = 32
+-- Active tab color
+config.colors = {
+  tab_bar = {
+    active_tab = {
+      fg_color = '#1e1e2e',
+      bg_color = '#b4befe', -- lavender
+      -- bg_color = '#a6e3a1', -- green
+    }
+  }
+}
+-- Switch to the last active tab when I close a tab
+config.switch_to_last_active_tab_when_closing_tab = true
+
 local panel = require("wezterm_panel")
-require("plugin")
 config.launch_menu = panel.launch_menu
 panel.show_launcher_on_startup()
 
@@ -63,10 +93,20 @@ local general_keys = {
     { key = "UpArrow",    mods = "ALT", action = act.AdjustPaneSize({ "Up", 10 }) },
     { key = "DownArrow",  mods = "ALT", action = act.AdjustPaneSize({ "Down", 10 }) },
 
-    -- { key = "x", mods = "ALT|SHIFT", action = act.ActivateCopyMode},
+    -- Close tab
+    { key = 'w', mods = 'CTRL', action = act.CloseCurrentTab{ confirm = true }, },
+
     { key = "c", mods = "LEADER", action = act.ActivateCopyMode},
     { key = 'v', mods = "LEADER", action = act.PasteFrom 'Clipboard' },
     -- { key = 'v', mods = 'NONE', action = act.CopyMode { SetSelectionMode = 'Cell' } }, -- 선택 모드
+
+    -- Clear scroll buffer(화면은 남겨둠)
+    { key = "X", mods = "CTRL|SHIFT", action = wezterm.action_callback(function(window, pane)
+      -- "ScrollbackOnly": 화면엔 남기고 스크롤백만 제거
+      -- "ScrollbackAndViewport": 화면도 같이 지움 (터미널 전체 clear)
+      window:perform_action( wezterm.action.ClearScrollback "ScrollbackOnly", pane )
+      window:toast_notification("WezTerm", "✅ Clear scrollback", nil, 500)
+    end) },
     
     -- 단축키로 메뉴 띄우기 (예: Ctrl+Shift+L)
     { key = "l", mods = "CTRL|SHIFT",
@@ -146,12 +186,24 @@ local general_keys = {
     },
   }, ]]
 
+    { key = ',', mods = 'LEADER', action = act.PromptInputLine {
+        description = 'Enter new name for tab',
+        action = wezterm.action_callback(
+          function(window, pane, line)
+            if line then
+              window:active_tab():set_title(line)
+            end
+          end
+        ),
+      },
+    },
+
     -- 검색
     { key = "/", mods = "CTRL|ALT", action = wezterm.action.Search("CurrentSelectionOrEmptyString") },
 
     
-  -- CTRL-SHIFT-l activates the debug overlay
-  { key = 'L', mods = 'CTRL|ALT', action = wezterm.action.ShowDebugOverlay },
+    -- CTRL-SHIFT-l activates the debug overlay
+    { key = 'L', mods = 'CTRL|ALT', action = wezterm.action.ShowDebugOverlay },
 
     -- 로그
     {
@@ -180,10 +232,78 @@ local general_keys = {
 
 
       },
+    },
+
+    -- ================================================================================
+    -- mux setting start
+    -- ================================================================================
+    
+  -- Mux 연결 (기본 local mux에 붙기)
+  {
+    key = 'a',
+    mods = 'LEADER',
+    action = act.AttachDomain 'DefaultDomain', -- 윈도우에서는 DefaultDomain 사용
+  },
+
+  -- Mux 분리
+  {
+    key = 'd',
+    mods = 'LEADER',
+    action = act.DetachDomain { DomainName = 'DefaultDomain' },
+  },
+
+  -- 워크스페이스 이름 바꾸기
+  {
+    key = '$',
+    mods = 'LEADER|SHIFT',
+    action = act.PromptInputLine {
+      description = '세션 이름 입력',
+      action = wezterm.action_callback(function(window, pane, line)
+        if line then
+          local mux = wezterm.mux
+          mux.rename_workspace(window:mux_window():get_workspace(), line)
+        end
+      end)
     }
+  },
+
+  -- 워크스페이스 목록 띄우기 (전환 및 새로 만들기)
+  {
+    key = 's',
+    mods = 'LEADER',
+    action = act.ShowLauncherArgs { flags = 'WORKSPACES' }
+  },
+
+  -- 현재 workspace 삭제
+{ key = "d", mods = "LEADER|SHIFT", action = wezterm.action.EmitEvent("delete-current-workspace"), },
+
+
+    -- ================================================================================
+    -- mux setting end
+    -- ================================================================================
+
     
 
 }
+
+-- mux: 현재 workspace 삭제
+wezterm.on("delete-current-workspace", function(window, pane)
+  local mux = wezterm.mux
+  local workspace = window:active_workspace()
+
+  for _, win in ipairs(mux.all_windows()) do
+    if win:get_workspace() == workspace then
+      for _, tab in ipairs(win:tabs()) do
+        window:perform_action(
+          wezterm.action.CloseCurrentTab { confirm = false },
+          pane
+        )
+      end
+    end
+  end
+
+  window:toast_notification("WezTerm", "🧹 워크스페이스 '" .. workspace_name .. "' 삭제 완료!", nil, 500)
+end)
 
 -- 로그 파일 경로 생성
 local function get_log_path()
@@ -303,36 +423,25 @@ config.key_tables = {
       -- 복사 및 종료
       -- { key = "u", action = act.CopyMode("CopyAndClose") },
     },
-    search_mode = {
-      
-      
-      -- 기본 'j' (아래로 이동) 동작을 'k' 키로 매핑
-      -- { key = 'k', mods = 'NONE', action = act.CopyMode 'MoveDown' }, -- 또는 act.SelectNext
-      { key = "k", action = act.CopyMode("MoveDown") },
-      
-      -- 기본 'k' (위로 이동) 동작을 'l' 키로 매핑
-      -- { key = 'l', mods = 'NONE', action = act.CopyMode 'MoveUp' }, -- 또는 act.SelectPrev
-      { key = "l", action = act.CopyMode("MoveUp") },
-      
-      -- 참고: 기본 런처/선택기 UI는 수직 목록인 경우가 많아
-      -- 'h'(왼쪽) 와 'l'(오른쪽)에 해당하는 기본 동작이 없을 수 있습니다.
-      -- 따라서 아래 매핑은 효과가 없을 수 있습니다.
-      -- { key = 'j', mods = 'NONE', action = act.CopyMode 'MoveLeft' }, -- 만약 좌우 이동이 있다면
-      -- { key = ';', mods = 'NONE', action = act.CopyMode 'MoveRight' }, -- 만약 좌우 이동이 있다면
+    
+  search_mode = {
+    -- 검색 확정: ALT + Enter
+    { key = "Enter", action = act.CopyMode("AcceptPattern") },
 
-      -- (선택) 원치 않는 기본 키 바인딩 비활성화 (예: 원래 j, k)
-      { key = 'j', mods = 'NONE', action = act.DisableDefaultAssignment },
-      -- { key = 'k', mods = 'NONE', action = act.DisableDefaultAssignment }, -- 이미 위에서 'k'에 새 액션을 할당했으므로 덮어쓰여짐
-      -- { key = 'h', mods = 'NONE', action = act.DisableDefaultAssignment },
-      -- { key = 'l', mods = 'NONE', action = act.DisableDefaultAssignment }, -- 이미 위에서 'l'에 새 액션을 할당했으므로 덮어쓰여짐
+    -- Esc로 종료
+    { key = "Escape", action = act.CopyMode("Close") },
 
-      -- 다른 search_mode 키 바인딩 유지 또는 추가
-      -- 예: Enter로 선택, Esc로 취소 등은 기본값을 따르거나 여기서 재정의 가능
-      -- { key = 'Enter', mods = 'NONE', action = act.CopyMode 'PriorMode' }, -- 선택 완료 동작 (예시)
-      -- { key = 'Escape', mods = 'NONE', action = act.CopyMode 'Close' },   -- 취소 동작 (예시)
-    },
+    -- 다음 검색 결과로 이동: ALT + n
+    { key = "n", mods = "ALT", action = act.CopyMode("NextMatch") },
+
+    -- 이전 검색 결과로 이동: ALT + SHIFT + n
+    { key = "n", mods = "ALT|SHIFT", action = act.CopyMode("PriorMatch") },
+
+  },
 }
 
+-- 불필요
+-- require("plugin")
 local plugin_keys = require("plugin")
 
 -- 키 바인딩 합치기
@@ -341,3 +450,45 @@ for _, k in ipairs(general_keys) do table.insert(config.keys, k) end
 for _, k in ipairs(plugin_keys) do table.insert(config.keys, k) end
 
 return config
+
+
+-- 다중 키 입력 단축키로 만들기
+-- local wezterm = require 'wezterm'
+-- local act = wezterm.action
+
+-- local config = wezterm.config_builder()
+
+-- config.leader = { key = "Space", mods = "CTRL" }
+
+-- config.keys = {
+--   {
+--     key = ",",
+--     mods = "LEADER",
+--     action = act.ActivateKeyTable {
+--       name = "leader_comma",
+--       one_shot = false, -- 여러 키 입력 허용
+--     },
+--   },
+-- }
+
+-- config.key_tables = {
+--   leader_comma = {
+--     {
+--       key = "a",
+--       action = act.PromptInputLine {
+--         description = "Enter new name for tab",
+--         action = wezterm.action_callback(function(window, pane, line)
+--           if line then
+--             window:active_tab():set_title(line)
+--           end
+--         end),
+--       },
+--     },
+--     {
+--       key = "Escape",
+--       action = "PopKeyTable",
+--     },
+--   },
+-- }
+
+-- return config
