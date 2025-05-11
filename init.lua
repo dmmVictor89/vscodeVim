@@ -28,20 +28,6 @@ vim.o.wrap = false
 -- 또는 vim.opt 네임스페이스 사용:
 -- vim.opt.wrap = false
 
--- 들여쓰기 및 탭 관련 설정 (스페이스 4칸 사용)
-
--- 탭 문자의 시각적 너비 설정
-vim.o.tabstop = 4
-
--- 자동 들여쓰기 및 >, < 명령어 너비 설정
-vim.o.shiftwidth = 4
-
--- Insert 모드에서 Tab/Backspace 동작 너비 설정
-vim.o.softtabstop = 4
-
--- Tab 키 입력 시 스페이스 사용 설정 (가장 중요)
-vim.o.expandtab = true
-
 -- (선택 사항, 권장) 자동 들여쓰기 활성화
 vim.o.autoindent = true
 vim.o.smartindent = true -- 또는 파일 타입별 설정을 위해 아래 사용
@@ -156,6 +142,21 @@ end
 -- vim.opt.swapfile = false
 -- vim.opt.backup = false
 
+---------------------------------------------------------------------------------------------------------
+-- 들여쓰기 및 탭 관련 설정 (스페이스 4칸 사용)
+vim.opt.expandtab = true
+
+-- 탭 하나를 4개의 스페이스로 설정
+vim.opt.tabstop = 4
+
+-- 들여쓰기/내어쓰기 시 스페이스 4개 사용
+vim.opt.shiftwidth = 4
+
+-- 탭 입력 시 스페이스 4개 삽입
+vim.opt.softtabstop = 4
+
+-- 들여쓰기를 shiftwidth의 배수로 맞춤 (선택 사항)
+vim.opt.shiftround = true
 
 ---------------------------------------------------------------------------------------------------------
 -- 입력 지연 관련 설정
