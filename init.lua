@@ -29,8 +29,8 @@ vim.o.wrap = false
 -- vim.opt.wrap = false
 
 -- (선택 사항, 권장) 자동 들여쓰기 활성화
-vim.o.autoindent = true
-vim.o.smartindent = true -- 또는 파일 타입별 설정을 위해 아래 사용
+-- vim.o.autoindent = true
+-- vim.o.smartindent = true -- 또는 파일 타입별 설정을 위해 아래 사용
 -- vim.cmd('filetype plugin indent on') -- 파일 타입에 맞는 들여쓰기 자동 로드
 
 

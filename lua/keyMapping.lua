@@ -284,6 +284,21 @@ if vim.g.vscode then
       end)
     end)
 
+    -- file open
+    vim.keymap.set({ "n", "x", "i" }, "fo", function()
+      vscode.with_insert(function()
+        vscode.action("workbench.action.files.openFile")
+      end)
+    end)
+    
+    -- folder open
+    vim.keymap.set({ "n", "x", "i" }, "fd", function()
+      vscode.with_insert(function()
+        vscode.action("workbench.action.files.openFile")
+      end)
+    end)
+    
+
     -- jj -> esc
     -- vim.keymap.set('i', 'jj', '<Esc>')
     -- vim.api.nvim_set_keymap('i', 'jj', '<Esc>', { noremap = true, silent = true })
@@ -372,8 +387,75 @@ end
 
 -- ---------------------------------------------------------------------------------------------------------
 -- 간단 매크로 <- 이게 제대로 작동됨 250226
--- 현재 글자 복사해서 오른쪽 화면에서 찾기
+-- 먼저, vim.api.nvim_replace_termcodes는 입력 문자열(예: ciw''<Esc>j"ap)을 Neovim이 이해할 수 있는 실제 키 코드로 변환하는 함수입니다. 이 함수는 feedkeys에 전달할 키 시퀀스를 준비합니다.
+-- 파라미터 설명
+-- 1. str (string):
+-- 변환할 입력 문자열. 여기서는 keys로 전달된 문자열(예: ciw''<Esc>j"ap).
+-- 2. replace_keycodes (boolean):
+-- 특수 키(예: <Esc>, <CR>, <Space>)를 실제 키 코드로 변환할지 여부.
+-- 3. replace_single_key (boolean):
+-- 단일 키(예: <, >, |)를 특수 키로 처리할지 여부.
+-- false (당신의 코드): 단일 키를 문자 그대로 처리합니다. 예: <는 < 문자로 남고, <Esc> 같은 특수 키만 변환됩니다.
+-- true: <나 > 같은문자도 특수 키로 간주하려고 시도합니다(보통 필요하지 않음).
+-- 4. special (boolean):
+-- 특수 문자를 추가로 이스케이프 처리할지 여부(예: <를 \<로 변환).
+-- true (당신의 코드): 특수 문자를 Neovim의 내부 표현으로 변환하여 feedkeys가 정확히 처리할 수 있도록 합니다.
+-- false: 특수 문자를 이스케이프하지 않고 그대로 전달.
 
+-- vim.api.nvim_feedkeys 파라미터
+-- keys (string): 실행할 키 입력 시퀀스. 여기서는 vim.api.nvim_replace_termcodes(keys, true, false, true)의 출력이 전달됩니다.
+-- mode (string):
+-- 키 입력을 처리할 모드. 이 파라미터는 feedkeys가 입력을 어떻게 해석하고 실행할지를 결정합니다.
+-- 당신의 코드에서는 'm'을 사용했으며, 가능한 값은 다음과 같습니다:
+-- 'm' (remap, 당신의 코드):
+-- 입력된 키를 리매핑을 적용하여 처리합니다.
+-- 예: 당신의 리매핑에서 j는 h(왼쪽 이동)로 매핑되어 있으므로, j를 feedkeys에 넣으면 h 동작(왼쪽 이동)이 실행됩니다.
+-- 리매핑된 키(예: j → h)를 사용하려는 경우 적합.
+-- 'n' (no remap):
+-- 리매핑을 무시하고 키를 원래 Vim/Neovim 명령으로 처리합니다.
+-- 예: j는 아래로 이동, h는 왼쪽으로 이동.
+-- 이전 코드에서 h가 작동했던 이유는 'n' 모드에서 h를 원래 의미(왼쪽 이동)로 실행했기 때문입니다.
+-- 't' (terminal):
+-- 터미널 모드에서 키를 처리. 일반적으로 터미널 입력에 사용.
+-- 'x' (execute):
+-- 입력을 바로 실행(리매핑 무시, 즉시 처리).
+
+-- ---------------------------------------------------------------------------------------------------------
+-- 단어를  큰 따옴표 안에 넣기
+vim.keymap.set('n', "m\"", function()
+    
+  local function feedkeys(keys)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 'm', false)
+  end
+  feedkeys("\"aciw\"\"<Esc>j\"ap")
+  
+  end, { silent = true })
+
+-- 단어를 작은 따옴표 안에 넣기
+vim.keymap.set('n', "m'", function()
+  local function feedkeys(keys)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 'm', false)
+  end
+  feedkeys("\"aciw''<Esc>j\"ap")
+end, { silent = true })
+
+-- 단어를 괄호 안에 넣기
+vim.keymap.set('n', "m(", function()
+  local function feedkeys(keys)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 'm', false)
+  end
+  feedkeys("\"aciw()<Esc>j\"ap")
+end, { silent = true })
+
+-- 단어를 중괄호 안에 넣기
+vim.keymap.set('n', "m{", function()
+  local function feedkeys(keys)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 'm', false)
+  end
+  feedkeys("\"aciw{}<Esc>j\"ap")
+end, { silent = true })
+
+-- 현재 글자 복사해서 오른쪽 화면에서 찾기
 vim.keymap.set('n', '<leader>mf', function()
   vim.cmd('normal ujs;') -- 단어 복사 후 옆 창으로 이동
   vim.defer_fn(function()

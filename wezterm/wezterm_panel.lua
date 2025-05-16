@@ -67,6 +67,11 @@ M.selector_choices = {
   },
   -- --------------------------------------------------------------------------------------------------------------------------------
   {
+    id = "prd_legacy", -- 고유 ID
+    label = "🖥️  [prd] legacy_procServer(192.168.10.10)",
+  },
+  -- --------------------------------------------------------------------------------------------------------------------------------
+  {
     id = "prd_DB1_ssh", -- 고유 ID
     label = "🖥️  [prd] DB1_pharmpay(192.168.10.31)",
   },
@@ -112,6 +117,8 @@ M.commands_by_id = {
     
     prd_active_ssh_lordsystem          = { "ssh", "prd13lord"},
     prd_standby_ssh_lordsystem         = { "ssh", "prd14lord"},
+
+    prd_legacy                         = { "ssh", "prd10"},
 
     prd_DB1_ssh                        = { "ssh", "prd31db"},
     prd_db2_ssh                        = { "ssh", "prd32db"},
