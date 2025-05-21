@@ -109,7 +109,7 @@ config.font = wezterm.font_with_fallback({
 })
 config.color_scheme = 'Catppuccin Mocha'
 
-config.leader = { mods = "CTRL", key = " ", timeout_milliseconds = 2000, }
+config.leader = { mods = "SHIFT", key = " ", timeout_milliseconds = 2000, }
 
 -- Make it look like tabs, with better GUI controls
 config.use_fancy_tab_bar = true
