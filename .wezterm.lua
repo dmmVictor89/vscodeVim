@@ -9,7 +9,7 @@ local hostname = wezterm.hostname();
 
 local userName = os.getenv("USERNAME");
 
-local prog = ""
+local prog
 -- wezterm.lua의 상단에 추가
 if hostname == "DESKTOP-LEKLO7C" then
     package.path = package.path .. ";C:/Users/trueticket89/AppData/Local/nvim/wezterm/?.lua"
@@ -17,22 +17,13 @@ if hostname == "DESKTOP-LEKLO7C" then
 else
     package.path = package.path .. ";C:/Users/이진표/AppData/Local/nvim/wezterm/?.lua"
     prog = "C:\\My Program Files\\Git\\bin\\bash.exe"
+    -- wsl fish 설정용
+    -- prog = { 'wsl', '-d', 'Ubuntu', '--', 'fish'}
 end
 
 
 -- 설정 ----------------------------------------------------------- -----
 local config = wezterm.config_builder()
-
--- 최대화 상태로 실행
--- wezterm.on("gui-startup", function(cmd)
---     wezterm.log_info("최대화 호출")
---     local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
---     if window and window:gui_window() then
---       window:gui_window():maximize()
---     else
---       wezterm.log_info("gui_window() 없음 또는 nil")
---     end
---   end)
 
 -- 마우스 설정 -----------------------------
 -- 마우스 클릭한 줄 전체 복사 기능 추가
@@ -100,7 +91,14 @@ config.window_close_confirmation = "NeverPrompt"
 -- tab_bar 하단으로
 -- config.tab_bar_at_bottom = true
 
-config.default_prog = { prog, "-l" }
+-- config.default_prog = { prog, "-l" }
+-- 기본 shell 설정
+if type(prog) == "string" then
+  config.default_prog = { prog, "-l" }
+else
+  config.default_prog = { table.unpack(prog)}
+end
+
 config.font_size = 12.0
 config.font = wezterm.font_with_fallback({
     "D2Coding",

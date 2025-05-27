@@ -84,9 +84,13 @@ return {
         }
         if type == "workspace" then
           local state = resurrect.state_manager.load_state(id, "workspace")
+          wezterm.log_info("stat: " .. wezterm.json_encode(state))
+          wezterm.log_info("Current pane_id: " .. tostring(pane:pane_id()))
           resurrect.workspace_state.restore_workspace(state, opts)
         elseif type == "window" then
           local state = resurrect.state_manager.load_state(id, "window")
+          wezterm.log_info("stat: " .. wezterm.json_encode(state))
+          wezterm.log_info("Current pane_id: " .. tostring(pane:pane_id()))
           resurrect.window_state.restore_window(pane:window(), state, opts)
         elseif type == "tab" then
           local state = resurrect.state_manager.load_state(id, "tab")
