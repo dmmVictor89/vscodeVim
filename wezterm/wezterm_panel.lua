@@ -99,6 +99,10 @@ M.selector_choices = {
   },
   -- --------------------------------------------------------------------------------------------------------------------------------
   {
+    id = "dev_legacy", -- 고유 ID
+    label = "🖥️  [dev] legacy_procServer(192.168.10.53)",
+  },
+  {
     id = "prd_legacy", -- 고유 ID
     label = "🖥️  [prd] legacy_procServer(192.168.10.10)",
   },
@@ -146,6 +150,8 @@ M.commands_by_id = {
     
     dev_active_ssh_kpn                 = { "ssh", "dev26kpn" },
     dev_standby_ssh_kpn                = { "ssh", "dev27kpn" },
+    
+    dev_legacy                         = { "ssh", "dev53"},
 
     -- prd
     prd_active_ssh_agent               = { "ssh", "prd26agent" },
