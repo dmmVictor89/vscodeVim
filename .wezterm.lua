@@ -70,18 +70,12 @@ config.adjust_window_size_when_changing_font_size = false
 config.selection_word_boundary = " \t\n{}[]()\"'`,;:│"
 -- 마우스 설정 -----------------------------
 
--- 로컬 mux 도메인 자동 실행
--- config.default_domain = "DefaultDomain"
-
 -- Mux domain 활성화
 config.unix_domains = {
     {
         name = "DefaultDomain", -- 윈도우에서도 사용 가능
     },
 }
-
--- 기본 도메인으로 연결
-config.default_gui_startup_args = { "connect", "DefaultDomain" }
 
 config.enable_csi_u_key_encoding = true
 config.use_dead_keys = false      -- 데드 키 기능을 끄고, ', ~, ``` 등 조합 없이 즉시 입력되도록 함
@@ -94,9 +88,9 @@ config.window_close_confirmation = "NeverPrompt"
 -- config.default_prog = { prog, "-l" }
 -- 기본 shell 설정
 if type(prog) == "string" then
-  config.default_prog = { prog, "-l" }
+    config.default_prog = { prog, "-l" }
 else
-  config.default_prog = { table.unpack(prog)}
+    config.default_prog = { table.unpack(prog) }
 end
 
 config.font_size = 12.0
@@ -514,7 +508,7 @@ config.key_tables = {
     },
 
     search_mode = {
-        -- 검색 확정: ALT + Enter
+        -- 검색 확정: ALT + Entergg
         { key = "Enter",  action = act.CopyMode("AcceptPattern") },
 
         -- Esc로 종료
@@ -528,6 +522,35 @@ config.key_tables = {
 
     },
 }
+
+
+wezterm.on("gui-startup", function(cmd)
+    wezterm.log_info("stat: " .. "Hello world!")
+
+    local resurrect = wezterm.plugin.require("https://github.com/MLFlexer/resurrect.wezterm")
+    local mux = wezterm.mux
+    local opts = {
+        relative = true,
+        restore_text = true,
+        close_open_panes = true, -- 복원 전에 현재 탭의 모든 pane을 닫고 복원할 pane만 유지함. tab 복원 시 유용.
+        on_pane_restore = resurrect.tab_state.default_on_pane_restore,
+    }
+
+    -- 새로운 창과 탭 생성
+    local tab, pane, window = mux.spawn_window(cmd or {})
+
+    -- 현재 탭의 pane 수 확인
+    local panes = tab:panes()
+    if #panes == 1 then
+        -- pane이 하나뿐인 경우, 저장된 3-pane 워크스페이스 복원
+        local state = resurrect.state_manager.load_state("3pane", "tab")
+        
+        resurrect.tab_state.restore_tab(pane:tab(), state, opts)
+        wezterm.log_info("3pane 워크스페이스 복원 완료")
+    else
+        wezterm.log_info("Pane이 이미 2개 이상이므로 복원하지 않음")
+    end
+end)
 
 -- 불필요
 -- require("plugin")
@@ -564,7 +587,7 @@ return config
 --   leader_comma = {
 --     {
 --       key = "a",
---       action = act.PromptInputLine {
+--       action = act.PromptInputLine {gg
 --         description = "Enter new name for tab",
 --         action = wezterm.action_callback(function(window, pane, line)
 --           if line then

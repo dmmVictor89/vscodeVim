@@ -36,6 +36,7 @@ local function get_tab_state(tab)
 
 end
 
+
 return {
 
   { key = "l", mods = "ALT|SHIFT", action = logger.action.CaptureScrollback },
