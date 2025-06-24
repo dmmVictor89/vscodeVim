@@ -25,6 +25,10 @@ end
 -- 설정 ----------------------------------------------------------- -----
 local config = wezterm.config_builder()
 
+config.set_environment_variables = {
+    LANG = 'en_US.UTF-8',
+}
+
 -- 마우스 설정 -----------------------------
 -- 마우스 클릭한 줄 전체 복사 기능 추가
 --[[ wezterm.on("mouse-event", function(event, pane)
@@ -94,10 +98,11 @@ else
 end
 
 config.font_size = 12.0
+config.font = wezterm.font 'D2Coding'
 config.font = wezterm.font_with_fallback({
     "D2Coding",
     "JetBrains Mono",
-    "Noto Sans",
+    "Noto Sans KR",
 })
 config.color_scheme = 'Catppuccin Mocha'
 
@@ -265,7 +270,7 @@ local general_keys = {
     },
 
     -- 검색
-    { key = "/", mods = "CTRL|ALT", action = wezterm.action.Search("CurrentSelectionOrEmptyString") },
+    -- { key = "/", mods = "CTRL|ALT", action = wezterm.action.Search("CurrentSelectionOrEmptyString") },
 
 
     -- CTRL-SHIFT-l activates the debug overlay

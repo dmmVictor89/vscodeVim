@@ -172,6 +172,14 @@ vim.keymap.set('v', '<c-e>', '"_diw')
 vim.keymap.set({ 'n', 'v' }, '<leader>v', '<c-v>')
 
 -- ---------------------------------------------------------------------------------------------------------
+-- 블록 이동 변경
+vim.keymap.set({ 'n', 'v' }, ']]', ']}')
+vim.keymap.set({ 'n', 'v' }, '[[', '[{')
+
+vim.keymap.set({ 'n', 'v' }, ']}', ']]')
+vim.keymap.set({ 'n', 'v' }, '[{', '[[')
+
+-- ---------------------------------------------------------------------------------------------------------
 -- set line number
 -- Basic settings
 vim.opt.number = true
@@ -454,6 +462,15 @@ vim.keymap.set('n', "m{", function()
   end
   feedkeys("\"aciw{}<Esc>j\"ap")
 end, { silent = true })
+
+-- 현재 글자 복사해서 현재 위치부터 검색
+vim.keymap.set('n', '<leader>mg', function()
+  vim.cmd('normal uj') -- 단어 복사 후 최상단으로 이동
+  vim.defer_fn(function()
+    vim.api.nvim_feedkeys("/" .. vim.fn.getreg("0") .. "\n", "n", false)
+  end, 150) -- 150ms 대기
+end, { noremap = true, silent = true })
+
 
 -- 현재 글자 복사해서 최상단에서부터 검색
 vim.keymap.set('n', '<leader>ms', function()
