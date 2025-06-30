@@ -142,21 +142,33 @@ ShowCustomTooltip(text) {
 
     guiTooltip.BackColor := "White"
     guiTooltip.SetFont("s12 cYellow", "D2Coding")  ; 라임색으로 시인성 향상
-    WinSetTransparent(0, guiTooltip.Hwnd)  ; 투명도 200 (0-255)
+    ; WinSetTransparent(0, guiTooltip.Hwnd)  ; 투명도 200 (0-255)
     ; 텍스트에 따라 색상 결정
     if (text = "A") {
-        guiTooltip.SetFont("s12 cLime", "D2Coding")  ; 영어는 노란색
+        guiTooltip.SetFont("s12 cLime Bold", "D2Coding")  ; 영어는 노란색
+        text := "•"
     } else if (text = "가") {
-        guiTooltip.SetFont("s10 cYellow", "D2Coding")     ; 한글은 빨간색
-    }
+        guiTooltip.SetFont("s10 cYellow Bold", "D2Coding")     ; 한글은 빨간색
+        text := "•"
+    } else {
+        text := ""
+    } 
 
     ; 디버깅용 출력
     ; guiTooltip.SetFont("s8 cRed", "Hack")
     ; displayText := text . "`n" . debugInfo
     ; guiTooltip.Add("Text", "x5 y2 BackgroundTrans", displayText)
     guiTooltip.Add("Text", "x8 y8 BackgroundTrans Center", text)
-    WinSetTransColor("White", guiTooltip.Hwnd)
-    guiTooltip.Show("NoActivate x" . x . " y" . y . " AutoSize")
+    
+    ; GUI 투명도 설정을 안전하게 처리
+    try {
+        if (guiTooltip && guiTooltip.Hwnd) {
+            WinSetTransColor("White", guiTooltip.Hwnd)
+            guiTooltip.Show("NoActivate x" . x . " y" . y . " AutoSize")
+        }
+    } catch {
+        ; 오류 발생 시 아무 동작하지 않음
+    }
 }
 
 ; IME 상태 확인 함수 (개선)
