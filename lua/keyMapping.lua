@@ -464,16 +464,26 @@ vim.keymap.set('n', "m{", function()
 end, { silent = true })
 
 -- 현재 글자 복사해서 현재 위치부터 검색
-vim.keymap.set('n', '<leader>mg', function()
+vim.keymap.set('n', 'mg', function()
   vim.cmd('normal uj') -- 단어 복사 후 최상단으로 이동
   vim.defer_fn(function()
     vim.api.nvim_feedkeys("/" .. vim.fn.getreg("0") .. "\n", "n", false)
   end, 150) -- 150ms 대기
 end, { noremap = true, silent = true })
 
+-- 현재 글자 복사해서 현재 위치부터 뒤로 검색
+vim.keymap.set('n', 'mw', function()
+  vim.cmd('normal uj') -- 단어 복사 후 최상단으로 이동
+  vim.defer_fn(function()
+    vim.api.nvim_feedkeys("?" .. vim.fn.getreg("0") .. "\n", "n", false)
+    -- vim.api.nvim_feedkeys("?" .. vim.fn.getreg("0") .. "\n", false)
+  end, 150) -- 150ms 대기
+  vim.cmd('normal n') -- 뒤로 한번 이동
+end, { noremap = true, silent = true })
+
 
 -- 현재 글자 복사해서 최상단에서부터 검색
-vim.keymap.set('n', '<leader>ms', function()
+vim.keymap.set('n', 'ms', function()
   vim.cmd('normal ujgg') -- 단어 복사 후 최상단으로 이동
   vim.defer_fn(function()
     vim.api.nvim_feedkeys("/" .. vim.fn.getreg("0") .. "\n", "n", false)
@@ -481,7 +491,7 @@ vim.keymap.set('n', '<leader>ms', function()
 end, { noremap = true, silent = true })
 
 -- 현재 글자 복사해서 오른쪽 화면에서 찾기
-vim.keymap.set('n', '<leader>mf', function()
+vim.keymap.set('n', 'mf', function()
   vim.cmd('normal ujs;') -- 단어 복사 후 옆 창으로 이동
   vim.defer_fn(function()
     vim.api.nvim_feedkeys("/" .. vim.fn.getreg("0") .. "\n", "n", false)
