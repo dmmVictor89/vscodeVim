@@ -284,6 +284,13 @@ if vim.g.vscode then
         vim.fn.VSCodeNotify('workbench.action.closeActiveEditor')   -- VSCode의 창 닫기 명령 호출
       end
     end, { noremap = true, silent = true })
+    
+    vim.keymap.set('n', 'c-w', function()
+      local win_count = #vim.api.nvim_list_wins()                   -- 현재 열린 창의 개수
+      if win_count > 1 then
+        vim.fn.VSCodeNotify('workbench.action.closeActiveEditor')   -- VSCode의 창 닫기 명령 호출
+      end
+    end, { noremap = true, silent = true })
 
     -- multi cursor
     vim.keymap.set({ "n", "x", "i" }, "<C-i>", function()
@@ -355,7 +362,30 @@ if vim.g.vscode then
     vim.keymap.set('n', 'mtl', function() vim.fn.VSCodeNotify("turboConsoleLog.displayLogMessage") end, { noremap = true, silent = true })
     vim.keymap.set('n', 'mtd', function() vim.fn.VSCodeNotify("turboConsoleLog.deleteAllLogMessages") end, { noremap = true, silent = true })
 
+    -- harpoon plugin 설정
+    -- vscode-harpoon 키매핑 (1-10)
+    for i = 1, 10 do
+    -- 루프 내에서 올바른 숫자를 참조하기 위해 지역 변수를 사용합니다.
+    -- 이렇게 하지 않으면 모든 매핑이 마지막 숫자인 10으로 동작하게 됩니다.
+    local index = i
+
+    -- harpoon 목록에 에디터 추가: <leader>ha1 ~ <leader>ha10
+    
+    vim.keymap.set('n', '<leader>ha', function() vim.fn.VSCodeNotify("cursor-harpoon.addEditor") end, { noremap = true, silent = true })
+
+    vim.keymap.set('n', '<leader>hh' .. index, function()
+        vim.fn.VSCodeNotify('cursor-harpoon.addEditor' .. index)
+    end, { noremap = true, silent = true, desc = 'Harpoon: 에디터 추가 ' .. index })
+
+    -- harpoon 목록의 에디터로 이동: <leader>hg1 ~ <leader>hg10
+    vim.keymap.set('n', '<leader>' .. index, function()
+        vim.fn.VSCodeNotify('cursor-harpoon.gotoEditor' .. index)
+    end, { noremap = true, silent = true, desc = 'Harpoon: 에디터로 이동 ' .. index })
+    end
+
+
   -- noevim native 에서 사용할 것
+  ---------------------------------------------------------------------------------------------------------
   else
     
     -- 윈도우 관련

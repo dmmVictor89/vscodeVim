@@ -34,6 +34,8 @@ vnoremap vv V
 nnoremap J <Nop> 
 vnoremap J <Nop> 
 
+nnoremap uu 0v-u
+
 " y -> u set yank
 nnoremap y u 
 vnoremap y u 
@@ -43,8 +45,9 @@ nnoremap ui yiw
 nnoremap u y 
 " vnoremap u ygv 
 vnoremap u y`> 
-nnoremap uu yy 
-vnoremap uu yy 
+" nnoremap uu yy 
+" vnoremap uu yy
+
 
 nnoremap p "0p
 vnoremap p "0p
