@@ -108,6 +108,15 @@ require('packer').startup({
     -- , event = "TextYankPost" -- lazy loading
     , config = function() require("yanky").setup() end }
 
+    -- 중괄호 표시
+    use {
+      'code-biscuits/nvim-biscuits',
+      requires = {
+        'nvim-treesitter/nvim-treesitter',
+        run = ':SUpdate'
+      },
+    }
+
     if not vim.g.vscode then
       use { 'sphamba/smear-cursor.nvim' }
       use { 'nvim-lualine/lualine.nvim', requires = { 'nvim-tree/nvim-web-devicons', opt = true }, config = function() require('lualine').setup() end }
@@ -128,6 +137,15 @@ require('packer').startup({
            , config = function()
              require('Comment').setup()
              end
+      }
+
+      -- 중괄호 표시
+      use {
+        'code-biscuits/nvim-biscuits',
+        requires = {
+          'nvim-treesitter/nvim-treesitter',
+          run = ':SUpdate'
+        },
       }
 
     end
