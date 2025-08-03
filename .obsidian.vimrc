@@ -8,8 +8,8 @@ set clipboard=unnamedplus
 set clipboard=unnamed
 
 " 대소문자 무시 검색 설정
-set ignorecase
-set smartcase
+" set ignorecase
+" set smartcase
 
 " kk를 esc 로 설정  
 inoremap kk <ESC>
