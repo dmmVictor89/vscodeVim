@@ -16,6 +16,24 @@ print("init.lua load start")
 -- 플러그인 업데이트하는 방법
 -- :PackerSync
 
+
+
+---------------------------------------------------------------------------------------------------------
+--- 인코딩 설정
+---------------------------------------------------------------------------------------------------------
+---
+vim.api.nvim_create_autocmd({ "BufReadPre", "BufNewFile" }, {
+  pattern = { "*.pc" },
+  callback = function()
+    -- 인코딩 탐색 순서: euc-kr 먼저, cp949, utf-8 순으로 시도
+    vim.opt_local.fileencodings = { "euc-kr", "cp949", "utf-8" }
+    -- 탐색 결과에 상관없이 무조건 EUC-KR 로 읽고 싶다면
+    vim.opt_local.fileencoding  = "euc-kr"
+  end,
+})
+
+
+---------------------------------------------------------------------------------------------------------
 if vim.g.vscode then
   vim.schedule(function()
     vim.o.iminsert = 0
@@ -91,6 +109,7 @@ require('packer').startup({
     , config = function() require("yanky").setup() end }
 
     if not vim.g.vscode then
+      use { 'sphamba/smear-cursor.nvim' }
       use { 'nvim-lualine/lualine.nvim', requires = { 'nvim-tree/nvim-web-devicons', opt = true }, config = function() require('lualine').setup() end }
       
       -- 컬러테마 플러그인 추가 (예: tokyonight)
@@ -161,7 +180,7 @@ vim.opt.shiftround = true
 ---------------------------------------------------------------------------------------------------------
 -- 입력 지연 관련 설정
 vim.opt.ttimeout = true
-vim.opt.ttimeoutlen = 10  -- 키 코드 처리 대기 시간을 10ms로 설정
+vim.opt.ttimeoutlen = 15000  -- 키 코드 처리 대기 시간을 10ms로 설정
 
 ---------------------------------------------------------------------------------------------------------
 -- vim.keymap.set({ 'i', 'x' }, '<esc>', function()
@@ -226,7 +245,8 @@ require('flit').setup {
   multiline = true,
   -- Like `leap`s similar argument (call-specific overrides).
   -- E.g.: opts = { equivalence_classes = {} }
-  opts = {},
+  opts = {
+  },
  -- u를 제외하기 위해서 flit.lua 에서 //241118 u 제외 목록에 추가
   labels = labels,
 }
@@ -287,6 +307,45 @@ require("yanky").setup({
 
 -- 히스토리 크기 제한 (Yanky 설정 필요)
 vim.g.yanky_max_entries = 50 -- 최대 50개 항목으로 제한 (플러그인 설정에 따라 적용)
+
+---------------------------------------------------------------------------------------------------------
+-- ============================================================================
+-- 플러그인 개별 설정
+-- ============================================================================
+
+-- smear-cursor.nvim 설정 (VSCode가 아닐 때만)
+if not vim.g.vscode then
+    require('smear_cursor').setup({
+        -- 기본 설정
+        smear_between_buffers = true,
+        smear_between_neighbor_lines = true,
+        scroll_buffer_space = true,
+        legacy_computing_symbols_support = false,
+        
+        -- 커서 색상 (터미널이 색상을 덮어쓰는 경우 수동 설정)
+        -- cursor_color = "#d3cdc3",  -- 또는 "none"으로 텍스트 색상 매칭
+        cursor_color = "#673AB7",  -- 또는 "none"으로 텍스트 색상 매칭
+        
+        -- 애니메이션 조정 (더 빠르게 하려면)
+        stiffness = 0.8,                      -- 0.6      [0, 1]
+        trailing_stiffness = 0.5,             -- 0.4      [0, 1]
+        stiffness_insert_mode = 0.7,          -- 0.5      [0, 1]
+        trailing_stiffness_insert_mode = 0.7, -- 0.5      [0, 1]
+        damping = 0.8,                        -- 0.65     [0, 1]
+        damping_insert_mode = 0.8,            -- 0.7      [0, 1]
+        distance_stop_animating = 0.5,        -- 0.1      > 0
+        
+        -- 프레임레이트 조정
+        time_interval = 7, -- 밀리초 (기본값: 17ms)
+        
+        -- 인서트 모드에서도 스미어 활성화
+        smear_insert_mode = true,
+        
+        -- 최소 이동 거리 설정
+        min_horizontal_distance_smear = 1,
+        min_vertical_distance_smear = 1,
+    })
+end
 ---------------------------------------------------------------------------------------------------------
 -- require('hop').setup()
 ---------------------------------------------------------------------------------------------------------

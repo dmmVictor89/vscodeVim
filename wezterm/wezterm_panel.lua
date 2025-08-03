@@ -11,8 +11,10 @@ M.selector_choices = {
     label = "🖥️  [dev] eContract, wholeSale(192.168.20.8)",
   },
   -- --------------------------------------------------------------------------------------------------------------------------------
-  -- active
+  -- DEV
   -- --------------------------------------------------------------------------------------------------------------------------------
+  -- active
+  -- ----------------------------------------------------o---------------------------------------------------------------------------
   {
     id = "dev_active_ssh_nxcomm", -- 고유 ID
     label = "🖥️  [dev] active_nxcomm(192.168.10.26)",
@@ -28,6 +30,30 @@ M.selector_choices = {
   {
     id = "dev_active_ssh_lordsystem_active", -- 고유 ID
     label = "🖥️  [dev] active_LordSystem(192.168.10.26)",
+  },
+  {
+    id = "dev_active_ssh_kis", -- 고유 ID
+    label = "🖥️  [dev] active_kis(192.168.10.26)",
+  },
+  {
+    id = "dev_active_ssh_kovan", -- 고유 ID
+    label = "🖥️  [dev] active_kovan(192.168.10.26)",
+  },
+  {
+    id = "dev_active_ssh_nice", -- 고유 ID
+    label = "🖥️  [dev] active_nice(192.168.10.26)",
+  },
+  {
+    id = "dev_active_ssh_kicc", -- 고유 ID
+    label = "🖥️  [dev] active_kicc(192.168.10.26)",
+  },
+  {
+    id = "dev_active_ssh_ksnet", -- 고유 ID
+    label = "🖥️  [dev] active_ksnet(192.168.10.26)",
+  },
+  {
+    id = "dev_active_ssh_shinhan_bank", -- 고유 ID
+    label = "🖥️  [dev] active_shinhan-bank(192.168.10.26)",
   },
   -- --------------------------------------------------------------------------------------------------------------------------------
   {
@@ -52,6 +78,30 @@ M.selector_choices = {
     id = "dev_standby_ssh_lordsystem_standby", -- 고유 ID
     label = "🖥️  [dev] standby_LordSystem(192.168.10.27)",
   },
+  {
+    id = "dev_standby_ssh_kis", -- 고유 ID
+    label = "🖥️  [dev] standby_kis(192.168.10.27)",
+  },
+  {
+    id = "dev_standby_ssh_kovan", -- 고유 ID
+    label = "🖥️  [dev] standby_kovan(192.168.10.27)",
+  },
+  {
+    id = "dev_standby_ssh_nice", -- 고유 ID
+    label = "🖥️  [dev] standby_nice(192.168.10.27)",
+  },
+  {
+    id = "dev_standby_ssh_kicc", -- 고유 ID
+    label = "🖥️  [dev] standby_kicc(192.168.10.27)",
+  },
+  {
+    id = "dev_standby_ssh_ksnet", -- 고유 ID
+    label = "🖥️  [dev] standby_ksnet(192.168.10.27)",
+  },
+  {
+    id = "dev_standby_ssh_shinhan_bank", -- 고유 ID
+    label = "🖥️  [dev] standby_shinhan-bank(192.168.10.27)",
+  },
   
   -- --------------------------------------------------------------------------------------------------------------------------------
   {
@@ -71,8 +121,36 @@ M.selector_choices = {
     label = "🖥️  [prd] active_agent(192.168.10.13)",
   },
   {
+    id = "prd_active_ssh_kpn", -- 고유 ID
+    label = "🖥️  [prd] active_kpn(192.168.10.13)",
+  },
+  {
     id = "prd_active_ssh_lordsystem", -- 고유 ID
     label = "🖥️  [prd] active_LordSystem(192.168.10.13)",
+  },
+  {
+    id = "prd_active_ssh_kis", -- 고유 ID
+    label = "🖥️  [prd] active_kis(192.168.10.13)",
+  },
+  {
+    id = "prd_active_ssh_kovan", -- 고유 ID
+    label = "🖥️  [prd] active_kovan(192.168.10.13)",
+  },
+  {
+    id = "prd_active_ssh_nice", -- 고유 ID
+    label = "🖥️  [prd] active_nice(192.168.10.13)",
+  },
+  {
+    id = "prd_active_ssh_kicc", -- 고유 ID
+    label = "🖥️  [prd] active_kicc(192.168.10.13)",
+  },
+  {
+    id = "prd_active_ssh_ksnet", -- 고유 ID
+    label = "🖥️  [prd] active_ksnet(192.168.10.13)",
+  },
+  {
+    id = "prd_active_ssh_shinhan_bank", -- 고유 ID
+    label = "🖥️  [prd] active_shinhan-bank(192.168.10.13)",
   },
   -- --------------------------------------------------------------------------------------------------------------------------------
   {
@@ -90,8 +168,36 @@ M.selector_choices = {
     label = "🖥️  [prd] standby_agent(192.168.10.14)",
   },
   {
+    id = "prd_standby_ssh_kpn", -- 고유 ID
+    label = "🖥️  [prd] standby_kpn(192.168.10.13)",
+  },
+  {
     id = "prd_standby_ssh_lordsystem_standby", -- 고유 ID
     label = "🖥️  [prd] standby_LordSystem(192.168.10.14)",
+  },
+  {
+    id = "prd_standby_ssh_kis", -- 고유 ID
+    label = "🖥️  [prd] standby_kis(192.168.10.14)",
+  },
+  {
+    id = "prd_standby_ssh_kovan", -- 고유 ID
+    label = "🖥️  [prd] standby_kovan(192.168.10.14)",
+  },
+  {
+    id = "prd_standby_ssh_nice", -- 고유 ID
+    label = "🖥️  [prd] standby_nice(192.168.10.14)",
+  },
+  {
+    id = "prd_standby_ssh_kicc", -- 고유 ID
+    label = "🖥️  [prd] standby_kicc(192.168.10.14)",
+  },
+  {
+    id = "prd_standby_ssh_ksnet", -- 고유 ID
+    label = "🖥️  [prd] standby_ksnet(192.168.10.14)",
+  },
+  {
+    id = "prd_standby_ssh_shinhan_bank", -- 고유 ID
+    label = "🖥️  [prd] standby_shinhan-bank(192.168.10.14)",
   },
   -- --------------------------------------------------------------------------------------------------------------------------------
   {
@@ -151,17 +257,68 @@ M.commands_by_id = {
     dev_active_ssh_kpn                 = { "ssh", "dev26kpn" },
     dev_standby_ssh_kpn                = { "ssh", "dev27kpn" },
     
+    -- kis
+    dev_active_ssh_kis                 = { "ssh", "dev26kis" },
+    dev_standby_ssh_kis                = { "ssh", "dev27kis" },
+    
+    -- kovan
+    dev_active_ssh_kovan               = { "ssh", "dev26kovan" },
+    dev_standby_ssh_kovan              = { "ssh", "dev27kovan" },
+    
+    -- nice
+    dev_active_ssh_nice                = { "ssh", "dev26nice" },
+    dev_standby_ssh_nice               = { "ssh", "dev27nice" },
+    
+    -- kicc
+    dev_active_ssh_kicc                = { "ssh", "dev26kicc" },
+    dev_standby_ssh_kicc               = { "ssh", "dev27kicc" },
+    
+    -- ksnet
+    dev_active_ssh_ksnet               = { "ssh", "dev26ksnet" },
+    dev_standby_ssh_ksnet              = { "ssh", "dev27ksnet" },
+    
+    -- shinhan-bank
+    dev_active_ssh_shinhan_bank        = { "ssh", "dev26shinhan-bank" },
+    dev_standby_ssh_shinhan_bank       = { "ssh", "dev27shinhan-bank" },
+    
     dev_legacy                         = { "ssh", "dev53"},
 
     -- prd
-    prd_active_ssh_agent               = { "ssh", "prd26agent" },
-    prd_standby_ssh_agent              = { "ssh", "prd27agent" },
+    prd_active_ssh_agent               = { "ssh", "prd13agent" },
+    prd_standby_ssh_agent              = { "ssh", "prd14agent" },
+    
+    prd_active_ssh_kpn                 = { "ssh", "prd13kpn" },
+    prd_standby_ssh_kpn                = { "ssh", "prd14kpn" },
 
-    prd_active_ssh_nxcomm              = { "ssh", "prd26nxcomm" },
-    prd_standby_ssh_nxcomm             = { "ssh", "prd27nxcomm" },
+    prd_active_ssh_nxcomm              = { "ssh", "prd13nxcomm" },
+    prd_standby_ssh_nxcomm             = { "ssh", "prd14nxcomm" },
     
     prd_active_ssh_lordsystem          = { "ssh", "prd13lord"},
     prd_standby_ssh_lordsystem         = { "ssh", "prd14lord"},
+    
+    -- kis
+    prd_active_ssh_kis                 = { "ssh", "prd13kis" },
+    prd_standby_ssh_kis                = { "ssh", "prd14kis" },
+    
+    -- kovan
+    prd_active_ssh_kovan               = { "ssh", "prd13kovan" },
+    prd_standby_ssh_kovan              = { "ssh", "prd14kovan" },
+    
+    -- nice
+    prd_active_ssh_nice                = { "ssh", "prd13nice" },
+    prd_standby_ssh_nice               = { "ssh", "prd14nice" },
+    
+    -- kicc
+    prd_active_ssh_kicc                = { "ssh", "prd13kicc" },
+    prd_standby_ssh_kicc               = { "ssh", "prd14kicc" },
+    
+    -- ksnet
+    prd_active_ssh_ksnet               = { "ssh", "prd13ksnet" },
+    prd_standby_ssh_ksnet              = { "ssh", "prd14ksnet" },
+    
+    -- shinhan-bank
+    prd_active_ssh_shinhan_bank        = { "ssh", "prd13shinhan-bank" },
+    prd_standby_ssh_shinhan_bank       = { "ssh", "prd14shinhan-bank" },
 
     prd_legacy                         = { "ssh", "prd10"},
 
@@ -177,8 +334,8 @@ M.commands_by_id = {
 }
 
 -- (기존 show_launcher_on_startup 함수는 필요에 따라 유지하거나 제거)
-M.show_launcher_on_startup = function()
-  -- ...
-end
+-- M.show_launcher_on_startup = function()
+--   -- ...
+-- end
 
 return M

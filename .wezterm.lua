@@ -2,6 +2,7 @@ local wezterm = require 'wezterm'
 local act = wezterm.action
 
 wezterm.log_info("🔥 WezTerm 시작");
+wezterm.log_info("로그보기: ctrl+shift+alt+l");
 
 -- 환경구분을 위해서 hostname 호출
 -- home: DESKTOP-LEKLO7C
@@ -16,7 +17,9 @@ if hostname == "DESKTOP-LEKLO7C" then
     prog = "D:\\My Program Files\\Git\\bin\\bash.exe"
 else
     package.path = package.path .. ";C:/Users/이진표/AppData/Local/nvim/wezterm/?.lua"
-    prog = "C:\\My Program Files\\Git\\bin\\bash.exe"
+    -- prog = "C:\\Windows\\System32\\cmd.exe"
+    -- prog = "C:\\My Program Files\\Git\\bin\\bash.exe"
+    prog = "C:\\My Program Files\\msys64\\usr\\bin\\zsh.exe"
     -- wsl fish 설정용
     -- prog = { 'wsl', '-d', 'Ubuntu', '--', 'fish'}
 end
@@ -27,45 +30,8 @@ local config = wezterm.config_builder()
 
 config.set_environment_variables = {
     LANG = 'en_US.UTF-8',
+    LC_ALL = 'en_US.UTF-8',
 }
-
--- 마우스 설정 -----------------------------
--- 마우스 클릭한 줄 전체 복사 기능 추가
---[[ wezterm.on("mouse-event", function(event, pane)
-  if event.kind == "Up" and event.button == "Left" then
-    local y = event.line
-    local line = pane:get_line(y)
-    if line then
-      local win = wezterm.mux.get_window(pane:window_id())
-      if win then
-        win:copy_to_clipboard(line)
-        wezterm.log_info("복사 완료: " .. line)
-      end
-    end
-  end
-end) ]]
-
--- config.mouse_bindings = {
---   -- 마우스 왼쪽 클릭 시 Copy Mode로 진입
---   {
---     event = { Down = { streak = 1, button = 'Left' } },
---     mods = 'NONE',
---     action = act.ActivateCopyMode,
---   },
---   -- 마우스 오른쪽 클릭 시 선택 후 복사
---   {
---     event = { Up = { streak = 1, button = 'Right' } },
---     mods = 'NONE',
---     action = wezterm.action_callback(function(window, pane)
---       local has_selection = window:get_selection_text_for_pane(pane) ~= ''
---       if has_selection then
---         window:perform_action(act.CopyTo('ClipboardAndPrimarySelection'), pane)
---         window:perform_action(act.ClearSelection, pane)
---       end
---     end),
---   },
--- }
-
 
 -- 스크롤 및 마우스 설정
 config.mouse_wheel_scrolls_tabs = false
@@ -126,8 +92,8 @@ config.colors = {
 config.switch_to_last_active_tab_when_closing_tab = true
 
 local panel = require("wezterm_panel")
-config.launch_menu = panel.launch_menu
-panel.show_launcher_on_startup()
+-- config.launch_menu = panel.launch_menu
+-- panel.show_launcher_on_startup()
 
 local general_keys = {
 
@@ -207,53 +173,6 @@ local general_keys = {
             end),
         }
     },
-    -- 새탭에서
-    --[[     { key = "l", mods = "CTRL|SHIFT"
-    -- , action = wezterm.action.ShowLauncher,
-    , action = wezterm.action.InputSelector {
-      title = "SSH 연결 선택",
-      choices = panel.selector_choices,
-      -- 콜백 함수의 세 번째 인자를 'choice' 대신 'selected_id'로 명명 (가독성)
-      action = wezterm.action_callback(function(window, pane, selected_id)
-        wezterm.log_info("InputSelector callback started.")
-
-        -- selected_id가 nil이 아니고 비어있지 않은 문자열인지 확인
-        if selected_id and type(selected_id) == "string" and selected_id ~= "" then
-          -- 이제 selected_id는 "ssh_snlnas" 같은 문자열 ID 자체임
-          wezterm.log_info("Selected choice ID: " .. selected_id)
-
-          -- selected_id를 직접 사용하여 명령어 조회
-          local command_args = panel.commands_by_id[selected_id]
-
-          if command_args then
-            wezterm.log_info("Found command_args (JSON): " .. wezterm.json_encode(command_args))
-            wezterm.log_info("Attempting to perform action SpawnCommandInNewTab...")
-
-            window:perform_action(
-              wezterm.action.SpawnCommandInNewTab {
-                args = command_args
-              },
-              pane
-            )
-            wezterm.log_info("SpawnCommandInNewTab action performed.")
-          else
-            -- 매핑 테이블에 ID가 없는 경우
-            wezterm.log_error("Command args not found for ID: " .. selected_id)
-          end
-        else
-          -- 선택이 취소되었거나 예상치 못한 타입인 경우
-          if selected_id == nil then
-            wezterm.log_info("InputSelector choice was cancelled (nil).")
-          else
-            -- nil도 아니고 문자열도 아닌 경우 (예상치 못한 상황)
-            wezterm.log_error("InputSelector returned unexpected data: " .. wezterm.json_encode(selected_id))
-          end
-        end
-      end),
-
-    },
-  }, ]]
-
     {
         key = ',',
         mods = 'LEADER',
@@ -352,10 +271,8 @@ local general_keys = {
     -- ================================================================================
     -- mux setting end
     -- ================================================================================
-
-
-
 }
+
 
 -- mux: 현재 workspace 삭제
 wezterm.on("delete-current-workspace", function(window, pane)
@@ -528,38 +445,7 @@ config.key_tables = {
     },
 }
 
-
-wezterm.on("gui-startup", function(cmd)
-    wezterm.log_info("stat: " .. "Hello world!")
-
-    local resurrect = wezterm.plugin.require("https://github.com/MLFlexer/resurrect.wezterm")
-    local mux = wezterm.mux
-    local opts = {
-        relative = true,
-        restore_text = true,
-        close_open_panes = true, -- 복원 전에 현재 탭의 모든 pane을 닫고 복원할 pane만 유지함. tab 복원 시 유용.
-        on_pane_restore = resurrect.tab_state.default_on_pane_restore,
-    }
-
-    -- 새로운 창과 탭 생성
-    local tab, pane, window = mux.spawn_window(cmd or {})
-
-    -- 현재 탭의 pane 수 확인
-    local panes = tab:panes()
-    if #panes == 1 then
-        -- pane이 하나뿐인 경우, 저장된 3-pane 워크스페이스 복원
-        local state = resurrect.state_manager.load_state("3pane", "tab")
-        
-        resurrect.tab_state.restore_tab(pane:tab(), state, opts)
-        wezterm.log_info("3pane 워크스페이스 복원 완료")
-    else
-        wezterm.log_info("Pane이 이미 2개 이상이므로 복원하지 않음")
-    end
-end)
-
--- 불필요
--- require("plugin")
-local plugin_keys = require("plugin")
+local plugin_keys = require("resurrectPlugin")
 
 -- 키 바인딩 합치기
 config.keys = {}
@@ -586,8 +472,6 @@ return config
 --       one_shot = false, -- 여러 키 입력 허용
 --     },
 --   },
--- }
-
 -- config.key_tables = {
 --   leader_comma = {
 --     {
