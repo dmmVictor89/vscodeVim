@@ -1,0 +1,614 @@
+# ==================== vim.xlam config file ====================
+# [English]
+# This configuration file allows you to customize default settings.
+# Customize it according to your environment and preferences, and
+# save it in the same directory as vim.xlam with the filename `_vimxlamrc`.
+#
+# *** About Configuration File ***
+# - Lines starting with `#` or blank lines are ignored.
+# - Lines starting with `set` allow you to modify defined configuration values.
+#   - Please change them as needed, keeping the default values in the comments.
+# - Lines containing `map` or `unmap` allow you to modify key mappings.
+#   - Please adhere to the syntax specified in the Syntax section.
+
+
+# ====================        Config        ====================
+### Temporary message prefix
+# set statusprefix=vim.xlam: 
+
+### Enable/Disable key
+# set togglekey=<C-m>
+
+### Scroll offset
+# set scrolloff=54
+
+### Maximum number of JumpHistory
+# set jumplisthistory=100
+
+### ���{��(japanese) / English (nojapanese)
+# set nojapanese
+
+### JIS keyboard(jiskeyboard) / US keyboard(nojiskeyboard)
+# set jiskeyboard
+
+### Quit Excel or not when closing the last workbook (Yes: quitapp / No: noquitapp)
+# set quitapp
+
+### Whether NumPad is used as [count] or not
+# set nonumpadcount
+
+### Delay time to display suggestions (ms, 0 to disable)
+# set suggestwait=1000
+
+### Shortcut labels for suggestion
+# set suggestlabels=asdfghjkl;qwertyuiopzxcvbnm,./1234567890
+
+### Color picker size
+# set colorpickersize=12
+
+### Custom color 1-5 (in ColorPicker)
+# set customcolor1=#ff6600
+# set customcolor2=#ff9966
+# set customcolor3=#ff00ff
+# set customcolor4=#008000
+# set customcolor5=#0000ff
+
+### Debug mode (on: debug / off: nodebug)
+# set nodebug
+
+
+# ====================       Keymaps        ====================
+# Syntax
+# --------------------------------------------------------------
+# [n|v|c|i]map [<cmd>]{lhs} []{rhs} [arg1] [arg2] [...]
+#  ^^^^^^^      ^^^^^ ^^^^^  ^^^^^ ^^^^^  ^^^^^^^^^^^^^^^^^
+#    |            |     |      |     |     `- args: Arguments of the function specified by {rhs}
+#    |            |     |      |     `------- rhs : Function name to be execute
+#    |            |     |      `------------- key : Flag to simulate keys with {rhs}
+#    |            |     `-------------------- lhs : Key sequence (vim style)
+#    |            `-------------------------- cmd : Flag to enable in command mode (plain text)
+#    `--------------------------------------- mode: Specify pre-defined mode ("n" if omitted)
+#
+# [n|v|c|i]unmap [<cmd>]{lhs}
+#          ^^^^^
+#           `--- disable mapping
+#
+# --------------------------------------------------------------
+# Modes
+# --------------------------------------------------------------
+# n: NORMAL  v: VISUAL  c: CMDLINE  i: SHAPE_INSERT
+#
+# --------------------------------------------------------------
+# Examples
+# --------------------------------------------------------------
+# nmap <C-p> ToggleLang
+# nmap <cmd>debug ToggleDebugMode
+# nmap yy YankCell
+# nmap bb ToggleBorderAll 1 2
+# nmap 1 ShowCmdForm "1"
+# vmap <C-.> SwapVisualBase
+# cmap <C-w> <C-BS>
+# nunmap <C-f>
+
+# ====================   Custom Keymaps (.vimrc ??)   ====================
+
+nunmap <C-f>
+nunmap <S-Space>
+nunmap <C-Space>
+nunmap <C-r>
+nunmap <C-t>
+
+# ESC ? ?? (kk? ESC?)
+imap kk <ESC>
+
+nmap j MoveLeft
+vmap j MoveLeft
+nmap k MoveDown
+vmap k MoveDown
+nmap l MoveUp
+vmap l MoveUp
+nmap ; MoveRight
+vmap ; MoveRight
+# nmap h ;
+# vmap h ;
+
+nmap a AppendFollowLangMode
+nmap A AppendNotFollowLangMode
+
+
+Option Explicit
+Option Private Module
+
+#Core
+nmap <C-p> ToggleLang
+nmap : EnterCmdlineMode
+nmap <cmd>reload ReloadVim
+nmap <cmd>debug ToggleDebugMode
+nmap <cmd>version ShowVersion
+
+
+#InsertMode
+nmap a AppendFollowLangMode
+nmap A AppendNotFollowLangMode
+nmap i InsertFollowLangMode
+nmap I InsertNotFollowLangMode
+nmap s SubstituteFollowLangMode
+nmap S SubstituteNotFollowLangMode
+
+
+#Moving
+nmap H MoveLeftWithShift
+nmap J MoveDownWithShift
+nmap K MoveUpWithShift
+nmap L MoveRightWithShift
+nmap <C-h> MoveLeft
+nmap <C-j> MoveDown
+nmap <C-k> MoveUp
+nmap <C-l> MoveRight
+nmap <C-S-H> MoveLeft
+nmap <C-S-J> MoveDown
+nmap <C-S-K> MoveUp
+nmap <C-S-L> MoveRight
+
+nmap gg MoveToTopRow
+nmap G MoveToLastRow
+nmap <bar> MoveToNthColumn
+nmap 0 MoveToFirstColumn
+nmap ^ MoveToLeftEnd
+nmap g0 MoveToA1
+
+nmap { MoveToTopOfCurrentRegion
+nmap } MoveToBottomOfCurrentRegion
+
+nmap W MoveToSpecifiedCell
+
+
+#Cell
+nmap xx CutCell
+nmap yy YankCell
+nmap O InsertCellsUp
+nmap t InsertCellsRight
+nmap T InsertCellsLeft
+nmap > IncrementText
+nmap <lt> DecrementText
+nmap ( IncreaseDecimal
+nmap ) DecreaseDecimal
+nmap <C-S-A> AddNumber
+nmap <C-S-X> SubtractNumber
+nmap g<C-A> VisualAddNumber
+nmap g<C-X> VisualSubtractNumber
+nmap zw ToggleWrapText
+nmap & ToggleMergeCells
+nmap f, ApplyCommaStyle
+nmap <Space> UnionSelectCells
+nmap <S-Space> ExceptSelectCells
+nmap <S-BS> ClearSelectCells
+nmap gf FollowHyperlinkOfActiveCell
+nmap Ff ApplyFlashFill
+nmap FF ApplyFlashFill
+nmap Fa ApplyAutoFill
+nmap FA ApplyAutoFill
+
+nmap =s AutoSum
+nmap =a AutoAverage
+nmap =c AutoCount
+nmap =m AutoMax
+nmap =i AutoMin
+nmap == InsertFunction
+
+nmap v ToggleVisualMode
+nmap V ToggleVisualLine
+
+
+# Border
+nmap bb ToggleBorderAll 1 2
+nmap ba ToggleBorderAround 1 2
+nmap bh ToggleBorderLeft 1 2
+nmap bj ToggleBorderBottom 1 2
+nmap bk ToggleBorderTop 1 2
+nmap bl ToggleBorderRight 1 2
+nmap bia ToggleBorderInner 1 2
+nmap bis ToggleBorderInnerHorizontal 1 2
+nmap biv ToggleBorderInnerVertical 1 2
+nmap b/ ToggleBorderDiagonalUp 1 2
+nmap b<bslash> ToggleBorderDiagonalDown 1 2
+nmap bB ToggleBorderAll 1 4
+nmap bA ToggleBorderAround 1 4
+nmap bH ToggleBorderLeft 1 4
+nmap bJ ToggleBorderBottom 1 4
+nmap bK ToggleBorderTop 1 4
+nmap bL ToggleBorderRight 1 4
+nmap Bb ToggleBorderAll 1 4
+nmap Ba ToggleBorderAround 1 4
+nmap Bh ToggleBorderLeft 1 4
+nmap Bj ToggleBorderBottom 1 4
+nmap Bk ToggleBorderTop 1 4
+nmap Bl ToggleBorderRight 1 4
+nmap Bia ToggleBorderInner 1 4
+nmap Bis ToggleBorderInnerHorizontal 1 4
+nmap Biv ToggleBorderInnerVertical 1 4
+nmap B/ ToggleBorderDiagonalUp 1 4
+nmap B<bslash> ToggleBorderDiagonalDown 1 4
+nmap bob ToggleBorderAll 1 1
+nmap boa ToggleBorderAround 1 1
+nmap boh ToggleBorderLeft 1 1
+nmap boj ToggleBorderBottom 1 1
+nmap bok ToggleBorderTop 1 1
+nmap bol ToggleBorderRight 1 1
+nmap boia ToggleBorderInner 1 1
+nmap bois ToggleBorderInnerHorizontal 1 1
+nmap boiv ToggleBorderInnerVertical 1 1
+nmap bo/ ToggleBorderDiagonalUp 1 1
+nmap bo<bslash> ToggleBorderDiagonalDown 1 1
+nmap bmb ToggleBorderAll 1 -4138
+nmap bma ToggleBorderAround 1 -4138
+nmap bmh ToggleBorderLeft 1 -4138
+nmap bmj ToggleBorderBottom 1 -4138
+nmap bmk ToggleBorderTop 1 -4138
+nmap bml ToggleBorderRight 1 -4138
+nmap bmia ToggleBorderInner 1 -4138
+nmap bmis ToggleBorderInnerHorizontal 1 -4138
+nmap bmiv ToggleBorderInnerVertical 1 -4138
+nmap bm/ ToggleBorderDiagonalUp 1 -4138
+nmap bm<bslash> ToggleBorderDiagonalDown 1 -4138
+nmap btb ToggleBorderAll -4119 4
+nmap bta ToggleBorderAround -4119 4
+nmap bth ToggleBorderLeft -4119 4
+nmap btj ToggleBorderBottom -4119 4
+nmap btk ToggleBorderTop -4119 4
+nmap btl ToggleBorderRight -4119 4
+nmap btia ToggleBorderInner -4119 4
+nmap btis ToggleBorderInnerHorizontal -4119 4
+nmap btiv ToggleBorderInnerVertical -4119 4
+nmap bt/ ToggleBorderDiagonalUp -4119 4
+nmap bt<bslash> ToggleBorderDiagonalDown -4119 4
+nmap bdd DeleteBorderAll
+nmap bda DeleteBorderAround
+nmap bdh DeleteBorderLeft
+nmap bdj DeleteBorderBottom
+nmap bdk DeleteBorderTop
+nmap bdl DeleteBorderRight
+nmap bdia DeleteBorderInner
+nmap bdis DeleteBorderInnerHorizontal
+nmap bdiv DeleteBorderInnerVertical
+nmap bd/ DeleteBorderDiagonalUp
+nmap bd<bslash> DeleteBorderDiagonalDown
+nmap bcc SetBorderColorAll
+nmap bca SetBorderColorAround
+nmap bch SetBorderColorLeft
+nmap bcj SetBorderColorBottom
+nmap bck SetBorderColorTop
+nmap bcl SetBorderColorRight
+nmap bcia SetBorderColorInner
+nmap bcis SetBorderColorInnerHorizontal
+nmap bciv SetBorderColorInnerVertical
+nmap bc/ SetBorderColorDiagonalUp
+nmap bc<bslash> SetBorderColorDiagonalDown
+
+
+#Row
+nmap r- NarrowRowsHeight
+nmap r+ WideRowsHeight
+nmap rr SelectRows
+nmap ra AppendRows
+nmap ri InsertRows
+nmap rd DeleteRows
+nmap ry YankRows
+nmap rx CutRows
+nmap rh HideRows
+nmap rH UnhideRows
+nmap rg GroupRows
+nmap ru UngroupRows
+nmap rf FoldRowsGroup
+nmap rs SpreadRowsGroup
+nmap rj AdjustRowsHeight
+nmap rw SetRowsHeight
+nmap rl ApplyRowsLock
+nmap rL ClearRowsLock
+
+
+#Column
+nmap c- NarrowColumnsWidth
+nmap c+ WideColumnsWidth
+nmap cc SelectColumns
+nmap ca AppendColumns
+nmap ci InsertColumns
+nmap cd DeleteColumns
+nmap cy YankColumns
+nmap cx CutColumns
+nmap ch HideColumns
+nmap cH UnhideColumns
+nmap cg GroupColumns
+nmap cu UngroupColumns
+nmap cf FoldColumnsGroup
+nmap cs SpreadColumnsGroup
+nmap cj AdjustColumnsWidth
+nmap cw SetColumnsWidth
+nmap cl ApplyColumnsLock
+nmap cL ClearColumnsLock
+
+
+#Yank
+nmap yr YankRows
+nmap yc YankColumns
+nmap ygg YankRows 1
+nmap yG YankRows 2
+nmap y{ YankRows 3
+nmap y} YankRows 4
+nmap y0 YankColumns 1
+nmap y$ YankColumns 2
+nmap y^ YankColumns 3
+nmap yg$ YankColumns 4
+nmap yh YankFromLeftCell
+nmap yj YankFromDownCell
+nmap yk YankFromUpCell
+nmap yl YankFromRightCell
+
+
+#Delete
+nmap X DeleteValue
+nmap D DeleteValue
+nmap dd DeleteRows
+nmap dr DeleteRows
+nmap dc DeleteColumns
+nmap dgg DeleteRows 1
+nmap dG DeleteRows 2
+nmap d{ DeleteRows 3
+nmap d} DeleteRows 4
+nmap d0 DeleteColumns 1
+nmap d$ DeleteColumns 2
+nmap d^ DeleteColumns 3
+nmap dg$ DeleteColumns 4
+nmap dh DeleteToLeft
+nmap dj DeleteToUp
+nmap dk DeleteToUp
+nmap dl DeleteToLeft
+
+
+#Cut
+nmap xr CutRows
+nmap xc CutColumns
+nmap xgg CutRows 1
+nmap xG CutRows 2
+nmap x{ CutRows 3
+nmap x} CutRows 4
+nmap x0 CutColumns 1
+nmap x$ CutColumns 2
+nmap x^ CutColumns 3
+nmap xg$ CutColumns 4
+
+
+#Paste
+nmap p PasteSmart 1
+nmap P PasteSmart 2
+nmap gp PasteSpecial
+nmap U PasteValue
+
+
+#Font
+nmap + IncreaseFontSize
+nmap fn ChangeFontName
+nmap fs ChangeFontSize
+nmap fh AlignLeft
+nmap fj AlignBottom
+nmap fk AlignTop
+nmap fl AlignRight
+nmap fo AlignCenter
+nmap fm AlignMiddle
+nmap fb ToggleBold
+nmap fi ToggleItalic
+nmap fu ToggleUnderline
+nmap f- ToggleStrikethrough
+nmap ft ChangeFormat
+nmap ff ShowFontDialog
+
+
+#Color
+nmap fc SmartFontColor
+nmap FC SmartFillColor
+nmap Fc SmartFillColor
+nmap bc ChangeShapeBorderColor
+
+
+#Comment
+nmap Ci EditCellComment
+nmap Cc EditCellComment
+nmap Ce DeleteCellComment
+nmap Cx DeleteCellComment
+nmap Cd DeleteCellComment
+nmap CE DeleteCellCommentAll
+nmap CD DeleteCellCommentAll
+nmap Ca ToggleCellComment
+nmap Cr ShowCellComment
+nmap Cm HideCellComment
+nmap CA ToggleCellCommentAll
+nmap CR ShowCellCommentAll
+nmap CM HideCellCommentAll
+nmap CH HideCellCommentIndicator
+nmap Cn NextComment
+nmap Cp PrevComment
+
+
+#Find & Replace
+nmap / ShowFindFollowLang
+nmap ? ShowFindNotFollowLang
+nmap n NextFoundCell
+nmap N PreviousFoundCell
+nmap R ShowReplaceWindow
+nmap * FindActiveValueNext
+nmap # FindActiveValuePrev
+nmap ]c NextSpecialCells -4144
+nmap [c PrevSpecialCells -4144
+nmap ]o NextSpecialCells 2
+nmap [o PrevSpecialCells 2
+nmap ]f NextSpecialCells -4123
+nmap [f PrevSpecialCells -4123
+nmap ]k NextSpecialCells 4
+nmap [k PrevSpecialCells 4
+nmap ]t NextSpecialCells -4173
+nmap [t PrevSpecialCells -4173
+nmap ]v NextSpecialCells -4175
+nmap [v PrevSpecialCells -4175
+nmap ]s NextShape
+nmap [s PrevShape
+
+
+#Scrolling
+nmap <C-u> ScrollUpHalf
+nmap <C-d> ScrollDownHalf
+nmap <C-b> ScrollUp
+nmap <C-f> ScrollDown
+nmap <C-y> ScrollUp1Row
+nmap <C-e> ScrollDown1Row
+nmap , ScrollLeftHalf
+nmap zh ScrollLeft1Column
+nmap zl ScrollRight1Column
+nmap zH ScrollLeft
+nmap zL ScrollRight
+nmap zt ScrollCurrentTop
+nmap zz ScrollCurrentMiddle
+nmap zb ScrollCurrentBottom
+nmap zs ScrollCurrentLeft
+nmap zm ScrollCurrentCenter
+nmap ze ScrollCurrentRight
+
+
+#Sheet Function
+nmap e NextSheet
+nmap E PreviousSheet
+nmap ww ShowSheetPicker
+nmap ws ShowSheetPicker
+nmap wn NextSheet
+nmap wp PreviousSheet
+nmap wr RenameSheet
+nmap wh MoveSheetBack
+nmap wl MoveSheetForward
+nmap wi InsertWorksheet
+nmap wa AppendWorksheet
+nmap wd DeleteSheet
+nmap w0 ActivateLastSheet
+nmap w$ ActivateLastSheet
+nmap wc ChangeSheetTabColor
+nmap wy CloneSheet
+nmap we ExportSheet
+nmap w ActivateSheet
+nmap <cmd>preview PrintPreviewOfActiveSheet
+
+
+#Workbook Function
+nmap <cmd>e OpenWorkbook
+nmap <cmd>e! ReopenActiveWorkbook
+nmap <cmd>w SaveWorkbook
+nmap <cmd>q CloseAskSaving
+nmap <cmd>q! CloseWithoutSaving
+nmap <cmd>wq CloseWithSaving
+nmap <cmd>x CloseWithSaving
+nmap <cmd>saveas SaveAsNewWorkbook
+nmap <cmd>b ActivateWorkbook
+nmap <cmd>bnext NextWorkbook
+nmap <cmd>bprevious PreviousWorkbook
+nmap ZZ CloseWithSaving
+nmap ZQ CloseWithoutSaving
+nmap ? ToggleReadOnly
+nmap ]b NextWorkbook
+nmap [b PreviousWorkbook
+
+
+#Useful Command
+# nmap <C-r> RedoExecute
+nmap . RepeatAction
+nmap m ZoomIn
+nmap M ZoomOut
+nmap % ZoomSpecifiedScale
+nmap <bslash> ShowContextMenu
+nmap <cmd>sort Sort 1
+nmap <cmd>sort! Sort 2
+nmap <cmd>unique RemoveDuplicates
+nmap <cmd>opendir OpenActiveBookDir
+nmap <cmd>fullpath YankActiveBookPath
+nmap <C-i> JumpNext
+nmap <C-o> JumpPrev
+nmap <cmd>clearjumps ClearJumps
+
+
+#Other Commands
+nmap <cmd>help SearchHelp
+nmap zf ToggleFreezePanes
+nmap =v ToggleFormulaBar
+nmap gb ToggleGridlines
+nmap gh ToggleHeadings
+nmap gs ShowSummaryInfo
+nmap zp SetPrintArea
+nmap zP ClearPrintArea
+nmap @@ ShowMacroDialog
+
+
+#Count
+nmap 1 ShowCmdForm "1"
+nmap 2 ShowCmdForm "2"
+nmap 3 ShowCmdForm "3"
+nmap 4 ShowCmdForm "4"
+nmap 5 ShowCmdForm "5"
+nmap 6 ShowCmdForm "6"
+nmap 7 ShowCmdForm "7"
+nmap 8 ShowCmdForm "8"
+nmap 9 ShowCmdForm "9"
+
+
+#KeyMapping
+nmap <C-[> <key><esc>
+
+
+#Visual Mode
+vmap <Esc> StopVisualMode
+vmap <C-[> StopVisualMode
+vmap <C-.> SwapVisualBase
+
+
+#Shape Insert Mode
+imap <Esc> ChangeToNormalMode
+imap <C-[> ChangeToNormalMode
+
+
+#Cmdline Mode
+cmap <Tab> ShowSuggest
+cmap <C-w> <key><C-BS>
+cmap <C-u> <key><S-Home><BS>
+cmap <C-k> <key><S-End><Del>
+cmap <C-h> <key><Left>
+cmap <C-l> <key><Right>
+cmap <C-a> <key><Home>
+cmap <C-e> <key><End>
+
+# --- Mappings converted from .vimrc ---
+imap kk <key><esc>
+nmap j MoveLeft
+vmap j MoveLeft
+nmap k MoveDown
+vmap k MoveDown
+nmap l MoveUp
+vmap l MoveUp
+nmap ; MoveRight
+vmap ; MoveRight
+nmap h ScrollRightHalf
+vmap h ScrollRightHalf
+nmap vv ToggleVisualLine
+vmap vv ToggleVisualLine
+nmap y Undo_CtrlZ
+vmap y Undo_CtrlZ
+nmap u YankCell
+vmap u YankCell
+nmap <leader>u InsertNotFollowLangMode
+vmap <leader>u InsertNotFollowLangMode
+nmap <leader>i AppendNotFollowLangMode
+vmap <leader>i AppendNotFollowLangMode
+nmap <leader>a AppendNotFollowLangMode
+vmap <leader>a AppendNotFollowLangMode
+nmap - MoveToRightEnd
+vmap - MoveToRightEnd
+nmap o InsertCellsDown
+nmap Y RedoExecute
+vmap Y RedoExecute
+nmap <leader>v ToggleVisualMode
+vmap <leader>v ToggleVisualMode
+nmap <leader>x CloseAskSaving
