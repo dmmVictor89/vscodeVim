@@ -37,8 +37,8 @@ vim.opt.smartcase = true
 
 -- open config
 -- 기존 :nmap -> lua style 매핑
-vim.keymap.set('n', '<leader>ei', ':e C:\\Users\\이진표\\AppData\\Local\\nvim\\init.lua', { noremap = true })
-vim.keymap.set('n', '<leader>ek', ':e C:\\Users\\이진표\\AppData\\Local\\nvim\\lua\\keyMapping.lua', { noremap = true })
+vim.keymap.set('n', '<leader>ei', ':e C:\\Users\\jinpyo\\AppData\\Local\\nvim\\init.lua', { noremap = true })
+vim.keymap.set('n', '<leader>ek', ':e C:\\Users\\jinpyo\\AppData\\Local\\nvim\\lua\\keyMapping.lua', { noremap = true })
 
 -- save
 -- vim.cmd('nmap <leader>s :w<cr>')

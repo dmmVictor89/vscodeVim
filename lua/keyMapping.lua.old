@@ -22,7 +22,7 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- open config
-vim.cmd('nmap <leader>cf :e C:\\Users\\이진표\\AppData\\Local\\nvim\\init.lua')
+vim.cmd('nmap <leader>cf :e C:\\Users\\jinpyo\\AppData\\Local\\nvim\\init.lua')
 
 -- save
 -- vim.cmd('nmap <leader>s :w<cr>')
