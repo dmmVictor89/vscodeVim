@@ -37,13 +37,17 @@ vim.opt.smartcase = true
 
 -- open config
 -- 기존 :nmap -> lua style 매핑
-vim.keymap.set('n', '<leader>cf', ':e C:\\Users\\이진표\\AppData\\Local\\nvim\\init.lua', { noremap = true })
+vim.keymap.set('n', '<leader>ei', ':e C:\\Users\\이진표\\AppData\\Local\\nvim\\init.lua', { noremap = true })
+vim.keymap.set('n', '<leader>ek', ':e C:\\Users\\이진표\\AppData\\Local\\nvim\\lua\\keyMapping.lua', { noremap = true })
 
 -- save
 -- vim.cmd('nmap <leader>s :w<cr>')
 
 -- J key binding 없애기
 vim.keymap.set({ 'n', 'v' }, 'J', '')
+
+-- ctrl+w binding 없애기
+vim.keymap.set({ 'n', 'v' }, '<c-w>', '')
 
 -- shift + k binding 없애기
 vim.keymap.set({ 'i' }, '<s-k>', '')
@@ -309,7 +313,7 @@ if vim.g.vscode then
     -- folder open
     vim.keymap.set({ "n", "x", "i" }, "fd", function()
       vscode.with_insert(function()
-        vscode.action("workbench.action.files.openFile")
+        vscode.action("workbench.action.files.openFileFolder")
       end)
     end)
     
@@ -387,6 +391,10 @@ if vim.g.vscode then
   -- noevim native 에서 사용할 것
   ---------------------------------------------------------------------------------------------------------
   else
+
+    -- 스크롤 설정
+    vim.keymap.set('n', '<s-j>', '10<c-e>', { noremap = true, silent = true })
+    vim.keymap.set('n', '<s-k>', '10<c-y>', { noremap = true, silent = true })
     
     -- 윈도우 관련
     vim.keymap.set('n', 'sj', '<C-w>h', { noremap = true, silent = true })

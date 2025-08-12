@@ -17,14 +17,19 @@ inoremap kk <ESC>
 
 nnoremap j h
 vnoremap j h
-nnoremap k j
-vnoremap k j
-nnoremap l k
-vnoremap l k
+nnoremap k gj
+vnoremap k gj
+nnoremap l gk
+vnoremap l gk
 nnoremap ; l 
 vnoremap ; l 
 nnoremap h ; 
 vnoremap h ; 
+
+nnoremap J 10<C-e>
+nnoremap K 10<C-y>
+vnoremap J 10<C-e>gv
+vnoremap K 10<C-y>gv
 
 " shift+a 를 shift+v(한줄 선택으로 변경)
 nnoremap vv V 

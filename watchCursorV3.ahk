@@ -1,4 +1,41 @@
-#Requires AutoHotkey v2.0
+#requires autohotkey v2.0
+
+;모니터 이동 및 정 easyclick 호출
+; 1번 모니터 1000, 500
+monitor1pos := { x: 1000, y: 500 }    ; 1번 모니터 클릭 위치
+monitor2pos := { x: -1000, y: 500 }   ; 2번 모니터 클릭 위치
+
+/* ^!1:: {
+    SelectMonitor(1)
+}
+
+^!2:: {
+    SelectMonitor(2)
+} */
+
+SelectMonitor(monitorNum) {
+    ; 해당 모니터의 작업 영역 정보 가져오기
+    MonitorGetWorkArea(monitorNum, &left, &top, &right, &bottom)
+
+    ; 모니터의 중앙 좌표 계산
+    centerX := left + (right - left) // 2
+    centerY := top + (bottom - top) // 2
+
+    ; 마우스를 해당 모니터의 중앙으로 이동
+    MouseMove(centerX, centerY, 0)
+
+    ; 현재 마우스 커서 위치(중앙)에 있는 창의 핸들(ID)을 가져옵니다.
+    ; 이것이 바로 해당 위치의 Z-order상 가장 위에 있는 창입니다.
+    winId := DllCall("WindowFromPoint", "int", centerX, "int", centerY, "ptr")
+
+    ; 창을 찾았으면 활성화하고 신호 전송
+    if (winId) {
+        WinActivate("ahk_id " winId)
+    } else {
+        Click
+    }
+    Send("!;") ; ctrl+; 전송
+}
 
 ; 한글/영어 입력 상태 감지 및 커스텀 툴팁 표시
 #SingleInstance Force
@@ -120,13 +157,16 @@ ShowCustomTooltip(text) {
             y := top + 10
         }
     }
+    
+    ; 디버그 용
+    debugInfo .= "Bounds: ( mouseX: " . mouseX . ", mouseY: " . mouseY . ")"
 
     ; 디버그 정보 (절대 좌표와 AHK 좌표 비교)
-    ; virtualScreenLeft := DllCall("GetSystemMetrics", "Int", 76)
-    ; virtualScreenTop := DllCall("GetSystemMetrics", "Int", 77)
-    ; debugInfo := "ABS: (" . mouseX . "," . mouseY . ") AHK: (" . ahkX . "," . ahkY . ") Norm: (" . normalized.x . "," . normalized.y . ")`n"
-    ; debugInfo .= "VirtScreen: (" . virtualScreenLeft . "," . virtualScreenTop . ") Mon:" . currentMonitor . "`n"
-    ; debugInfo .= "Bounds: (" . left . "," . top . "," . right . "," . bottom . ") GUI: (" . x . "," . y . ")"
+    ;  virtualScreenLeft := DllCall("GetSystemMetrics", "Int", 76)
+    ;  virtualScreenTop := DllCall("GetSystemMetrics", "Int", 77)
+    ;  debugInfo := "ABS: (" . mouseX . "," . mouseY . ") AHK: (" . ahkX . "," . ahkY . ") Norm: (" . normalized.x . "," . normalized.y . ")`n"
+    ;  debugInfo .= "VirtScreen: (" . virtualScreenLeft . "," . virtualScreenTop . ") Mon:" . currentMonitor . "`n"
+    ;  debugInfo .= "Bounds: (" . left . "," . top . "," . right . "," . bottom . ") GUI: (" . x . "," . y . ")"
 
     ; 기존 GUI 제거
     if (guiTooltip) {

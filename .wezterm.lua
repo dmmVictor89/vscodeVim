@@ -16,10 +16,10 @@ if hostname == "DESKTOP-LEKLO7C" then
     package.path = package.path .. ";C:/Users/trueticket89/AppData/Local/nvim/wezterm/?.lua"
     prog = "D:\\My Program Files\\Git\\bin\\bash.exe"
 else
-    package.path = package.path .. ";C:/Users/이진표/AppData/Local/nvim/wezterm/?.lua"
+    package.path = package.path .. ";C:/Users/jinpyo/AppData/Local/nvim/wezterm/?.lua"
     -- prog = "C:\\Windows\\System32\\cmd.exe"
     -- prog = "C:\\My Program Files\\Git\\bin\\bash.exe"
-    prog = "C:\\My Program Files\\msys64\\usr\\bin\\zsh.exe"
+    prog = "C:\\MyProgramFiles\\msys64\\usr\\bin\\zsh.exe"
     -- wsl fish 설정용
     -- prog = { 'wsl', '-d', 'Ubuntu', '--', 'fish'}
 end
@@ -295,8 +295,8 @@ end)
 
 -- 로그 파일 경로 생성
 local function get_log_path()
-    -- return "C:\\Users\\이진표\\logs\\wezterm_log_" .. os.date("%Y%m%d_%H%M%S") .. ".txt"
-    -- return "C:\\Users\\이진표\\logs\\wezterm_log.txt"
+    -- return "C:\\Users\\jinpyo\\logs\\wezterm_log_" .. os.date("%Y%m%d_%H%M%S") .. ".txt"
+    -- return "C:\\Users\\jinpyo\\logs\\wezterm_log.txt"
     return "C:\\Users\\" .. userName .. "\\logs\\wezterm_log.txt"
 end
 
@@ -430,7 +430,7 @@ config.key_tables = {
     },
 
     search_mode = {
-        -- 검색 확정: ALT + Entergg
+        -- 검색 확정: ALT + Enter
         { key = "Enter",  action = act.CopyMode("AcceptPattern") },
 
         -- Esc로 종료
@@ -451,6 +451,24 @@ local plugin_keys = require("resurrectPlugin")
 config.keys = {}
 for _, k in ipairs(general_keys) do table.insert(config.keys, k) end
 for _, k in ipairs(plugin_keys) do table.insert(config.keys, k) end
+
+-- =========================================================
+-- tmux 를 위한 설정 <- 안 먹힘
+-- =========================================================
+-- .wezterm.lua에서
+-- config.send_composed_key_when_left_alt_is_pressed = false
+-- config.send_composed_key_when_right_alt_is_pressed = false
+
+-- Alt 키를 터미널로 전달
+-- config.use_dead_keys = false
+-- config.keys = {
+  -- Alt+j,k,l,; 를 tmux로 전달
+--   { key = "j", mods = "ALT", action = wezterm.action.SendKey { key = "j", mods = "ALT" } },
+--   { key = "k", mods = "ALT", action = wezterm.action.SendKey { key = "k", mods = "ALT" } },
+--   { key = "l", mods = "ALT", action = wezterm.action.SendKey { key = "l", mods = "ALT" } },
+--   { key = ";", mods = "ALT", action = wezterm.action.SendKey { key = ";", mods = "ALT" } },
+-- }
+-- =========================================================
 
 return config
 
