@@ -108,15 +108,6 @@ require('packer').startup({
     -- , event = "TextYankPost" -- lazy loading
     , config = function() require("yanky").setup() end }
 
-    -- 중괄호 표시
-    use {
-      'code-biscuits/nvim-biscuits',
-      requires = {
-        'nvim-treesitter/nvim-treesitter',
-        run = ':SUpdate'
-      },
-    }
-
     if not vim.g.vscode then
       use { 'sphamba/smear-cursor.nvim' }
       use { 'nvim-lualine/lualine.nvim', requires = { 'nvim-tree/nvim-web-devicons', opt = true }, config = function() require('lualine').setup() end }
@@ -146,6 +137,26 @@ require('packer').startup({
           'nvim-treesitter/nvim-treesitter',
           run = ':SUpdate'
         },
+      }
+
+      -- 파일트리
+      use {
+      "nvim-neo-tree/neo-tree.nvim",
+      branch = "main",
+      requires = {
+          "nvim-lua/plenary.nvim",
+          "kyazdani42/nvim-web-devicons",
+          "MunifTanjim/nui.nvim"
+      },
+      config = function()
+          require("neo-tree").setup()
+      end
+      }
+
+      -- fzf 찾기
+      use {
+        'nvim-telescope/telescope.nvim',
+        -- requires = { {'nvim-lua/plenary.nvim'} }
       }
 
     end
@@ -362,6 +373,49 @@ if not vim.g.vscode then
         -- 최소 이동 거리 설정
         min_horizontal_distance_smear = 1,
         min_vertical_distance_smear = 1,
+    })
+
+    -- 주석처리
+    require('Comment').setup({
+      toggler = {
+        line = '<C-_>',  -- Ctrl+/ 의 키 시퀀스는 <C-_> 로 매핑합니다.
+        block = 'gbc',   -- 블록 주석 토글 기존 설정 유지 (필요시 변경)
+      },
+      opleader = {
+        line = '<C-_>',  -- 비주얼 모드 주석 토글용 설정
+        block = 'gb',    -- 필요에 따라 변경 가능
+      },
+    })
+
+    -- Neotree
+    require('neo-tree').setup({
+        -- legacy 명령 제거(권장)
+        remove_legacy_commands = true,
+
+        window = {
+            mappings = {
+            -- 기본값 제거(겹치면 nil)
+            ["h"] = nil,
+            ["j"] = nil,
+            ["k"] = nil,
+            ["l"] = nil,
+
+            -- 네 레이아웃에 맞춰 재매핑
+            ["j"] = "close_node", -- 원래 h
+            ["k"] = "next",       -- 원래 j
+            ["l"] = "prev",       -- 원래 k
+            [";"] = "open",       -- 원래 l
+
+            -- 필요시 기타 기본키도 재정의
+            ["<CR>"] = "open",
+            ["<space>"] = "toggle_node",
+            ["q"] = "close_window",
+            ["<tab>"] = function(state)
+                vim.cmd("wincmd p")  -- 이전 윈도우(보통 에디터)로 포커스 이동
+            end,
+            },
+        },
+    -- options go here
     })
 end
 ---------------------------------------------------------------------------------------------------------

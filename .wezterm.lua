@@ -51,6 +51,9 @@ config.unix_domains = {
 config.enable_csi_u_key_encoding = true
 config.use_dead_keys = false      -- 데드 키 기능을 끄고, ', ~, ``` 등 조합 없이 즉시 입력되도록 함
 config.scrollback_lines = 1999999 -- 탭당 유지할 히스토리 라인
+
+config.enable_kitty_keyboard = true
+
 -- 닫기 버튼 누를 때 확인창 없이 바로 종료
 config.window_close_confirmation = "NeverPrompt"
 -- tab_bar 하단으로

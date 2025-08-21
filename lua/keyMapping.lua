@@ -398,15 +398,35 @@ if vim.g.vscode then
     
     -- 윈도우 관련
     vim.keymap.set('n', 'sj', '<C-w>h', { noremap = true, silent = true })
+    vim.keymap.set('n', 'mi', '<C-w>h', { noremap = true, silent = true })
     vim.keymap.set('n', 'sk', '<C-w>j', { noremap = true, silent = true })
     vim.keymap.set('n', 'sl', '<C-w>k', { noremap = true, silent = true })
     vim.keymap.set('n', 's;', '<C-w>l', { noremap = true, silent = true })
+
+    -- 안먹힘 ----------
+    vim.keymap.set('n', '<C-h>', '<C-w>h', { noremap = true, silent = true })
+    vim.keymap.set('n', '<C-j>', '<C-w>j', { noremap = true, silent = true })
+    vim.keymap.set('n', '<C-k>', '<C-w>k', { noremap = true, silent = true })
+    vim.keymap.set('n', '<C-l>', '<C-w>l', { noremap = true, silent = true })
+    
+    vim.keymap.set('n', '<M-j>', '<C-w>h', { noremap = true, silent = true })
+    vim.keymap.set('n', '<M-k>', '<C-w>j', { noremap = true, silent = true })
+    vim.keymap.set('n', '<M-l>', '<C-w>k', { noremap = true, silent = true })
+    vim.keymap.set('n', '<M-;>', '<C-w>l', { noremap = true, silent = true })
+    -- 안먹힘 ----------
     
     -- 창 크기 조절
     vim.keymap.set('n', 's=', ':vertical resize +10<CR>')
     vim.keymap.set('n', 's-', ':vertical resize -10<CR>')
     vim.keymap.set('n', 's9', ':resize +10<CR>')
     vim.keymap.set('n', 's0', ':resize -10<CR>')
+
+    -- NeoTree 설정
+    vim.api.nvim_set_keymap('n', '<C-n>', ':Neotree toggle<CR>', { noremap = true, silent = true })
+
+    -- Telescope 설정
+    vim.api.nvim_set_keymap('n', '<leader>gl', ':Telescope find_files<CR>', { noremap=true, silent=true })
+    vim.api.nvim_set_keymap('n', '<leader>gp', ':Telescope live_grep<CR>', { noremap=true, silent=true })
 
 end
 
