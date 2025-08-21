@@ -427,6 +427,7 @@ if vim.g.vscode then
     -- Telescope 설정
     vim.api.nvim_set_keymap('n', '<leader>gl', ':Telescope find_files<CR>', { noremap=true, silent=true })
     vim.api.nvim_set_keymap('n', '<leader>gp', ':Telescope live_grep<CR>', { noremap=true, silent=true })
+    vim.api.nvim_set_keymap('n', '<leader>go', "<cmd>lua require'telescope'.extensions.project.project{}<CR>", { noremap = true, silent = true })
 
 end
 

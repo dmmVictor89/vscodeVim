@@ -118,7 +118,7 @@ require('packer').startup({
           -- Packer가 플러그인을 로드한 후 실행될 코드
           -- Neovim 시작 시 이 테마를 적용
           vim.cmd('colorscheme tokyonight')
-          -- 배경 설정 (옵션)
+         -- 배경 설정 (옵션)
           vim.o.background = 'dark'
         end
       }
@@ -157,6 +157,10 @@ require('packer').startup({
       use {
         'nvim-telescope/telescope.nvim',
         -- requires = { {'nvim-lua/plenary.nvim'} }
+      }
+      -- 디렉토리로 관리하는 extenseion  
+      use {
+        'nvim-telescope/telescope-project.nvim'
       }
 
     end
@@ -417,6 +421,20 @@ if not vim.g.vscode then
         },
     -- options go here
     })
+
+    require('telescope').load_extension('project')
+
+    require('telescope').setup{
+    extensions = {
+        project = {
+        base_dirs = {
+            'D:\\My Program Files\\myPython\\',
+            {'~/work', max_depth = 3},
+        },
+        hidden_files = true,  -- 숨긴 파일/폴더 포함여부
+        }
+    }
+}
 end
 ---------------------------------------------------------------------------------------------------------
 -- require('hop').setup()
