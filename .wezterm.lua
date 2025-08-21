@@ -14,8 +14,8 @@ local prog
 -- wezterm.lua의 상단에 추가
 if hostname == "DESKTOP-LEKLO7C" then
     package.path = package.path .. ";C:/Users/trueticket89/AppData/Local/nvim/wezterm/?.lua"
-    prog = "C:\\Windows\\System32\\cmd.exe"
-    -- prog = "D:\\My Program Files\\Git\\bin\\bash.exe"
+    -- prog = "C:\\Windows\\System32\\cmd.exe"
+    prog = "D:\\My Program Files\\Git\\bin\\bash.exe"
 else
     package.path = package.path .. ";C:/Users/jinpyo/AppData/Local/nvim/wezterm/?.lua"
     -- prog = "C:\\Windows\\System32\\cmd.exe"
