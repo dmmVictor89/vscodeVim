@@ -13,17 +13,18 @@ local userName = os.getenv("USERNAME");
 local prog
 -- wezterm.lua의 상단에 추가
 if hostname == "DESKTOP-LEKLO7C" then
-    package.path = package.path .. ";C:/Users/trueticket89/AppData/Local/nvim/wezterm/?.lua"
-    prog = "D:\\My Program Files\\Git\\bin\\bash.exe"
+    -- package.path = package.path .. ";C:/Users/trueticket89/AppData/Local/nvim/wezterm/?.lua"
+    -- prog = "D:\\My Program Files\\Git\\bin\\bash.exe"
 else
     package.path = package.path .. ";C:/Users/jinpyo/AppData/Local/nvim/wezterm/?.lua"
     -- prog = "C:\\Windows\\System32\\cmd.exe"
-    -- prog = "C:\\My Program Files\\Git\\bin\\bash.exe"
+    -- prog = "C:\\MyProgramFiles\\Git\\bin\\bash.exe"
     prog = "C:\\MyProgramFiles\\msys64\\usr\\bin\\zsh.exe"
     -- wsl fish 설정용
     -- prog = { 'wsl', '-d', 'Ubuntu', '--', 'fish'}
 end
 
+local resurrect = wezterm.plugin.require("https://github.com/MLFlexer/resurrect.wezterm")
 
 -- 설정 ----------------------------------------------------------- -----
 local config = wezterm.config_builder()
@@ -96,6 +97,8 @@ local panel = require("wezterm_panel")
 -- panel.show_launcher_on_startup()
 
 local general_keys = {
+
+    -- =====================================================
 
     { key = "Enter",      mods = "ALT|SHIFT",  action = act.SplitVertical { domain = "CurrentPaneDomain" } },
     { key = "Enter",      mods = "CTRL|SHIFT", action = act.SplitHorizontal { domain = "CurrentPaneDomain" } },
@@ -445,6 +448,7 @@ config.key_tables = {
     },
 }
 
+-- 일단 잠정 보류
 local plugin_keys = require("resurrectPlugin")
 
 -- 키 바인딩 합치기
