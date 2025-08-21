@@ -26,7 +26,7 @@
 # set jumplisthistory=100
 
 ### ���{��(japanese) / English (nojapanese)
-# set nojapanese
+set nojapanese
 
 ### JIS keyboard(jiskeyboard) / US keyboard(nojiskeyboard)
 # set jiskeyboard
@@ -92,7 +92,6 @@
 
 # ====================   Custom Keymaps (.vimrc ??)   ====================
 
-nunmap <C-f>
 nunmap <S-Space>
 nunmap <C-Space>
 nunmap <C-r>
@@ -111,6 +110,13 @@ nmap ; MoveRight
 vmap ; MoveRight
 # nmap h ;
 # vmap h ;
+
+
+nmap <C-f> ShowFindFollowLang
+vmap <C-f> ShowFindFollowLang
+
+# ========================================================================
+
 
 nmap a AppendFollowLangMode
 nmap A AppendNotFollowLangMode
@@ -457,7 +463,7 @@ nmap [s PrevShape
 nmap <C-u> ScrollUpHalf
 nmap <C-d> ScrollDownHalf
 nmap <C-b> ScrollUp
-nmap <C-f> ScrollDown
+#nmap <C-f> ScrollDown
 nmap <C-y> ScrollUp1Row
 nmap <C-e> ScrollDown1Row
 nmap , ScrollLeftHalf

@@ -19,12 +19,13 @@ if hostname == "DESKTOP-LEKLO7C" then
 else
     package.path = package.path .. ";C:/Users/jinpyo/AppData/Local/nvim/wezterm/?.lua"
     -- prog = "C:\\Windows\\System32\\cmd.exe"
-    -- prog = "C:\\My Program Files\\Git\\bin\\bash.exe"
+    -- prog = "C:\\MyProgramFiles\\Git\\bin\\bash.exe"
     prog = "C:\\MyProgramFiles\\msys64\\usr\\bin\\zsh.exe"
     -- wsl fish 설정용
     -- prog = { 'wsl', '-d', 'Ubuntu', '--', 'fish'}
 end
 
+local resurrect = wezterm.plugin.require("https://github.com/MLFlexer/resurrect.wezterm")
 
 -- 설정 ----------------------------------------------------------- -----
 local config = wezterm.config_builder()
@@ -51,6 +52,9 @@ config.unix_domains = {
 config.enable_csi_u_key_encoding = true
 config.use_dead_keys = false      -- 데드 키 기능을 끄고, ', ~, ``` 등 조합 없이 즉시 입력되도록 함
 config.scrollback_lines = 1999999 -- 탭당 유지할 히스토리 라인
+
+config.enable_kitty_keyboard = true
+
 -- 닫기 버튼 누를 때 확인창 없이 바로 종료
 config.window_close_confirmation = "NeverPrompt"
 -- tab_bar 하단으로
@@ -97,6 +101,8 @@ local panel = require("wezterm_panel")
 -- panel.show_launcher_on_startup()
 
 local general_keys = {
+
+    -- =====================================================
 
     { key = "Enter",      mods = "ALT|SHIFT",  action = act.SplitVertical { domain = "CurrentPaneDomain" } },
     { key = "Enter",      mods = "CTRL|SHIFT", action = act.SplitHorizontal { domain = "CurrentPaneDomain" } },
@@ -446,6 +452,7 @@ config.key_tables = {
     },
 }
 
+-- 일단 잠정 보류
 local plugin_keys = require("resurrectPlugin")
 
 -- 키 바인딩 합치기

@@ -1,10 +1,11 @@
-
 local wezterm = require 'wezterm'
 local resurrect = wezterm.plugin.require("https://github.com/MLFlexer/resurrect.wezterm")
 -- resurrect json file 경로
 -- C:\Users\jinpyo\AppData\Roaming\wezterm\plugins\httpssCssZssZsgithubsDscomsZsMLFlexersZsresurrectsDswezterm\state\
 -- 플러그인 위치
 -- C:\Users\jinpyo\AppData\Roaming\wezterm\plugins\httpssCssZssZsgithubsDscomsZsMLFlexersZsresurrectsDswezterm\plugin\resurrect
+-- utils.lua: ensure_folder_exists 주석처리함
+-- state_manager.lua: 153라인 주석 처리함
 
 -- local utils = require("resurrect.utils")
 -- local pane_tree_mod = require("resurrect.pane_tree")
@@ -12,9 +13,6 @@ local resurrect = wezterm.plugin.require("https://github.com/MLFlexer/resurrect.
 
 local logger = wezterm.plugin.require("https://github.com/sei40kr/wez-logging.git")
 -- wez logging 설정은 wez-logging 폴더의 init.lua
-
-local act = wezterm.action
-
 
 return {
 
@@ -25,13 +23,19 @@ return {
     key = "s",
     mods = "ALT",
     action = resurrect.tab_state.save_tab_action()
-    -- action = wezterm.action.Multiple {
-    --   resurrect.tab_state.save_tab_action(),
-    --   wezterm.action_callback(function(window, pane)
-    --     window:toast_notification("Resurrect", "✅ 탭 저장 완료!", nil, 1)
-    --   end),
-    -- },
   },
+  
+--   {
+--     key = "s",
+--     mods = "ALT",
+--     action = wezterm.action.Multiple {
+--       resurrect.tab_state.save_tab_action(),
+--       wezterm.action_callback(function(window, pane)
+--         window:toast_notification("Resurrect", "✅ 탭 저장 완료!", nil, 1)
+--       end),
+--     },
+--   },
+
 -- {
 --     key = "r",
 --     mods = "ALT",
