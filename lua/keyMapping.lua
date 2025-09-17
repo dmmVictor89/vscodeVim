@@ -35,6 +35,9 @@ vim.opt.clipboard = 'unnamedplus'
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
+-- Highlight current line
+vim.opt.cursorline = true 
+
 -- open config
 -- 기존 :nmap -> lua style 매핑
 vim.keymap.set('n', '<leader>ei', ':e C:\\Users\\jinpyo\\AppData\\Local\\nvim\\init.lua', { noremap = true })
@@ -45,12 +48,10 @@ vim.keymap.set('n', '<leader>ek', ':e C:\\Users\\jinpyo\\AppData\\Local\\nvim\\l
 
 -- J key binding 없애기
 vim.keymap.set({ 'n', 'v' }, 'J', '')
+vim.keymap.set({ 'n', 'v' }, 'K', '')
 
 -- ctrl+w binding 없애기
 vim.keymap.set({ 'n', 'v' }, '<c-w>', '')
-
--- shift + k binding 없애기
-vim.keymap.set({ 'i' }, '<s-k>', '')
 
 -- shift + a binding
 -- vim.keymap.set({'n', 'v'}, '<s-a>', '<s-v>')
@@ -65,22 +66,33 @@ vim.keymap.set({ 'n', 'v' }, '<leader>i', '<s-a>')
 vim.keymap.set({ 'n', 'v' }, '-', '$')
 vim.keymap.set({ 'n', 'v' }, '<leader>a', '<s-a>')
 
--- 아래에 새로운 행 만들고 노멀모드
+-- 아래에 새로운 행 만들고 노멀모드 
 vim.keymap.set('n', '<leader>o', 'o<Esc>0"_D', { noremap = true, silent = true })
 
 -- join lines
 vim.keymap.set('n', '<leader>j', 'J', { noremap = true, silent = true })
 -- ---------------------------------------------------------------------------------------------------------
 -- motion keys (left, down, up, left)
-vim.keymap.set({ 'n', 'v' }, 'j', 'h')
-vim.keymap.set({ 'n', 'v' }, 'k', 'j')
-vim.keymap.set({ 'n', 'v' }, 'l', 'k')
-vim.keymap.set({ 'n', 'v' }, ';', 'l')
-vim.keymap.set({ 'n', 'v' }, 'h', ';')
--- vim.keymap.set({'n', 'v'}, 'h', '\'')
+vim.keymap.set({ 'n', 'v' }, 'j', 'h', { noremap = true, silent = true })
+vim.keymap.set({ 'n', 'v' }, 'k', 'j', { noremap = true, silent = true })
+vim.keymap.set({ 'n', 'v' }, 'l', 'k', { noremap = true, silent = true })
+vim.keymap.set({ 'n', 'v' }, ';', 'l', { noremap = true, silent = true })
+vim.keymap.set({ 'n', 'v' }, 'h', ';', { noremap = true, silent = true })
+vim.keymap.set({'n', 'v'}, 'h', '\'')
 
 vim.keymap.set({ 'n', 'v' }, 'H', 'b')
 vim.keymap.set({ 'n', 'v' }, 'L', 'w')
+
+vim.keymap.set('n', '<PageUp>', '')
+vim.keymap.set({'n', 'v', 'i'}, '<PageUp>', '<PageUp>')
+-- vim.keymap.set('n', '<PageUp>', '50k')
+-- vim.keymap.set('i', '<PageUp>', '<PageUp>')
+-- vim.keymap.set('v', '<PageUp>', '<PageUp>')
+vim.keymap.set('n', '<PageDown>', '')
+vim.keymap.set({'n', 'v', 'i'}, '<PageDown>', '<PageDown>')
+-- vim.keymap.set('n', '<PageDown>', '50j')
+-- vim.keymap.set('i', '<PageDown>', '<PageDown>')
+-- vim.keymap.set('v', '<PageDown>', '<PageDown>')
 
 -- y -> u set yank
 vim.keymap.set({ 'n', 'v' }, 'y', 'u')
@@ -94,8 +106,8 @@ vim.keymap.set({ 'n', 'v' }, 'uj', 'yiw')
 vim.keymap.set({ 'n', 'x' }, 'u', '<Plug>(YankyYank)', { noremap = true })
 vim.keymap.set('n', 'uu', 'V<Plug>(YankyYank)', { noremap = true })
 
-vim.keymap.set({ 'n', 'v' }, '<pageup>', '<c-e>')
-vim.keymap.set({ 'n', 'v' }, '<pagedown>', '<c-d>')
+-- vim.keymap.set({ 'n', 'v' }, '<pageup>', '<c-e>')
+-- vim.keymap.set({ 'n', 'v' }, '<pagedown>', '<c-d>')
 
 -- repeat prvious f, t, F or T movement
 -- vim.keymap.set('n', '\'', ';')
@@ -265,13 +277,13 @@ if vim.g.vscode then
     end, { noremap = true, silent = true, desc = "Insert line after with VS Code indent" })
 
     --  fixed cursor scroll
-    vim.keymap.set({ 'n', 'v' }, 'J', function()
+    vim.keymap.set({'n', 'v'}, 'J', function()
         for _ = 1, 10 do
             vim.fn.VSCodeNotify('vscode-neovim.ctrl-e') -- fixed cursor & scroll down
         end
     end, { noremap = true, desc = "Scroll down 10 lines" })
 
-    vim.keymap.set({ 'n', 'v' }, 'K', function()
+    vim.keymap.set({'n', 'v'}, 'K', function()
         for _ = 1, 10 do
             vim.fn.VSCodeNotify('vscode-neovim.ctrl-y') -- fixed cursor & scroll up
         end
@@ -304,14 +316,14 @@ if vim.g.vscode then
     end)
 
     -- file open
-    vim.keymap.set({ "n", "x", "i" }, "fo", function()
+    vim.keymap.set({ "n", "x", "i" }, "of", function()
       vscode.with_insert(function()
         vscode.action("workbench.action.files.openFile")
       end)
     end)
     
     -- folder open
-    vim.keymap.set({ "n", "x", "i" }, "fd", function()
+    vim.keymap.set({ "n", "x", "i" }, "od", function()
       vscode.with_insert(function()
         vscode.action("workbench.action.files.openFileFolder")
       end)
@@ -391,10 +403,13 @@ if vim.g.vscode then
   -- noevim native 에서 사용할 것
   ---------------------------------------------------------------------------------------------------------
   else
+    
+    vim.api.nvim_set_keymap('n', '<leader>ps', ':PackerSync <CR>', { noremap=true, silent=true })
+    vim.api.nvim_set_keymap('n', '<leader>mvr', ':source $MYVIMRC <CR>', { noremap=true, silent=true })
 
     -- 스크롤 설정
-    vim.keymap.set('n', '<s-j>', '10<c-e>', { noremap = true, silent = true })
-    vim.keymap.set('n', '<s-k>', '10<c-y>', { noremap = true, silent = true })
+    vim.keymap.set({'n', 'v'}, 'J', '10<c-e>', { noremap = true, silent = true })
+    vim.keymap.set({'n', 'v'}, 'K', '10<c-y>', { noremap = true, silent = true })
     
     -- 윈도우 관련
     vim.keymap.set('n', 'sj', '<C-w>h', { noremap = true, silent = true })
@@ -404,15 +419,15 @@ if vim.g.vscode then
     vim.keymap.set('n', 's;', '<C-w>l', { noremap = true, silent = true })
 
     -- 안먹힘 ----------
-    vim.keymap.set('n', '<C-h>', '<C-w>h', { noremap = true, silent = true })
-    vim.keymap.set('n', '<C-j>', '<C-w>j', { noremap = true, silent = true })
-    vim.keymap.set('n', '<C-k>', '<C-w>k', { noremap = true, silent = true })
-    vim.keymap.set('n', '<C-l>', '<C-w>l', { noremap = true, silent = true })
+    vim.keymap.set('n', '<C-j>', '<C-w>h', { noremap = true, silent = true })
+    vim.keymap.set('n', '<C-k>', '<C-w>j', { noremap = true, silent = true })
+    vim.keymap.set('n', '<C-l>', '<C-w>k', { noremap = true, silent = true })
+    vim.keymap.set('n', '<C-;>', '<C-w>l', { noremap = true, silent = true })
     
-    vim.keymap.set('n', '<M-j>', '<C-w>h', { noremap = true, silent = true })
-    vim.keymap.set('n', '<M-k>', '<C-w>j', { noremap = true, silent = true })
-    vim.keymap.set('n', '<M-l>', '<C-w>k', { noremap = true, silent = true })
-    vim.keymap.set('n', '<M-;>', '<C-w>l', { noremap = true, silent = true })
+    -- vim.keymap.set('n', '<M-j>', '<C-w>h', { noremap = true, silent = true })
+    -- vim.keymap.set('n', '<M-k>', '<C-w>j', { noremap = true, silent = true })
+    -- vim.keymap.set('n', '<M-l>', '<C-w>k', { noremap = true, silent = true })
+    -- vim.keymap.set('n', '<M-;>', '<C-w>l', { noremap = true, silent = true })
     -- 안먹힘 ----------
     
     -- 창 크기 조절
@@ -423,11 +438,25 @@ if vim.g.vscode then
 
     -- NeoTree 설정
     vim.api.nvim_set_keymap('n', '<C-n>', ':Neotree toggle<CR>', { noremap = true, silent = true })
+    vim.api.nvim_create_autocmd("FileType", {
+    pattern = "neo-tree",
+    callback = function()
+        -- buffer-local 매핑
+        vim.keymap.set("n", "<Tab>", "<C-w>l", { buffer = true, noremap = true, silent = true })
+    end,
+    })
+    vim.api.nvim_set_keymap('n', 'tu', ':tabnext<CR>', { noremap=true, silent=true })
+    vim.api.nvim_set_keymap('n', 'ti', ':tabprev<CR>', { noremap=true, silent=true })
 
     -- Telescope 설정
-    vim.api.nvim_set_keymap('n', '<leader>gl', ':Telescope find_files<CR>', { noremap=true, silent=true })
-    vim.api.nvim_set_keymap('n', '<leader>gp', ':Telescope live_grep<CR>', { noremap=true, silent=true })
-    vim.api.nvim_set_keymap('n', '<leader>go', "<cmd>lua require'telescope'.extensions.project.project{}<CR>", { noremap = true, silent = true })
+    vim.api.nvim_set_keymap('n', '<leader>gp', ':Telescope find_files <CR>', { noremap=true, silent=true })
+    vim.api.nvim_set_keymap('n', '<leader>gk', ':Telescope live_grep<CR>', { noremap=true, silent=true })
+    vim.api.nvim_set_keymap('n', '<leader>go', ':Telescope projects <CR>', { noremap = true, silent = true })
+
+    -- bufferLine 이전 버퍼 탭으로 이동
+    vim.api.nvim_set_keymap('n', '<c-y>', ':BufferLineCyclePrev<CR>', { noremap = true, silent = true })
+    -- bufferLine 다음 버퍼 탭으로 이동
+    vim.api.nvim_set_keymap('n', '<c-u>', ':BufferLineCycleNext<CR>', { noremap = true, silent = true })
 
 end
 

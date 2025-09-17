@@ -31,6 +31,13 @@ nnoremap K 10<C-y>
 vnoremap J 10<C-e>gv
 vnoremap K 10<C-y>gv
 
+nnoremap <PageUp> <PageUp>
+inoremap <PageUp> <PageUp>
+vnoremap <PageUp> <PageUp>
+nnoremap <PageDown> <PageDown>
+inoremap <PageDown> <PageDown>
+vnoremap <PageDown> <PageDown>
+
 " shift+a 를 shift+v(한줄 선택으로 변경)
 nnoremap vv V 
 vnoremap v V

@@ -16,8 +16,6 @@ print("init.lua load start")
 -- 플러그인 업데이트하는 방법
 -- :PackerSync
 
-
-
 ---------------------------------------------------------------------------------------------------------
 --- 인코딩 설정
 ---------------------------------------------------------------------------------------------------------
@@ -108,7 +106,9 @@ require('packer').startup({
     -- , event = "TextYankPost" -- lazy loading
     , config = function() require("yanky").setup() end }
 
+    -- native 전용
     if not vim.g.vscode then
+      -- 커서설정
       use { 'sphamba/smear-cursor.nvim' }
       use { 'nvim-lualine/lualine.nvim', requires = { 'nvim-tree/nvim-web-devicons', opt = true }, config = function() require('lualine').setup() end }
       
@@ -121,6 +121,14 @@ require('packer').startup({
          -- 배경 설정 (옵션)
           vim.o.background = 'dark'
         end
+      }
+
+      -- buffer 관리
+      use { 'akinsho/nvim-bufferline.lua'
+          , requires = 'kyazdani42/nvim-web-devicons'
+          , config = function()
+            require("bufferline").setup {}
+            end
       }
 
       -- 주석 처리 comment
@@ -141,26 +149,85 @@ require('packer').startup({
 
       -- 파일트리
       use {
-      "nvim-neo-tree/neo-tree.nvim",
-      branch = "main",
-      requires = {
-          "nvim-lua/plenary.nvim",
-          "kyazdani42/nvim-web-devicons",
-          "MunifTanjim/nui.nvim"
-      },
-      config = function()
-          require("neo-tree").setup()
-      end
+        "nvim-neo-tree/neo-tree.nvim",
+        branch = "main",
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "kyazdani42/nvim-web-devicons",
+            "MunifTanjim/nui.nvim"
+        }
       }
 
-      -- fzf 찾기
+      -- telescope
       use {
         'nvim-telescope/telescope.nvim',
+        -- cmd = "Telescope",  -- 이 명령어를 처음 쓸 때만 로드
         -- requires = { {'nvim-lua/plenary.nvim'} }
-      }
-      -- 디렉토리로 관리하는 extenseion  
-      use {
-        'nvim-telescope/telescope-project.nvim'
+        requires = {
+            -- fzf native exetension
+            { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
+            
+            -- 프로젝트 관리
+          , { 'ahmedkhalf/project.nvim' }
+
+            --   디렉토리로 관리하는 extenseion  
+          , { 'nvim-telescope/telescope-project.nvim' }
+        }
+        , config = function()
+                local ok, telescope = pcall(require, "telescope")
+                if not ok then return end
+                
+                -- project.nvim 설정
+                require("project_nvim").setup {
+                detection_methods = { "pattern", "lsp" },
+                patterns = { ".git", "Makefile", "package.json" },
+                }
+                
+                require("project_nvim").setup {
+                    -- 자동 감지 방식 (패턴 or LSP root)
+                    detection_methods = { "pattern", "lsp" },
+
+                    -- 루트로 인식할 기준 파일/폴더
+                    patterns = { ".git", ".gradle", ".svn"},
+
+                    -- 특정 경로 제외
+                    -- exclude_dirs = { "~/.cargo/*" },
+
+                    -- 숨김 디렉토리도 프로젝트로 인식
+                    show_hidden = true,
+                }
+
+                telescope.setup{
+                extensions = {
+                    fzf = {
+                    fuzzy = true,
+                    override_generic_sorter = true,
+                    override_file_sorter = true,
+                    case_mode = "smart_case",
+                    },
+                    
+                    project = {
+                    base_dirs = {
+                        -- 특정 루트 디렉토리 지정
+                        { 'C:\\nworkspace', max_depth = 2 },
+                        -- 홈 디렉토리 밑 work 폴더, 3단계까지 탐색
+                        -- { vim.fn.expand('~/work'), max_depth = 3 },
+                    },
+                    hidden_files = true,  -- 숨김파일 포함 여부
+                    theme = "dropdown",   -- 원하는 테마 지정 가능
+                    order_by = "asc",     -- 정렬 순서
+                    }
+                },
+                }
+
+                -- telescope 로드 이후에 확장 로드
+                -- :lua print(vim.inspect(require('telescope._extensions').manager))  " fzf 키 보이는지
+                -- :lua print(vim.inspect(package.loaded['telescope._extensions.fzf'])) " 로드됐으면 table
+                -- :lua print(vim.inspect(package.loaded['telescope._extensions.project'])) " 로드됐으면 table
+                pcall(telescope.load_extension, "fzf")
+                require('telescope').load_extension('projects')
+                require('telescope').load_extension('project')
+        end,
       }
 
     end
@@ -341,6 +408,7 @@ require("yanky").setup({
 -- 히스토리 크기 제한 (Yanky 설정 필요)
 vim.g.yanky_max_entries = 50 -- 최대 50개 항목으로 제한 (플러그인 설정에 따라 적용)
 
+
 ---------------------------------------------------------------------------------------------------------
 -- ============================================================================
 -- 플러그인 개별 설정
@@ -396,52 +464,90 @@ if not vim.g.vscode then
         -- legacy 명령 제거(권장)
         remove_legacy_commands = true,
 
-        window = {
-            mappings = {
-            -- 기본값 제거(겹치면 nil)
-            ["h"] = nil,
-            ["j"] = nil,
-            ["k"] = nil,
-            ["l"] = nil,
+        filesystem = {
+            filtered_items = {
+            visible = true,     -- 숨김 파일도 보여주기
+            hide_dotfiles = false,  -- .으로 시작하는 dotfiles 숨기지 않음
+            hide_gitignored = false, -- .gitignore에 포함된 파일 숨기지 않음
+            hide_by_name = {},     -- 이름으로 숨길 파일들 빈 배열로 설정
+            never_show = {},       -- 아예 숨기지 않을 파일들
+            },
+        },
 
-            -- 네 레이아웃에 맞춰 재매핑
-            ["j"] = "close_node", -- 원래 h
-            ["k"] = "next",       -- 원래 j
-            ["l"] = "prev",       -- 원래 k
-            [";"] = "open",       -- 원래 l
+        window = {
+            
+            mapping_options = {
+                noremap = true,
+                nowait = true,
+            },
+
+             mappings = {
+            -- 기본값 제거(겹치면 nil)
 
             -- 필요시 기타 기본키도 재정의
             ["<CR>"] = "open",
-            ["<space>"] = "toggle_node",
-            ["q"] = "close_window",
-            ["<tab>"] = function(state)
-                vim.cmd("wincmd p")  -- 이전 윈도우(보통 에디터)로 포커스 이동
+            -- ["<space>"] = "toggle_node",
+
+            ["s"] = function(state)
+                vim.cmd("wincmd l")  -- 이전 윈도우(보통 에디터)로 포커스 이동
             end,
+            ["<tab>"] = function(state)
+                vim.cmd("wincmd l")  -- 이전 윈도우(보통 에디터)로 포커스 이동
+            end,
+
+            ["t"] = "open_tabnew",
+            ["w"] = "open_with_window_picker",
+            ["C"] = "close_node",
+            ["z"] = "close_all_nodes",
+            
+            ["A"] = "add_directory", -- also accepts the optional config.show_path option like "add". this also supports BASH style brace expansion.
+            ["d"] = "delete",
+            ["r"] = "rename",
+            ["b"] = "rename_basename",
+            ["y"] = "copy_to_clipboard",
+            ["x"] = "cut_to_clipboard",
+            ["c"] = "copy", -- takes text input for destination, also accepts the optional config.show_path option like "add":
+
+            ["m"] = "move", -- takes text input for destination, also accepts the optional config.show_path option like "add".
+            ["q"] = "close_window",
+            ["R"] = "refresh",
+            ["?"] = "show_help",
+            ["<"] = "prev_source",
+            [">"] = "next_source"
+            },
+            
+            fuzzy_finder_mappings = { -- define keymaps for filter popup window in fuzzy_finder_mode
+                ["<down>"] = "move_cursor_down",
+                ["<C-n>"] = "move_cursor_down",
+                ["<up>"] = "move_cursor_up",
+                ["<C-p>"] = "move_cursor_up",
+                ["<esc>"] = "close",
+                ["<S-CR>"] = "close_keep_filter",
+                ["<C-CR>"] = "close_clear_filter",
+                ["<C-w>"] = { "<C-S-w>", raw = true },
+                {
+                -- normal mode mappings
+                n = {
+                    ["k"] = "move_cursor_down",
+                    ["l"] = "move_cursor_up",
+                    ["<S-CR>"] = "close_keep_filter",
+                    ["<C-CR>"] = "close_clear_filter",
+                    ["<esc>"] = "close",
+                }
+                }
+                -- ["<esc>"] = "noop", -- if you want to use normal mode
+                -- ["key"] = function(state, scroll_padding) ... end,
             },
         },
     -- options go here
     })
 
-    require('telescope').load_extension('project')
-
-    require('telescope').setup{
-    extensions = {
-        project = {
-        base_dirs = {
-            'D:\\My Program Files\\myPython\\',
-            {'~/work', max_depth = 3},
-        },
-        hidden_files = true,  -- 숨긴 파일/폴더 포함여부
-        }
-    }
-}
 end
 ---------------------------------------------------------------------------------------------------------
 -- require('hop').setup()
 ---------------------------------------------------------------------------------------------------------
 -- require('leap').opts.safe_labels = {}
 ---------------------------------------------------------------------------------------------------------
-require("keyMapping")
 -- if vim.g.vscode then 
     -- require("vsCodeKeyMapping")
 -- end
@@ -481,3 +587,10 @@ require("keyMapping")
 --   require('plugins')
 --   -- 플러그인 설정 등
 -- end
+
+---------------------------------------------------------------------------------------------------------
+--- 키 매핑 
+---------------------------------------------------------------------------------------------------------
+require("keyMapping")
+
+

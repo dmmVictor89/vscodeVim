@@ -11,6 +11,11 @@ M.selector_choices = {
     id = "ssh_scouter", -- 고유 ID
     label = "🖥️  scouter(192.168.10.15)",
   },
+  
+  {
+    id = "ssh_jenkins", -- 고유 ID
+    label = "🖥️  jenkins(192.168.10.15)",
+  },
 
   {
     id = "ssh_eContract", -- 고유 ID
@@ -22,6 +27,10 @@ M.selector_choices = {
   -- --------------------------------------------------------------------------------------------------------------------------------
   -- active
   -- ----------------------------------------------------o---------------------------------------------------------------------------
+  {
+    id = "ssh_root", -- 고유 ID
+    label = "🖥️  [dev] root(192.168.10.26)",
+  },
   {
     id = "dev_active_ssh_nxcomm", -- 고유 ID
     label = "🖥️  [dev] active_nxcomm(192.168.10.26)",
@@ -251,7 +260,9 @@ M.selector_choices = {
 -- ID를 실제 명령어 인자(args)와 매핑하는 테이블
 M.commands_by_id = {
     
+    ssh_root                       = { "ssh", "devroot" },
     ssh_scouter                    = { "ssh", "scouter" },
+    ssh_jenkins                    = { "ssh", "jenkins" },
 
     ssh_eContract                  = { "ssh", "devec" },
     -- dev
