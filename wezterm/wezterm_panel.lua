@@ -26,7 +26,7 @@ M.selector_choices = {
   -- DEV
   -- --------------------------------------------------------------------------------------------------------------------------------
   -- active
-  -- ----------------------------------------------------o---------------------------------------------------------------------------
+  -- --------------------------------------------------------------------------------------------------------------------------------
   {
     id = "ssh_root", -- 고유 ID
     label = "🖥️  [dev] root(192.168.10.26)",
@@ -44,7 +44,7 @@ M.selector_choices = {
     label = "🖥️  [dev] active_kpn(192.168.10.26)",
   },
   {
-    id = "dev_active_ssh_lordsystem_active", -- 고유 ID
+    id = "dev_active_ssh_lordsystem", -- 고유 ID
     label = "🖥️  [dev] active_LordSystem(192.168.10.26)",
   },
   {
@@ -91,7 +91,7 @@ M.selector_choices = {
     label = "🖥️  [dev] standby_kpn(192.168.10.27)",
   },
   {
-    id = "dev_standby_ssh_lordsystem_standby", -- 고유 ID
+    id = "dev_standby_ssh_lordsystem", -- 고유 ID
     label = "🖥️  [dev] standby_LordSystem(192.168.10.27)",
   },
   {
@@ -188,7 +188,7 @@ M.selector_choices = {
     label = "🖥️  [prd] standby_kpn(192.168.10.13)",
   },
   {
-    id = "prd_standby_ssh_lordsystem_standby", -- 고유 ID
+    id = "prd_standby_ssh_lordsystem", -- 고유 ID
     label = "🖥️  [prd] standby_LordSystem(192.168.10.14)",
   },
   {
@@ -260,93 +260,93 @@ M.selector_choices = {
 -- ID를 실제 명령어 인자(args)와 매핑하는 테이블
 M.commands_by_id = {
     
-    ssh_root                       = { "ssh", "devroot" },
-    ssh_scouter                    = { "ssh", "scouter" },
-    ssh_jenkins                    = { "ssh", "jenkins" },
+    ssh_root                       = { "ssh", "-t", "devroot", "'bash --rcfile ~/.mybash -i'" },
+    ssh_scouter                    = { "ssh", "-t", "scouter", "'bash --rcfile ~/.mybash -i'" },
+    ssh_jenkins                    = { "ssh", "-t", "jenkins", "'bash --rcfile ~/.mybash -i'" },
 
-    ssh_eContract                  = { "ssh", "devec" },
+    ssh_eContract                  = { "ssh", "-t", "devec", "'bash --rcfile ~/.mybash -i'" },
     -- dev
-    dev_active_ssh_nxcomm              = { "ssh", "dev26nxcomm" },
-    dev_standby_ssh_nxcomm             = { "ssh", "dev27nxcomm" },
+    dev_active_ssh_nxcomm              = { "ssh", "-t", "dev26nxcomm", "'bash --rcfile ~/.mybash -i'" },
+    dev_standby_ssh_nxcomm             = { "ssh", "-t", "dev27nxcomm", "'bash --rcfile ~/.mybash -i'" },
     
-    dev_active_ssh_agent               = { "ssh", "dev26agent" },
-    dev_standby_ssh_agent              = { "ssh", "dev27agent" },
+    dev_active_ssh_agent               = { "ssh", "-t", "dev26agent", "'bash --rcfile ~/.mybash -i'" },
+    dev_standby_ssh_agent              = { "ssh", "-t", "dev27agent", "'bash --rcfile ~/.mybash -i'" },
 
-    dev_active_ssh_lordsystem_active   = { "ssh", "dev26lord"},
-    dev_standby_ssh_lordsystem_standby = { "ssh", "dev27lord"},
+    dev_active_ssh_lordsystem          = { "ssh", "-t", "dev26lord", "'bash --rcfile ~/.mybash -i'"},
+    dev_standby_ssh_lordsystem         = { "ssh", "-t", "dev27lord", "'bash --rcfile ~/.mybash -i'"},
     
-    dev_active_ssh_kpn                 = { "ssh", "dev26kpn" },
-    dev_standby_ssh_kpn                = { "ssh", "dev27kpn" },
+    dev_active_ssh_kpn                 = { "ssh", "-t", "dev26kpn", "'bash --rcfile ~/.mybash -i'" },
+    dev_standby_ssh_kpn                = { "ssh", "-t", "dev27kpn", "'bash --rcfile ~/.mybash -i'" },
     
     -- kis
-    dev_active_ssh_kis                 = { "ssh", "dev26kis" },
-    dev_standby_ssh_kis                = { "ssh", "dev27kis" },
+    dev_active_ssh_kis                 = { "ssh", "-t", "dev26kis", "'bash --rcfile ~/.mybash -i'" },
+    dev_standby_ssh_kis                = { "ssh", "-t", "dev27kis", "'bash --rcfile ~/.mybash -i'" },
     
     -- kovan
-    dev_active_ssh_kovan               = { "ssh", "dev26kovan" },
-    dev_standby_ssh_kovan              = { "ssh", "dev27kovan" },
+    dev_active_ssh_kovan               = { "ssh", "-t", "dev26kovan", "'bash --rcfile ~/.mybash -i'" },
+    dev_standby_ssh_kovan              = { "ssh", "-t", "dev27kovan", "'bash --rcfile ~/.mybash -i'" },
     
     -- nice
-    dev_active_ssh_nice                = { "ssh", "dev26nice" },
-    dev_standby_ssh_nice               = { "ssh", "dev27nice" },
+    dev_active_ssh_nice                = { "ssh", "-t", "dev26nice", "'bash --rcfile ~/.mybash -i'" },
+    dev_standby_ssh_nice               = { "ssh", "-t", "dev27nice", "'bash --rcfile ~/.mybash -i'" },
     
     -- kicc
-    dev_active_ssh_kicc                = { "ssh", "dev26kicc" },
-    dev_standby_ssh_kicc               = { "ssh", "dev27kicc" },
+    dev_active_ssh_kicc                = { "ssh", "-t", "dev26kicc", "'bash --rcfile ~/.mybash -i'" },
+    dev_standby_ssh_kicc               = { "ssh", "-t", "dev27kicc", "'bash --rcfile ~/.mybash -i'" },
     
     -- ksnet
-    dev_active_ssh_ksnet               = { "ssh", "dev26ksnet" },
-    dev_standby_ssh_ksnet              = { "ssh", "dev27ksnet" },
+    dev_active_ssh_ksnet               = { "ssh", "-t", "dev26ksnet", "'bash --rcfile ~/.mybash -i'" },
+    dev_standby_ssh_ksnet              = { "ssh", "-t", "dev27ksnet", "'bash --rcfile ~/.mybash -i'" },
     
     -- shinhan-bank
-    dev_active_ssh_shinhan_bank        = { "ssh", "dev26shinhan-bank" },
-    dev_standby_ssh_shinhan_bank       = { "ssh", "dev27shinhan-bank" },
+    dev_active_ssh_shinhan_bank        = { "ssh", "-t", "dev26shinhan-bank", "'bash --rcfile ~/.mybash -i'" },
+    dev_standby_ssh_shinhan_bank       = { "ssh", "-t", "dev27shinhan-bank", "'bash --rcfile ~/.mybash -i'" },
     
-    dev_legacy                         = { "ssh", "dev53"},
+    dev_legacy                         = { "ssh", "-t", "dev53", "'bash --rcfile ~/.mybash -i'"},
 
     -- prd
-    prd_active_ssh_agent               = { "ssh", "prd13agent" },
-    prd_standby_ssh_agent              = { "ssh", "prd14agent" },
+    prd_active_ssh_agent               = { "ssh", "-t", "prd13agent", "'bash --rcfile ~/.mybash -i'" },
+    prd_standby_ssh_agent              = { "ssh", "-t", "prd14agent", "'bash --rcfile ~/.mybash -i'" },
     
-    prd_active_ssh_kpn                 = { "ssh", "prd13kpn" },
-    prd_standby_ssh_kpn                = { "ssh", "prd14kpn" },
+    prd_active_ssh_kpn                 = { "ssh", "-t", "prd13kpn", "'bash --rcfile ~/.mybash -i'" },
+    prd_standby_ssh_kpn                = { "ssh", "-t", "prd14kpn", "'bash --rcfile ~/.mybash -i'" },
 
-    prd_active_ssh_nxcomm              = { "ssh", "prd13nxcomm" },
-    prd_standby_ssh_nxcomm             = { "ssh", "prd14nxcomm" },
+    prd_active_ssh_nxcomm              = { "ssh", "-t", "prd13nxcomm", "'bash --rcfile ~/.mybash -i'" },
+    prd_standby_ssh_nxcomm             = { "ssh", "-t", "prd14nxcomm", "'bash --rcfile ~/.mybash -i'" },
     
-    prd_active_ssh_lordsystem          = { "ssh", "prd13lord"},
-    prd_standby_ssh_lordsystem         = { "ssh", "prd14lord"},
+    prd_active_ssh_lordsystem          = { "ssh", "-t", "prd13lord", "'bash --rcfile ~/.mybash -i'"},
+    prd_standby_ssh_lordsystem         = { "ssh", "-t", "prd14lord", "'bash --rcfile ~/.mybash -i'"},
     
     -- kis
-    prd_active_ssh_kis                 = { "ssh", "prd13kis" },
-    prd_standby_ssh_kis                = { "ssh", "prd14kis" },
+    prd_active_ssh_kis                 = { "ssh", "-t", "prd13kis", "'bash --rcfile ~/.mybash -i'" },
+    prd_standby_ssh_kis                = { "ssh", "-t", "prd14kis", "'bash --rcfile ~/.mybash -i'" },
     
     -- kovan
-    prd_active_ssh_kovan               = { "ssh", "prd13kovan" },
-    prd_standby_ssh_kovan              = { "ssh", "prd14kovan" },
+    prd_active_ssh_kovan               = { "ssh", "-t", "prd13kovan", "'bash --rcfile ~/.mybash -i'" },
+    prd_standby_ssh_kovan              = { "ssh", "-t", "prd14kovan", "'bash --rcfile ~/.mybash -i'" },
     
     -- nice
-    prd_active_ssh_nice                = { "ssh", "prd13nice" },
-    prd_standby_ssh_nice               = { "ssh", "prd14nice" },
+    prd_active_ssh_nice                = { "ssh", "-t", "prd13nice", "'bash --rcfile ~/.mybash -i'" },
+    prd_standby_ssh_nice               = { "ssh", "-t", "prd14nice", "'bash --rcfile ~/.mybash -i'" },
     
     -- kicc
-    prd_active_ssh_kicc                = { "ssh", "prd13kicc" },
-    prd_standby_ssh_kicc               = { "ssh", "prd14kicc" },
+    prd_active_ssh_kicc                = { "ssh", "-t", "prd13kicc", "'bash --rcfile ~/.mybash -i'" },
+    prd_standby_ssh_kicc               = { "ssh", "-t", "prd14kicc", "'bash --rcfile ~/.mybash -i'" },
     
     -- ksnet
-    prd_active_ssh_ksnet               = { "ssh", "prd13ksnet" },
-    prd_standby_ssh_ksnet              = { "ssh", "prd14ksnet" },
+    prd_active_ssh_ksnet               = { "ssh", "-t", "prd13ksnet", "'bash --rcfile ~/.mybash -i'" },
+    prd_standby_ssh_ksnet              = { "ssh", "-t", "prd14ksnet", "'bash --rcfile ~/.mybash -i'" },
     
     -- shinhan-bank
-    prd_active_ssh_shinhan_bank        = { "ssh", "prd13shinhan-bank" },
-    prd_standby_ssh_shinhan_bank       = { "ssh", "prd14shinhan-bank" },
+    prd_active_ssh_shinhan_bank        = { "ssh", "-t", "prd13shinhan-bank", "'bash --rcfile ~/.mybash -i'" },
+    prd_standby_ssh_shinhan_bank       = { "ssh", "-t", "prd14shinhan-bank", "'bash --rcfile ~/.mybash -i'" },
 
-    prd_legacy                         = { "ssh", "prd10"},
+    prd_legacy                         = { "ssh", "-t", "prd10", "'bash --rcfile ~/.mybash -i'"},
 
-    prd_DB1_ssh                        = { "ssh", "prd31db"},
-    prd_db2_ssh                        = { "ssh", "prd32db"},
+    prd_DB1_ssh                        = { "ssh", "-t", "prd31db", "'bash --rcfile ~/.mybash -i'"},
+    prd_db2_ssh                        = { "ssh", "-t", "prd32db", "'bash --rcfile ~/.mybash -i'"},
     
-    ssh_snlnas                     = { "ssh", "snlnas" },
+    ssh_snlnas                     = { "ssh", "-t", "snlnas", "'bash --rcfile ~/.mybash -i'" },
     -- ssh_lordsystem = { "ssh", "-p", "22", "lordsystem@192.168.10.26" }, -- -p 옵션 사용!
     -- 다른 항목들도 모두 -p 형식으로 수정
   -- staging = { "ssh", "admin@staging.example.com" },
