@@ -22,7 +22,7 @@ else
     -- prog = "C:\\MyProgramFiles\\Git\\bin\\bash.exe"
     prog = "C:\\MyProgramFiles\\msys64\\usr\\bin\\zsh.exe"
     -- wsl fish 설정용
-    -- prog = { 'wsl', '-d', 'Ubuntu', '--', 'fish'}
+    -- prog = { 'wsl', '-d', 'Ubuntu', '--', Clipboard'fish'}
 end
 
 local resurrect = wezterm.plugin.require("https://github.com/MLFlexer/resurrect.wezterm")
@@ -34,6 +34,9 @@ config.set_environment_variables = {
     LANG = 'en_US.UTF-8',
     LC_ALL = 'en_US.UTF-8',
 }
+
+-- 선택 텍스트 처리
+config.selection_word_boundary = ' \t\n{}()[]|&^%$#@!/;,"\'<=>?`.,:*'  -- 공백 포함 경계 조정
 
 -- 스크롤 및 마우스 설정
 config.mouse_wheel_scrolls_tabs = false
@@ -124,6 +127,8 @@ local general_keys = {
     { key = "c",          mods = "LEADER",     action = act.ActivateCopyMode },
     { key = 'v',          mods = "LEADER",     action = act.PasteFrom 'Clipboard' },
     -- { key = 'v', mods = 'NONE', action = act.CopyMode { SetSelectionMode = 'Cell' } }, -- 선택 모드
+    -- 클립보드 붙여넣기 설정
+    { key = 'V', mods = 'CTRL|SHIFT', action = wezterm.action.PasteFrom 'Clipboard' },
 
     -- Clear scroll buffer(화면은 남겨둠)
     {

@@ -1,0 +1,33 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
+then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+export PATH
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+alias ..='cd .. && ll'
+alias ll='ls -la'
+alias lg='ll | grep'
+
+# User specific aliases and functions
+alias sftplord='sftp sftpcresoty@10.175.49.97'
+UPPER_USER=$(echo $USER | tr '[:lower:]' '[:upper:]')
+alias fso="cd /home/$USER/PHARMPAY-$UPPER_USER && ll"
+alias fch="cd /home/$USER/PHARMPAY-$UPPER_USER-BATCH && ll"
+
+
+# ----- function
+fl(){
+  cd "$1" && ll
+}
+

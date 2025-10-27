@@ -1,0 +1,5 @@
+ssh-agent 를 실행한다(window services.msc 에서 openSSH Authentication Agent 를 실행해야 함)
+id_rsa 경로가 있는 곳으로 가서
+ssh-add id_rsa
+명령어로 등록을 한다
+그럼 비밀번호 없이 사용 가능

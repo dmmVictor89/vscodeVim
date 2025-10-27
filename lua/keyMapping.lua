@@ -454,6 +454,8 @@ if vim.g.vscode then
     vim.api.nvim_set_keymap('n', '<leader>go', ':Telescope projects <CR>', { noremap = true, silent = true })
 
     -- bufferLine 이전 버퍼 탭으로 이동
+    vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>', { desc = "Close Buffer" })
+    
     vim.api.nvim_set_keymap('n', '<c-y>', ':BufferLineCyclePrev<CR>', { noremap = true, silent = true })
     -- bufferLine 다음 버퍼 탭으로 이동
     vim.api.nvim_set_keymap('n', '<c-u>', ':BufferLineCycleNext<CR>', { noremap = true, silent = true })

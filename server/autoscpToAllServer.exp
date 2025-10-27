@@ -1,0 +1,83 @@
+#!/usr/bin/expect -f
+
+set timeout 30
+set passphrase "ll"
+
+set servers {
+    "devroot:/root/"
+    "scouter:/home/scouter/"
+    "jenkins:/home/jenkins/"
+    "dev26nxcomm:/home/nxcomm/"
+    "dev27nxcomm:/home/nxcomm/"
+    "dev26agent:/home/agent/"
+    "dev27agent:/home/agent/"
+    "dev26lord:/home/lordsystem/"
+    "dev27lord:/home/lordsystem/"
+    "dev26kpn:/home/kpn/"
+    "dev27kpn:/home/kpn/"
+    "dev26kis:/home/kis/"
+    "dev27kis:/home/kis/"
+    "dev26kovan:/home/kovan/"
+    "dev27kovan:/home/kovan/"
+    "dev26nice:/home/nice/"
+    "dev27nice:/home/nice/"
+    "dev26kicc:/home/kicc/"
+    "dev27kicc:/home/kicc/"
+    "dev26ksnet:/home/ksnet/"
+    "dev27ksnet:/home/ksnet/"
+    "dev26shinhan-bank:/home/shinhan-bank/"
+    "dev27shinhan-bank:/home/shinhan-bank/"
+    "prd13agent:/home/agent/"
+    "prd14agent:/home/agent/"
+    "prd13kpn:/home/kpn/"
+    "prd14kpn:/home/kpn/"
+    "prd13nxcomm:/home/nxcomm/"
+    "prd14nxcomm:/home/nxcomm/"
+    "prd13lord:/home/lordsystem/"
+    "prd14lord:/home/lordsystem/"
+    "prd13kis:/home/kis/"
+    "prd14kis:/home/kis/"
+    "prd13kovan:/home/kovan/"
+    "prd14kovan:/home/kovan/"
+    "prd13nice:/home/nice/"
+    "prd14nice:/home/nice/"
+    "prd13kicc:/home/kicc/"
+    "prd14kicc:/home/kicc/"
+    "prd13ksnet:/home/ksnet/"
+    "prd14ksnet:/home/ksnet/"
+    "prd13shinhan-bank:/home/shinhan-bank/"
+    "prd14shinhan-bank:/home/shinhan-bank/"
+    "dev53:/home/comm/"
+    "prd10:/home/comm/"
+    "prd31db:/home/oracle/"
+    "prd32db:/home/oracle/"
+    "snlnas:/home/snlnas/"
+}
+
+foreach server $servers {
+    puts "Copying to: $server"
+    spawn scp ./.mybash $server
+    expect {
+        "passphrase" {
+            send "$passphrase\r"
+            expect eof
+            puts "SUCCESS: $server"
+        }
+        "password" {
+            send "$passphrase\r"
+            expect eof
+            puts "SUCCESS: $server"
+        }
+        eof {
+            puts "SUCCESS: $server"
+        }
+        timeout {
+            puts "ERROR: Timeout - $server"
+            expect eof
+        }
+    }
+    puts "----------------------------------------"
+}
+EOF
+
+chmod +x auto_scp_simple.exp
