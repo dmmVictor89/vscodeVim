@@ -1,3 +1,4 @@
+" Dbeaver 설정
 " 리더 키 설정
 let mapleader=" "
 
@@ -47,11 +48,11 @@ vnoremap u y`>
 nnoremap uu yy 
 vnoremap uu yy 
 
-vnoremap p "+p
 nnoremap p "+p
+vnoremap p "_dP
 
 nnoremap P "+P
-vnoremap P "+P
+vnoremap P "-dP
 
 " <leader>u 를 'I'로 매핑 (줄의 시작으로 이동하여 입력 모드)
 

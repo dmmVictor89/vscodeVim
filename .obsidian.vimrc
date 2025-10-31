@@ -55,10 +55,10 @@ nnoremap uu yy
 vnoremap uu yy 
 
 nnoremap p "0p
-vnoremap p "0p
+vnoremap p "_dP
 
 nnoremap P "0P
-vnoremap P "0P
+vnoremap P "_dP
 
 " <leader>u 를 'I'로 매핑 (줄의 시작으로 이동하여 입력 모드)
 
