@@ -75,51 +75,64 @@ Function SubstituteWithoutIME(Optional ByVal g As String) As Boolean
 End Function
 
 Function InsertFollowLangMode(Optional ByVal g As String) As Boolean
-    If gVim.IsJapanese Then
-        Call InsertWithIME
-    Else
-        Call InsertWithoutIME
-    End If
+    'If gVim.IsJapanese Then
+    '    Call InsertWithIME
+    'Else
+    '   Call InsertWithoutIME
+    'End If
+
+    Call InsertWithoutIME
 End Function
 
 Function InsertNotFollowLangMode(Optional ByVal g As String) As Boolean
-    If Not gVim.IsJapanese Then
-        Call InsertWithIME
-    Else
-        Call InsertWithoutIME
-    End If
+    'If Not gVim.IsJapanese Then
+    '    Call InsertWithIME
+    'Else
+    '    Call InsertWithoutIME
+    'End If
+
+    Call InsertWithoutIME
 End Function
 
 Function AppendFollowLangMode(Optional ByVal g As String) As Boolean
-    If gVim.IsJapanese Then
-        Call AppendWithIME
-    Else
-        Call AppendWithoutIME
-    End If
+    'If gVim.IsJapanese Then
+    '    Call AppendWithIME
+    'Else
+    '    Call AppendWithoutIME
+    'End If
+
+    Call AppendWithoutIME
 End Function
 
 Function AppendNotFollowLangMode(Optional ByVal g As String) As Boolean
-    If Not gVim.IsJapanese Then
-        Call AppendWithIME
-    Else
-        Call AppendWithoutIME
-    End If
+    'If Not gVim.IsJapanese Then
+    '    Call AppendWithIME
+    'Else
+    '    Call AppendWithoutIME
+    'End If
+
+    Call AppendWithoutIME
 End Function
 
 Function SubstituteFollowLangMode(Optional ByVal g As String) As Boolean
-    If gVim.IsJapanese Then
-        Call SubstituteWithIME
-    Else
-        Call SubstituteWithoutIME
-    End If
+    'If gVim.IsJapanese Then
+    '    Call SubstituteWithIME
+    'Else
+    '    Call SubstituteWithoutIME
+    'End If
+
+    Call SubstituteWithoutIME
+
 End Function
 
 Function SubstituteNotFollowLangMode(Optional ByVal g As String) As Boolean
-    If Not gVim.IsJapanese Then
-        Call SubstituteWithIME
-    Else
-        Call SubstituteWithoutIME
-    End If
+    'If Not gVim.IsJapanese Then
+    '    Call SubstituteWithIME
+    'Else
+    '    Call SubstituteWithoutIME
+    'End If
+
+    Call SubstituteWithoutIME
 End Function
 
 Private Sub StartEditing()

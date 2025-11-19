@@ -159,6 +159,8 @@ local general_keys = {
         mods = "CTRL|SHIFT",
         action = wezterm.action.InputSelector {
             title = "SSH 연결 선택",
+            fuzzy = true,
+            -- alphabet = "1234567890abcdefghilmnopqrstuvwxyz", -- 선택 단축키로 사용할 고유 문자 목록 설정 (기본: "1234567890abcdefghilmnopqrstuvwxyz")
             choices = panel.selector_choices,
             action = wezterm.action_callback(function(window, pane, selected_id)
                 if selected_id and type(selected_id) == "string" and selected_id ~= "" then

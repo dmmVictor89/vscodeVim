@@ -181,14 +181,14 @@ ShowCustomTooltip(text) {
     guiTooltip.Opt("-Caption +ToolWindow +AlwaysOnTop -Border")
 
     guiTooltip.BackColor := "White"
-    guiTooltip.SetFont("s12 cYellow", "D2Coding")  ; 라임색으로 시인성 향상
+    guiTooltip.SetFont("s20 cFF00FF", "D2Coding")  ; 라임색으로 시인성 향상
     ; WinSetTransparent(0, guiTooltip.Hwnd)  ; 투명도 200 (0-255)
     ; 텍스트에 따라 색상 결정
     if (text = "A") {
-        guiTooltip.SetFont("s12 cLime Bold", "D2Coding")  ; 영어는 노란색
+        guiTooltip.SetFont("s20 cLime Bold", "D2Coding")  ; 영어는 노란색
         text := "•"
     } else if (text = "가") {
-        guiTooltip.SetFont("s10 cYellow Bold", "D2Coding")     ; 한글은 빨간색
+        guiTooltip.SetFont("s20 cFF00FF Bold", "D2Coding")     ; 한글은 빨간색
         text := "•"
     } else {
         text := ""

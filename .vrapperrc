@@ -50,9 +50,11 @@ vnoremap uu yy
 
 nnoremap p "+p
 vnoremap p "_dP
+vnoremap up viw"_dP
 
 nnoremap P "+P
 vnoremap P "-dP
+vnoremap uP viw"-dP
 
 " <leader>u 를 'I'로 매핑 (줄의 시작으로 이동하여 입력 모드)
 

@@ -41,6 +41,8 @@ export PATH="$PATH:/c/MyProgramFiles/Git/bin/"
 export PATH="$PATH:/c/MyProgramFiles/Git/usr/bin/" # ssh-copy-id 사용시
 export PATH="$PATH:/c/MyProgramFiles/Git/usr/bin/ssh.exe" # ssh-copy-id 사용시
 export TMUX_CONF="/c/MyProgramFiles/msys64/home/jinpyo/"
+export PATH="$PATH:/c/Program Files/dotnet/"
+export PATH="$PATH:/c/Program Files/Python/Python310/"
 
 
 # ZSH Starting

@@ -202,7 +202,7 @@ Private Sub Class_Initialize()
         .Add VIM_TOGGLE_KEY, "^{m}"
         .Add SCROLL_OFFSET, 54#
         .Add MAX_HISTORIES, 100
-        .Add LANG_JAPANESE, True
+        .Add LANG_JAPANESE, False
         .Add JIS_KEYBOARD, True
         .Add QUIT_APP_ALL_WB_CLOSED, True
         .Add NUMPAD_COUNT, False

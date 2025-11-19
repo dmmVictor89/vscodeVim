@@ -44,7 +44,12 @@ vim.keymap.set('n', '<leader>ei', ':e C:\\Users\\jinpyo\\AppData\\Local\\nvim\\i
 vim.keymap.set('n', '<leader>ek', ':e C:\\Users\\jinpyo\\AppData\\Local\\nvim\\lua\\keyMapping.lua', { noremap = true })
 
 -- save
--- vim.cmd('nmap <leader>s :w<cr>')
+-- vim.keymap.set({ 'n', 'v' }, 'gs', ':w<CR>')
+vim.keymap.set({ 'n', 'v' }, '<leader>s', ':w<CR>')
+-- vim.keymap.set({ 'n', 'v' }, 'gq', ':q!<CR>')
+vim.keymap.set({ 'n', 'v' }, '<leader>q', ':q!<CR>')
+-- vim.keymap.set({ 'n', 'v' }, 'gqq', ':wq<CR>')
+vim.keymap.set({ 'n', 'v' }, '<leader>qq', ':wq<CR>')
 
 -- J key binding 없애기
 vim.keymap.set({ 'n', 'v' }, 'J', '')
@@ -246,35 +251,32 @@ if vim.g.vscode then
   local vscode = require('vscode')
   
   -- Neovim Ui Modifier
-  vim.api.nvim_exec([[ 
-        " THEME CHANGER
-        function! SetCursorLineNrColorInsert(mode)
-            " Insert mode: blue
-            if a:mode == "i"
-                call VSCodeNotify('nvim-theme.insert')
+--   vim.api.nvim_exec([[ 
+--         " THEME CHANGER
+--         function! SetCursorLineNrColorInsert(mode)
+--             " Insert mode: blue
+--             if a:mode == "i"
+--                 call VSCodeNotify('nvim-theme.insert')
 
-            " Replace mode: red
-            elseif a:mode == "r"
-                call VSCodeNotify('nvim-theme.replace')
-            endif
-        endfunction
+--             " Replace mode: red
+--             elseif a:mode == "r"
+--                 call VSCodeNotify('nvim-theme.replace')
+--             endif
+--         endfunction
 
-        augroup CursorLineNrColorSwap
-            autocmd!
-            autocmd ModeChanged *:[vV\x16]* call VSCodeNotify('nvim-theme.visual')
-            autocmd ModeChanged *:[R]* call VSCodeNotify('nvim-theme.replace')
-            autocmd InsertEnter * call SetCursorLineNrColorInsert(v:insertmode)
-            autocmd InsertLeave * call VSCodeNotify('nvim-theme.normal')
-            autocmd CursorHold * call VSCodeNotify('nvim-theme.normal')
-            autocmd ModeChanged [vV\x16]*:* call VSCodeNotify('nvim-theme.normal')
-        augroup END
-    ]], false)
+--         augroup CursorLineNrColorSwap
+--             autocmd!
+--             autocmd ModeChanged *:[vV\x16]* call VSCodeNotify('nvim-theme.visual')
+--             autocmd ModeChanged *:[R]* call VSCodeNotify('nvim-theme.replace')
+--             autocmd InsertEnter * call SetCursorLineNrColorInsert(v:insertmode)
+--             autocmd InsertLeave * call VSCodeNotify('nvim-theme.normal')
+--             autocmd CursorHold * call VSCodeNotify('nvim-theme.normal')
+--             autocmd ModeChanged [vV\x16]*:* call VSCodeNotify('nvim-theme.normal')
+--         augroup END
+--     ]], false)
 
     -- o 설정
-    vim.keymap.set('n', 'o', function()
-        vim.fn.VSCodeNotify('editor.action.insertLineAfter')
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('A', true, false, true), 'n', false)
-    end, { noremap = true, silent = true, desc = "Insert line after with VS Code indent" })
+    vim.keymap.set({ 'n', 'v' }, 'o', 'A<CR>')
 
     --  fixed cursor scroll
     vim.keymap.set({'n', 'v'}, 'J', function()
