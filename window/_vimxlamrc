@@ -464,7 +464,8 @@ nmap <C-u> ScrollUpHalf
 nmap <C-d> ScrollDownHalf
 nmap <C-b> ScrollUp
 #nmap <C-f> ScrollDown
-nmap <C-y> ScrollUp1Row
+#nmap <C-y> ScrollUp1Row
+nmap <C-y> RedoExecute
 nmap <C-e> ScrollDown1Row
 nmap , ScrollLeftHalf
 nmap zh ScrollLeft1Column

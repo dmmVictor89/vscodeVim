@@ -253,7 +253,7 @@ require('packer').startup({
 if not vim.g.vscode then 
   require('lualine').setup()
     -- use { 'nvim-tree/nvim-web-devicons', opt = true }
-  require('evil_lualine')
+  -- require('evil_lualine')
 end
 
 ---------------------------------------------------------------------------------------------------------

@@ -18,6 +18,8 @@ export PATH
 alias ..='cd .. && ll'
 alias ll='ls -la'
 alias lg='ll | grep'
+alias less='less -n'
+alias tf='tail -f'
 
 # User specific aliases and functions
 alias sftplord='sftp sftpcresoty@10.175.49.97'
