@@ -78,6 +78,6 @@ foreach server $servers {
     }
     puts "----------------------------------------"
 }
-EOF
 
-chmod +x auto_scp_simple.exp
+
+    puts "All works ended successfully"
