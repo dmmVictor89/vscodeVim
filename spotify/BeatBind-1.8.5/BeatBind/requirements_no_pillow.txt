@@ -1,0 +1,13 @@
+async-timeout==4.0.3
+certifi==2024.6.2
+charset-normalizer==3.3.2
+idna==3.7
+psutil==5.9.8
+pystray==0.19.5
+pywin32==306
+redis==5.0.5
+requests==2.32.3
+six==1.16.0
+spotipy==2.24.0
+ttkthemes==3.2.2
+urllib3==2.2.1
