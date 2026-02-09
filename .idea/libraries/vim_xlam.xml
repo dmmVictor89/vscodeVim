@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="vim.xlam">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/window/vim.xlam.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

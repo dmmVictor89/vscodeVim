@@ -1,0 +1,44 @@
+#!/usr/bin/expect -f
+
+set timeout 30
+set passphrase "ll"
+
+set servers {
+    "dev26pevo:/home/pevo/"
+    "dev27pevo:/home/pevo/"
+    "dev26gtf:/home/gtf/"
+    "dev27gtf:/home/gtf/"
+
+    "prd13pevo:/home/pevo/"
+    "prd14pevo:/home/pevo/"
+    "prd13gtf:/home/gtf/"
+    "prd14gtf:/home/gtf/"
+}
+
+foreach server $servers {
+    puts "Copying to: $server"
+    spawn scp ./.mybash $server
+    expect {
+        "passphrase" {
+            send "$passphrase\r"
+            expect eof
+            puts "SUCCESS: $server"
+        }
+        "password" {
+            send "$passphrase\r"
+            expect eof
+            puts "SUCCESS: $server"
+        }
+        eof {
+            puts "SUCCESS: $server"
+        }
+        timeout {
+            puts "ERROR: Timeout - $server"
+            expect eof
+        }
+    }
+    puts "----------------------------------------"
+}
+
+
+    puts "All works ended successfully"
