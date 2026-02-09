@@ -27,6 +27,11 @@ set servers {
     "dev27ksnet:/home/ksnet/"
     "dev26shinhan-bank:/home/shinhan-bank/"
     "dev27shinhan-bank:/home/shinhan-bank/"
+    "dev26pevo:/home/pevo/"
+    "dev27pevo:/home/pevo/"
+    "dev26gtf:/home/gtf/"
+    "dev27gtf:/home/gtf/"
+
     "prd13agent:/home/agent/"
     "prd14agent:/home/agent/"
     "prd13kpn:/home/kpn/"
@@ -47,6 +52,11 @@ set servers {
     "prd14ksnet:/home/ksnet/"
     "prd13shinhan-bank:/home/shinhan-bank/"
     "prd14shinhan-bank:/home/shinhan-bank/"
+    "prd13pevo:/home/pevo/"
+    "prd14pevo:/home/pevo/"
+    "prd13gtf:/home/gtf/"
+    "prd14gtf:/home/gtf/"
+
     "dev53:/home/comm/"
     "prd10:/home/comm/"
     "prd31db:/home/oracle/"

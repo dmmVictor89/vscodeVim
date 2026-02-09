@@ -50,6 +50,21 @@ export PATH="$PATH:/c/Program Files/Python/Python310/"
 source ~/.zsh/plugin/zsh-autosuggestions/zsh-autosuggestions.zsh
 source ~/.zsh/plugin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+# source ~/.zsh/plugin/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+#      zstyle ':autocomplete:*' min-input 2 # 2글자 이상 입력시 활성화
+#      zstyle ':autocomplete:*' insert-unambiguous no
+
+#     zstyle ':completion:*' menu select=2
+#     zstyle ':completion:*' group-name ''
+#     zstyle ':completion:*' verbose no
+#     
+#     autoload -Uz compinit
+#     compinit_args=()
+#     if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+1) ]]; then
+#     compinit_args=("-C")
+#     fi
+#     compinit $compinit_args
+
 # theme
 eval "$(zoxide init zsh)"
 eval "$(oh-my-posh init zsh --config '/home/jinpyo/.oh-my-zsh/theme/sorin.omp.json')"
@@ -74,8 +89,8 @@ prompt_context() {}
 # ~/.fzf/install
 #
 plugins=(
-            zsh-autosuggestions
-            zhs-syntax-highlighting
+            # zsh-autosuggestions
+            # zhs-syntax-highlighting
             fzf
        )
 

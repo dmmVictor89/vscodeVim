@@ -71,6 +71,14 @@ M.selector_choices = {
     id = "dev_active_ssh_shinhan_bank", -- 고유 ID
     label = "🖥️  [dev] active_shinhan-bank(192.168.10.26)",
   },
+  {
+    id = "dev_active_ssh_pevo", -- 고유 ID
+    label = "🖥️  [dev] active_pevo(192.168.10.26)",
+  },
+  {
+    id = "dev_active_ssh_gtf", -- 고유 ID
+    label = "🖥️  [dev] active_gtf(192.168.10.26)",
+  },
   -- --------------------------------------------------------------------------------------------------------------------------------
   {
     label = "=========================================================================================================",
@@ -118,7 +126,15 @@ M.selector_choices = {
     id = "dev_standby_ssh_shinhan_bank", -- 고유 ID
     label = "🖥️  [dev] standby_shinhan-bank(192.168.10.27)",
   },
-  
+  {
+    id = "dev_standby_ssh_pevo", -- 고유 ID
+    label = "🖥️  [dev] active_pevo(192.168.10.27)",
+  },
+  {
+    id = "dev_standby_ssh_gtf", -- 고유 ID
+    label = "🖥️  [dev] standby_gtf(192.168.10.27)",
+  },
+
   -- --------------------------------------------------------------------------------------------------------------------------------
   {
     label = "=========================================================================================================",
@@ -168,6 +184,14 @@ M.selector_choices = {
     id = "prd_active_ssh_shinhan_bank", -- 고유 ID
     label = "🖥️  [prd] active_shinhan-bank(192.168.10.13)",
   },
+  {
+    id = "prd_active_ssh_pevo", -- 고유 ID
+    label = "🖥️  [prd] active_pevo(192.168.10.13)",
+  },
+  {
+    id = "prd_active_ssh_gtf", -- 고유 ID
+    label = "🖥️  [prd] active_gtf(192.168.10.13)",
+  },
   -- --------------------------------------------------------------------------------------------------------------------------------
   {
     label = "=========================================================================================================",
@@ -215,6 +239,14 @@ M.selector_choices = {
     id = "prd_standby_ssh_shinhan_bank", -- 고유 ID
     label = "🖥️  [prd] standby_shinhan-bank(192.168.10.14)",
   },
+  {
+    id = "prd_standby_ssh_pevo", -- 고유 ID
+    label = "🖥️  [prd] standby_pevo(192.168.10.14)",
+  },
+  {
+    id = "prd_standby_ssh_gtf", -- 고유 ID
+    label = "🖥️  [prd] standby_gtf(192.168.10.14)",
+  },
   -- --------------------------------------------------------------------------------------------------------------------------------
   {
     label = "=========================================================================================================",
@@ -252,7 +284,7 @@ M.selector_choices = {
   --   label = "🔧  staging",
   -- },
   -- {
-  --   id = "ssh_prod",
+  --   id = "ssh_prod", tid: 6575250001
   --   label = "🌐  prod",
   -- },
 }
@@ -301,9 +333,18 @@ M.commands_by_id = {
     -- shinhan-bank
     dev_active_ssh_shinhan_bank        = { "ssh", "-t", "dev26shinhan-bank", "'bash --rcfile ~/.mybash -i'" },
     dev_standby_ssh_shinhan_bank       = { "ssh", "-t", "dev27shinhan-bank", "'bash --rcfile ~/.mybash -i'" },
-    
+
+    -- pevo
+    dev_active_ssh_pevo               = { "ssh", "-t", "dev26pevo", "'bash --rcfile ~/.mybash -i'" },
+    dev_standby_ssh_pevo              = { "ssh", "-t", "dev27pevo", "'bash --rcfile ~/.mybash -i'" },
+
+    -- gtf
+    dev_active_ssh_gtf               = { "ssh", "-t", "dev26gtf", "'bash --rcfile ~/.mybash -i'" },
+    dev_standby_ssh_gtf              = { "ssh", "-t", "dev27gtf", "'bash --rcfile ~/.mybash -i'" },
+
     dev_legacy                         = { "ssh", "-t", "dev53", "'bash --rcfile ~/.mybash -i'"},
 
+  -- --------------------------------------------------------------------------------------------------------------------------------
     -- prd
     prd_active_ssh_agent               = { "ssh", "-t", "prd13agent", "'bash --rcfile ~/.mybash -i'" },
     prd_standby_ssh_agent              = { "ssh", "-t", "prd14agent", "'bash --rcfile ~/.mybash -i'" },
@@ -340,6 +381,14 @@ M.commands_by_id = {
     -- shinhan-bank
     prd_active_ssh_shinhan_bank        = { "ssh", "-t", "prd13shinhan-bank", "'bash --rcfile ~/.mybash -i'" },
     prd_standby_ssh_shinhan_bank       = { "ssh", "-t", "prd14shinhan-bank", "'bash --rcfile ~/.mybash -i'" },
+
+    -- pevo
+    prd_active_ssh_pevo               = { "ssh", "-t", "prd13pevo", "'bash --rcfile ~/.mybash -i'" },
+    prd_standby_ssh_pevo              = { "ssh", "-t", "prd14pevo", "'bash --rcfile ~/.mybash -i'" },
+
+    -- gtf
+    prd_active_ssh_gtf               = { "ssh", "-t", "prd13gtf", "'bash --rcfile ~/.mybash -i'" },
+    prd_standby_ssh_gtf              = { "ssh", "-t", "prd14gtf", "'bash --rcfile ~/.mybash -i'" },
 
     prd_legacy                         = { "ssh", "-t", "prd10", "'bash --rcfile ~/.mybash -i'"},
 

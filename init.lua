@@ -93,8 +93,9 @@ packer_bootstrap = ensure_packer()
 require('packer').startup({
   function(use)
     use 'wbthomason/packer.nvim'
-    use { 'ggandor/leap.nvim', config = function() require('leap').add_default_mappings() end }
-    use { 'ggandor/flit.nvim', config = function() require('flit').setup() end }
+    -- use { 'ggandor/leap.nvim', config = function() require('leap').setup() end }
+    use { 'ggandor/leap.nvim' }
+    use { 'ggandor/flit.nvim' }
     use { 'gbprod/substitute.nvim', config = function() require('substitute').setup() end }
     use { 'chrisgrieser/nvim-various-textobjs'
     -- , event = "BufEnter" -- lazy loading 
@@ -302,7 +303,7 @@ local labels = {
 -- Leap 설정에 라벨 적용
 leap.opts.labels = labels
 
-leap.add_default_mappings()
+-- leap.add_default_mappings()
 
 -- `t`를 `s`처럼 동작하도록 설정 (화면 전체 검색)
 vim.keymap.set({ "n", "x", "o" }, "e", function()
@@ -310,25 +311,15 @@ vim.keymap.set({ "n", "x", "o" }, "e", function()
 end, { desc = "Leap using 't'" })
 
 -- leap 가 x(잘라내기)를 점유하지 않도록 설정
-vim.api.nvim_del_keymap("x", "x")  -- Visual 모드에서 leap의 x 매핑 제거
+-- vim.api.nvim_del_keymap("x", "x")  -- Visual 모드에서 leap의 x 매핑 제거
 
-
-leap.setup{
-    labels = labels,
-    special_keys = {
-      -- next_target = '<;>',
-      next_target = '<Tab>',
-      prev_target = '<S-Tab>',
-      next_group = '<Enter>',
-      prev_group = '<S-Enter>',
-      multi_accept = '<CR>',
-      multi_revert = '<BS>',
-    },
+leap.opts.keys = {
+  next_target = ';',
+  prev_target = '<backspace>',
+  next_group = '<space>',
+  prev_group = '<backspace>',
 }
--- substitute 와 s키 중복 오류로 사용 안 함    
--- require('leap').create_default_mappings()
--- Use the traversal keys to repeat the previous motion without explicitly
--- invoking Leap.
+
 require('leap.user').set_repeat_keys('<tab>, <enter>', '<backspace>')
 
 -- Define equivalence classes for brackets and quotes, in addition to
@@ -341,7 +332,7 @@ require('flit').setup {
   -- A string like "nv", "nvo", "o", etc.
   labeled_modes = "v",
   -- Repeat with the trigger key itself.
-  clever_repeat = true,
+  clever_repeat = false,
   multiline = true,
   -- Like `leap`s similar argument (call-specific overrides).
   -- E.g.: opts = { equivalence_classes = {} }

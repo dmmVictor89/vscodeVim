@@ -43,6 +43,7 @@ vim.opt.cursorline = true
 vim.keymap.set('n', '<leader>ei', ':e C:\\Users\\jinpyo\\AppData\\Local\\nvim\\init.lua', { noremap = true })
 vim.keymap.set('n', '<leader>ek', ':e C:\\Users\\jinpyo\\AppData\\Local\\nvim\\lua\\keyMapping.lua', { noremap = true })
 
+
 -- save
 -- vim.keymap.set({ 'n', 'v' }, 'gs', ':w<CR>')
 vim.keymap.set({ 'n', 'v' }, '<leader>s', ':w<CR>')
@@ -379,6 +380,8 @@ if vim.g.vscode then
     -- console
     vim.keymap.set('n', 'mtl', function() vim.fn.VSCodeNotify("turboConsoleLog.displayLogMessage") end, { noremap = true, silent = true })
     vim.keymap.set('n', 'mtd', function() vim.fn.VSCodeNotify("turboConsoleLog.deleteAllLogMessages") end, { noremap = true, silent = true })
+
+    -- flit 커서
 
     -- harpoon plugin 설정
     -- vscode-harpoon 키매핑 (1-10)
