@@ -1,0 +1,14 @@
+
+.DS_Store
+*/.DS_Store
+.history/
+build/
+dist/
+*/build/
+*/dist/
+*.spec
+*/app.build/
+*/app.dist/
+*/app.onefile-build/
+*.pyc
+/BeatBind/BeatBind
