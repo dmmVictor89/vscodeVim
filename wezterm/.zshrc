@@ -44,6 +44,10 @@ export TMUX_CONF="/c/MyProgramFiles/msys64/home/jinpyo/"
 export PATH="$PATH:/c/Program Files/dotnet/"
 export PATH="$PATH:/c/Program Files/Python/Python310/"
 
+export PATH="$PATH:/c/Users/jinpyo/AppData/Local/cursor-agent"
+alias agent="agent.cmd"
+alias cursor-agent="agent.cmd"
+
 
 # ZSH Starting
 # plugin

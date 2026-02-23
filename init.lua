@@ -1,4 +1,5 @@
-print("init.lua load start")
+  vim.notify("nvim on - " .. os.date("%Y-%m-%d %H:%M:%S"), vim.log.levels.INFO)
+
 -- 경로
 -- 회사용
 -- C:\Neovim\bin
@@ -583,5 +584,3 @@ end
 --- 키 매핑 
 ---------------------------------------------------------------------------------------------------------
 require("keyMapping")
-
-

@@ -7,12 +7,6 @@
 -- 4. Autocmd 최적화
 --------------------------------------------------
 
--- print("vim on (Improved version)")
-
-
--- 기존 print를 vim.notify로 변경 (중간 로그)
-vim.notify("vim on (Improved version)", vim.log.levels.INFO)
-
 -- todo //test
 -- h 매핑 g로 변경 hjkl 에는 매핑을 안 해야 한다 h 입력을 기다리면서 렉 걸림
 
@@ -42,6 +36,11 @@ vim.opt.cursorline = true
 -- 기존 :nmap -> lua style 매핑
 vim.keymap.set('n', '<leader>ei', ':e C:\\Users\\jinpyo\\AppData\\Local\\nvim\\init.lua', { noremap = true })
 vim.keymap.set('n', '<leader>ek', ':e C:\\Users\\jinpyo\\AppData\\Local\\nvim\\lua\\keyMapping.lua', { noremap = true })
+vim.keymap.set('n', '<leader>er', ':cd C:\\Users\\jinpyo\\AppData\\Local\\nvim', { noremap = true })
+
+-- vim.keymap.set('n', 'mn', function()
+--   vim.fn.chdir('C:\\Users\\jinpyo\\AppData\\Local\\nvim')
+-- end, { noremap = true })
 
 
 -- save
@@ -247,7 +246,7 @@ vim.keymap.set({ 'n', 'v' }, '\'', '`')
 if vim.g.vscode then 
   
   -- vscode
-  vim.notify("vscode setting is loaded", vim.log.levels.INFO) 
+--   vim.notify("vscode setting is loaded", vim.log.levels.INFO) 
   
   local vscode = require('vscode')
   
@@ -559,7 +558,7 @@ vim.keymap.set('n', "m{", function()
 end, { silent = true })
 
 -- 현재 글자 복사해서 현재 위치부터 검색
-vim.keymap.set('n', 'mg', function()
+vim.keymap.set('n', 'mw', function()
   vim.cmd('normal uj') -- 단어 복사 후 최상단으로 이동
   vim.defer_fn(function()
     vim.api.nvim_feedkeys("/" .. vim.fn.getreg("0") .. "\n", "n", false)
@@ -567,7 +566,7 @@ vim.keymap.set('n', 'mg', function()
 end, { noremap = true, silent = true })
 
 -- 현재 글자 복사해서 현재 위치부터 뒤로 검색
-vim.keymap.set('n', 'mw', function()
+vim.keymap.set('n', 'mg', function()
   vim.cmd('normal uj') -- 단어 복사 후 최상단으로 이동
   vim.defer_fn(function()
     vim.api.nvim_feedkeys("?" .. vim.fn.getreg("0") .. "\n", "n", false)
