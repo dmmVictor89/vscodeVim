@@ -6,16 +6,33 @@ wezterm.log_info("로그보기: ctrl+shift+alt+l");
 
 -- 환경구분을 위해서 hostname 호출
 -- home: DESKTOP-LEKLO7C
-local hostname = wezterm.hostname();
+local hostname = wezterm.hostname()
+local is_wsl = os.getenv("WSL_DISTRO_NAME") ~= nil or os.getenv("WSL_INTEROP") ~= nil
+local is_linux = wezterm.target_triple:find("linux") ~= nil
 
 local userName = os.getenv("USERNAME");
 
+-- 설정
+local config = wezterm.config_builder()
+
 local prog
 -- wezterm.lua의 상단에 추가
-if hostname == "DESKTOP-LEKLO7C" then
+if is_wsl and is_linux then
+    -- WSL Linux WezTerm에서 EGL 초기화 실패를 피하기 위한 설정
+    prog = "/usr/bin/zsh"
+    config.front_end = "Software"
+    config.enable_wayland = false
+elseif hostname == "DESKTOP-LEKLO7C" then
     package.path = package.path .. ";C:/Users/trueticket89/AppData/Local/nvim/wezterm/?.lua"
     -- prog = "C:\\Windows\\System32\\cmd.exe"
     prog = "D:\\My Program Files\\Git\\bin\\bash.exe"
+
+elseif hostname == "DESKTOP-IE1M33H"  and is_wsl then
+    prog = "/usr/sbin/zsh"
+    config.front_end = "OpenGL"
+    config.enable_wayland = false
+    config.webgpu_power_preference = "LowPower"
+
 else
     package.path = package.path .. ";C:/Users/jinpyo/AppData/Local/nvim/wezterm/?.lua"
     -- prog = "C:\\Windows\\System32\\cmd.exe"
@@ -28,7 +45,6 @@ end
 local resurrect = wezterm.plugin.require("https://github.com/MLFlexer/resurrect.wezterm")
 
 -- 설정 ----------------------------------------------------------- -----
-local config = wezterm.config_builder()
 
 config.set_environment_variables = {
     LANG = 'en_US.UTF-8',

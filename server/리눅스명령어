@@ -1,4 +1,4 @@
-#리눅스 명령어
+리눅스 명령어
 linux 명령어
   
 ========================================================================================================================================================================================
@@ -36,6 +36,12 @@ grep -r --exclude-dir=logs "jdbc:oracle" .
 grep -rl "pbt_AtaSend" . | grep '\.pc$'
 grep -rl "TLFSUB_SZ" . | grep '\.pc
 
+========================================================================================================================================================================================
+특정 사업자 특정거래 검색
+
+grep -r ".*9989999001.*5070596695.*" nice-op-20260225*
+
+
 
 ========================================================================================================================================================================================
 
@@ -51,24 +57,38 @@ find 명령어 응용
 -mtime  0  →  오늘 (현재 날짜)
 -mtime +0  → 오늘이 아닌 모든 파일 (어제 포함)
 -> -daystart 옵션과 함꼐 써야 함 find . -name "kis-op-*.log" -daystart -mtime +0
+-- 실시간
 find . -maxdepth 1 -name "kis-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/02 && mv "$0" ./log_temp/02/' {} \;
+-- 배치
+find . -maxdepth 1 -name "kis-batch-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/02 && mv "$0" ./log_temp/02/' {} \;
 
-find . -maxdepth 1 -name "kovan-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/01 && mv "$0" ./log_temp/01/' {} \;
+-- 실시간
+find . -maxdepth 1 -name "kovan-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/02 && mv "$0" ./log_temp/02/' {} \;
 
+-- 실시간
+find . -maxdepth 1 -name "kpn-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/02 && mv "$0" ./log_temp/02/' {} \;
 find . -maxdepth 1 -name "kpn-op-202601*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/01 && mv "$0" ./log_temp/01/' {} \;
 find . -maxdepth 1 -name "kpn-op-202602*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/02 && mv "$0" ./log_temp/02/' {} \;
 
-find . -maxdepth 1 -name "nice-op-202602*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/02 && mv "$0" ./log_temp/02/' {} \;
+-- 배치
+find . -maxdepth 1 -name "kpn-batch-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/02 && mv "$0" ./log_temp/02/' {} \;
+
+find . -maxdepth 1 -name "nice-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/02 && mv "$0" ./log_temp/02/' {} \;
 
 -- 로그 백업
 find . -iname "*202602*" -exec mv {} /data_backup/socket_log_backup/kis/2026/02 \;
+-- 배치
+find . -iname "*202602*" -exec mv {} /data_backup/batch_log_backup/kis/2026/02 \;
 
+find . -iname "*202602*" -exec mv {} /data_backup/socket_log_backup/kovan/2026/02 \;
 
 find . -iname "*202601*" -exec mv {} /data_backup/socket_log_backup/nice/2026/01 \;
 find . -iname "*202602*" -exec mv {} /data_backup/socket_log_backup/nice/2026/02 \;
 
 find . -iname "*202601*" -exec mv {} /data_backup/socket_log_backup/kpn/2026/01 \;
 find . -iname "*202602*" -exec mv {} /data_backup/socket_log_backup/kpn/2026/02 \;
+-- 배치
+find . -iname "*202602*" -exec mv {} /data_backup/batch_log_backup/kpn/2026/02 \;
 
 
 # 20251027 이전 파일만 보기
@@ -194,7 +214,6 @@ cd "$(cygpath '')"
 cygpath -w "$(pwd)"
 - 유닉스스타일
 cygpath -u "$(pwd)"
-
 
 ========================================================================================================================================================================================
 # 문법: ln -s [대상 파일의 전체 경로] [만들 링크 이름]
