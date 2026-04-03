@@ -57,23 +57,27 @@ find 명령어 응용
 -mtime  0  →  오늘 (현재 날짜)
 -mtime +0  → 오늘이 아닌 모든 파일 (어제 포함)
 -> -daystart 옵션과 함꼐 써야 함 find . -name "kis-op-*.log" -daystart -mtime +0
+[KIS]
 -- 실시간
-find . -maxdepth 1 -name "kis-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/02 && mv "$0" ./log_temp/02/' {} \;
+find . -maxdepth 1 -name "kis-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/03 && mv "$0" ./log_temp/03/' {} \;
 -- 배치
-find . -maxdepth 1 -name "kis-batch-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/02 && mv "$0" ./log_temp/02/' {} \;
+find . -maxdepth 1 -name "kis-batch-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/03 && mv "$0" ./log_temp/03/' {} \;
 
+[KOVAN]
 -- 실시간
-find . -maxdepth 1 -name "kovan-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/02 && mv "$0" ./log_temp/02/' {} \;
+find . -maxdepth 1 -name "kovan-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/03 && mv "$0" ./log_temp/03/' {} \;
 
+[KPN]
 -- 실시간
-find . -maxdepth 1 -name "kpn-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/02 && mv "$0" ./log_temp/02/' {} \;
+find . -maxdepth 1 -name "kpn-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/03 && mv "$0" ./log_temp/03/' {} \;
 find . -maxdepth 1 -name "kpn-op-202601*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/01 && mv "$0" ./log_temp/01/' {} \;
 find . -maxdepth 1 -name "kpn-op-202602*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/02 && mv "$0" ./log_temp/02/' {} \;
 
 -- 배치
-find . -maxdepth 1 -name "kpn-batch-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/02 && mv "$0" ./log_temp/02/' {} \;
+find . -maxdepth 1 -name "kpn-batch-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/03 && mv "$0" ./log_temp/03/' {} \;
 
-find . -maxdepth 1 -name "nice-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/02 && mv "$0" ./log_temp/02/' {} \;
+[NICE]
+find . -maxdepth 1 -name "nice-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/03 && mv "$0" ./log_temp/03/' {} \;
 
 -- 로그 백업
 find . -iname "*202602*" -exec mv {} /data_backup/socket_log_backup/kis/2026/02 \;
@@ -216,9 +220,18 @@ cygpath -w "$(pwd)"
 cygpath -u "$(pwd)"
 
 ========================================================================================================================================================================================
+# sh 개행문자 오류
+sed -i 's/\r$//' ./logscp.sh
+
+
+========================================================================================================================================================================================
 # 문법: ln -s [대상 파일의 전체 경로] [만들 링크 이름]
 ln -s "$(pwd)/.bashrc" ~/.bashrc
 
+========================================================================================================================================================================================
+윈도우에서 포트 사용하는 프로세스 찾기
+netstat -ano | findstr :8000
+프로세스 죽이기: taskkill 8000
 
 ========================================================================================================================================================================================
 

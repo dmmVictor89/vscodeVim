@@ -118,10 +118,34 @@ require('packer').startup({
       use { 'folke/tokyonight.nvim'
         , config = function()
           -- Packer가 플러그인을 로드한 후 실행될 코드
-          -- Neovim 시작 시 이 테마를 적용
+          require("tokyonight").setup({
+            style = "night",
+            styles = {
+              functions = {},
+            },
+            on_highlights = function(hl, colors)
+            -- 민트 톤(산뜻, 눈 피로 적음)
+            -- #5E7A6B
+            -- , #7DCFFF
+            -- 라벤더 톤(차분하고 깔끔)
+            -- #6D6AA8, #C099FF
+            -- 웜 골드 톤(포인트 강함)
+            -- #7A6845, #E0AF68
+            -- 로즈 톤(개성 있음, 과하지 않음)
+            -- #7A5462, #F7768E"#87B980" }
+            --   
+              hl.LineNr = { fg = "#2A6485" }
+              hl.LineNrAbove = { fg = "#2A6485" }
+              hl.LineNrBelow = { fg = "#2A6485" }
+              hl.CursorLineNr = { fg = "#ffd866", bold = true }
+            end,
+          })
+
+          -- setup 이후 colorscheme 적용
           vim.cmd('colorscheme tokyonight')
-         -- 배경 설정 (옵션)
+          -- 배경 설정 (옵션)
           vim.o.background = 'dark'
+
         end
       }
 
