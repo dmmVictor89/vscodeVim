@@ -95,7 +95,7 @@ require('packer').startup({
   function(use)
     use 'wbthomason/packer.nvim'
     -- use { 'ggandor/leap.nvim', config = function() require('leap').setup() end }
-    use { 'ggandor/leap.nvim' }
+    use { 'https://codeberg.org/andyg/leap.nvim' }
     use { 'ggandor/flit.nvim' }
     use { 'gbprod/substitute.nvim', config = function() require('substitute').setup() end }
     use { 'chrisgrieser/nvim-various-textobjs'
@@ -235,7 +235,8 @@ require('packer').startup({
                     project = {
                     base_dirs = {
                         -- 특정 루트 디렉토리 지정
-                        { 'C:\\nworkspace', max_depth = 2 },
+                        -- { 'C:\\nworkspace', max_depth = 2 },
+                        { '/mnt/c/nworkspace', max_depth = 2 },
                         -- 홈 디렉토리 밑 work 폴더, 3단계까지 탐색
                         -- { vim.fn.expand('~/work'), max_depth = 3 },
                     },

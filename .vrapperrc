@@ -121,6 +121,13 @@ nnoremap sk <C-w>j
 nnoremap sk <C-w>k
 nnoremap s; <C-w>l
 
+nnoremap <A-j> <C-w>h
+nnoremap <A-k> <C-w>j
+nnoremap <A-i> <C-w>k
+" nnoremap <A-l> <C-w>l
+nnoremap <C-;> <C-w>l
+"nnoremap <A-l> <C-w>l
+
 " ge 로 = '' 입력하기
 noremap ge a = ''<ESC>i
 " gi 로 in ('', '') 입력하기

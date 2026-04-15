@@ -62,22 +62,27 @@ find 명령어 응용
 find . -maxdepth 1 -name "kis-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/03 && mv "$0" ./log_temp/03/' {} \;
 -- 배치
 find . -maxdepth 1 -name "kis-batch-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/03 && mv "$0" ./log_temp/03/' {} \;
+find . -maxdepth 1 -name "kis-batch-op-202604*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/04 && mv "$0" ./log_temp/04/' {} \;
+
+[NICE]
+find . -maxdepth 1 -name "nice-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/03 && mv "$0" ./log_temp/03/' {} \;
+find . -maxdepth 1 -name "nice-op-202604*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/04 && mv "$0" ./log_temp/04/' {} \;
+
 
 [KOVAN]
 -- 실시간
 find . -maxdepth 1 -name "kovan-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/03 && mv "$0" ./log_temp/03/' {} \;
+find . -maxdepth 1 -name "kovan-op-202604*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/04 && mv "$0" ./log_temp/04/' {} \;
 
 [KPN]
 -- 실시간
 find . -maxdepth 1 -name "kpn-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/03 && mv "$0" ./log_temp/03/' {} \;
 find . -maxdepth 1 -name "kpn-op-202601*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/01 && mv "$0" ./log_temp/01/' {} \;
 find . -maxdepth 1 -name "kpn-op-202602*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/02 && mv "$0" ./log_temp/02/' {} \;
+find . -maxdepth 1 -name "kpn-op-202604*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/04 && mv "$0" ./log_temp/04/' {} \;
 
 -- 배치
-find . -maxdepth 1 -name "kpn-batch-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/03 && mv "$0" ./log_temp/03/' {} \;
-
-[NICE]
-find . -maxdepth 1 -name "nice-op-*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/03 && mv "$0" ./log_temp/03/' {} \;
+find . -maxdepth 1 -name "kpn-batch-op-202604*.log" -daystart -mtime +0 -exec sh -c 'mkdir -p ./log_temp/04 && mv "$0" ./log_temp/04/' {} \;
 
 -- 로그 백업
 find . -iname "*202602*" -exec mv {} /data_backup/socket_log_backup/kis/2026/02 \;

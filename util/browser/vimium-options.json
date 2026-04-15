@@ -1,0 +1,82 @@
+{
+  "keyMappings": "# Insert your preferred key mappings here.\nmap g focusInput\nmap e scrollPageUp\nmap q previousTab\nmap w nextTab\nmap a goBack\nmap s goForward\nmap E scrollToTop\nmap D scrollToBottom\nmap z Vomnibar.activateInNewTab\nunmap t\nmap t duplicateTab\nmap T createTab",
+  "linkHintCharacters": "qwerasdfzxcvtgb1234",
+  "scrollStepSize": 650,
+  "smoothScroll": false,
+  "searchEngines": "x: https://www.google.com/search?q=%s\nㅌ: https://www.google.com/search?q=%s\nz: https://search.naver.com/search.naver?query=%s\nㅋ: https://search.naver.com/search.naver?query=%s\ny: https://www.youtube.com/results?search_query=%s\nㅛ: https://www.youtube.com/results?search_query=%s\ne: https://en.dict.naver.com/#/search?query=%s\nㄷ: https://en.dict.naver.com/#/search?query=%s\n\n# More examples.\n#\n# (Vimium supports search completion Wikipedia, as\n# above, and for these.)\n#\n# g: https://www.google.com/search?q=%s Google\n# l: https://www.google.com/search?q=%s&btnI I'm feeling lucky...\n# y: https://www.youtube.com/results?search_query=%s Youtube\n# gm: https://www.google.com/maps?q=%s Google maps\n# b: https://www.bing.com/search?q=%s Bing\n# d: https://duckduckgo.com/?q=%s DuckDuckGo\n# az: https://www.amazon.com/s/?field-keywords=%s Amazon\n# qw: https://www.qwant.com/?q=%s Qwant",
+  "settingsVersion": "2.1.2",
+  "exclusionRules": [
+    {
+      "passKeys": "",
+      "pattern": "https?://mail.google.com/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://typing.works/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https://blog.naver.com/shackle89?Redirect=Write*"
+    },
+    {
+      "passKeys": "r",
+      "pattern": "https?://www.fmkorea.com/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://docs.google.com"
+    },
+    {
+      "passKeys": "r",
+      "pattern": "https?://docs.google.com/*"
+    },
+    {
+      "passKeys": "*",
+      "pattern": "https?://docs.google.com/*"
+    },
+    {
+      "passKeys": "j",
+      "pattern": "https?://www.youtube.com/*"
+    },
+    {
+      "passKeys": "k",
+      "pattern": "https?://www.youtube.com/*"
+    },
+    {
+      "passKeys": "l",
+      "pattern": "https?://www.youtube.com/*"
+    },
+    {
+      "passKeys": "?",
+      "pattern": "https?://www.youtube.com/*"
+    },
+    {
+      "passKeys": "f",
+      "pattern": "https?://www.youtube.com/*"
+    },
+    {
+      "passKeys": "/",
+      "pattern": "https?://www.youtube.com/*"
+    },
+    {
+      "passKeys": "i",
+      "pattern": "https?://www.youtube.com/*"
+    },
+    {
+      "passKeys": "a",
+      "pattern": "https?://www.youtube.com/*"
+    },
+    {
+      "passKeys": "s",
+      "pattern": "https?://www.youtube.com/*"
+    },
+    {
+      "passKeys": "d",
+      "pattern": "https?://www.youtube.com/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://usevia.app/*"
+    }
+  ]
+}

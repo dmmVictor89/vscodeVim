@@ -1,0 +1,2 @@
+$cmd = 'python -X utf8 "C:\Users\jinpyo\AppData\Roaming\qutebrowser\config\userscripts\importer.py" -i chrome -b "C:\Users\jinpyo\AppData\Local\Microsoft\Edge\User Data\Default" > "C:\Users\jinpyo\AppData\Roaming\qutebrowser\config\bookmarks\urls"'
+cmd /c $cmd

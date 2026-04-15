@@ -1,0 +1,95 @@
+#!/bin/bash
+# SSH Server Selector for tmux
+# Usage: prefix or Ctrl+Shift+L in tmux
+
+servers=(
+  "🖥️  scouter(192.168.10.15):ssh -t scouter 'bash --rcfile ~/.mybash -i'"
+  "🖥️  jenkins(192.168.10.15):ssh -t jenkins 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] eContract, wholeSale(192.168.20.8):ssh -t devec 'bash --rcfile ~/.mybash -i'"
+  "=========================================="
+  "🖥️  [dev] root(192.168.10.26):ssh -t devroot 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] active_nxcomm(192.168.10.26):ssh -t dev26nxcomm 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] active_agent(192.168.10.26):ssh -t dev26agent 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] active_kpn(192.168.10.26):ssh -t dev26kpn 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] active_LordSystem(192.168.10.26):ssh -t dev26lord 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] active_kis(192.168.10.26):ssh -t dev26kis 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] active_kovan(192.168.10.26):ssh -t dev26kovan 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] active_nice(192.168.10.26):ssh -t dev26nice 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] active_kicc(192.168.10.26):ssh -t dev26kicc 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] active_ksnet(192.168.10.26):ssh -t dev26ksnet 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] active_shinhan-bank(192.168.10.26):ssh -t dev26shinhan-bank 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] active_pevo(192.168.10.26):ssh -t dev26pevo 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] active_gtf(192.168.10.26):ssh -t dev26gtf 'bash --rcfile ~/.mybash -i'"
+  "=========================================="
+  "🖥️  [dev] standby_nxcomm(192.168.10.27):ssh -t dev27nxcomm 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] standby_agent(192.168.10.27):ssh -t dev27agent 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] standby_kpn(192.168.10.27):ssh -t dev27kpn 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] standby_LordSystem(192.168.10.27):ssh -t dev27lord 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] standby_kis(192.168.10.27):ssh -t dev27kis 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] standby_kovan(192.168.10.27):ssh -t dev27kovan 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] standby_nice(192.168.10.27):ssh -t dev27nice 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] standby_kicc(192.168.10.27):ssh -t dev27kicc 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] standby_ksnet(192.168.10.27):ssh -t dev27ksnet 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] standby_shinhan-bank(192.168.10.27):ssh -t dev27shinhan-bank 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] standby_pevo(192.168.10.27):ssh -t dev27pevo 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [dev] standby_gtf(192.168.10.27):ssh -t dev27gtf 'bash --rcfile ~/.mybash -i'"
+  "=========================================="
+  "🖥️  [prd] active_nxcomm(192.168.10.13):ssh -t prd13nxcomm 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] active_agent(192.168.10.13):ssh -t prd13agent 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] active_kpn(192.168.10.13):ssh -t prd13kpn 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] active_LordSystem(192.168.10.13):ssh -t prd13lord 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] active_kis(192.168.10.13):ssh -t prd13kis 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] active_kovan(192.168.10.13):ssh -t prd13kovan 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] active_nice(192.168.10.13):ssh -t prd13nice 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] active_kicc(192.168.10.13):ssh -t prd13kicc 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] active_ksnet(192.168.10.13):ssh -t prd13ksnet 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] active_shinhan-bank(192.168.10.13):ssh -t prd13shinhan-bank 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] active_pevo(192.168.10.13):ssh -t prd13pevo 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] active_gtf(192.168.10.13):ssh -t prd13gtf 'bash --rcfile ~/.mybash -i'"
+  "=========================================="
+  "🖥️  [prd] standby_nxcomm(192.168.10.14):ssh -t prd14nxcomm 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] standby_agent(192.168.10.14):ssh -t prd14agent 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] standby_kpn(192.168.10.14):ssh -t prd14kpn 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] standby_LordSystem(192.168.10.14):ssh -t prd14lord 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] standby_kis(192.168.10.14):ssh -t prd14kis 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] standby_kovan(192.168.10.14):ssh -t prd14kovan 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] standby_nice(192.168.10.14):ssh -t prd14nice 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] standby_kicc(192.168.10.14):ssh -t prd14kicc 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] standby_ksnet(192.168.10.14):ssh -t prd14ksnet 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] standby_shinhan-bank(192.168.10.14):ssh -t prd14shinhan-bank 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] standby_pevo(192.168.10.14):ssh -t prd14pevo 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] standby_gtf(192.168.10.14):ssh -t prd14gtf 'bash --rcfile ~/.mybash -i'"
+  "=========================================="
+  "🖥️  [dev] legacy_procServer(192.168.10.53):ssh -t dev53 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] legacy_procServer(192.168.10.10):ssh -t prd10 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] DB1_pharmpay(192.168.10.31):ssh -t prd31db 'bash --rcfile ~/.mybash -i'"
+  "🖥️  [prd] DB2_pharmpay(192.168.10.32):ssh -t prd32db 'bash --rcfile ~/.mybash -i'"
+  "=========================================="
+  "🖥️  snlnas(183.98.219.170):ssh -t snlnas 'bash --rcfile ~/.mybash -i'"
+)
+
+# selected=$(printf '%s\n' "${servers[@]}" | fzf --height=80% --reverse --border --prompt="SSH > " --header="Select SSH Server")
+
+# [[ "$selected" == "="* ]] && exit 0
+
+# if [[ -n "$selected" ]]; then
+#   cmd=$(echo "$selected" | cut -d':' -f2-)
+#   eval "$cmd"
+# fi
+# if [[ -z "$ORIGIN_PANE" ]]; then
+#   tmux display-message "ORIGIN_PANE is empty"
+#   exit 1
+# fi
+
+# if [[ -n "$selected" ]]; then
+#   cmd=$(echo "$selected" | cut -d':' -f2-)
+#   tmux send-keys -t "$ORIGIN_PANE" "$cmd" C-m
+# fi
+
+selected=$(printf '%s\n' "${servers[@]}" | fzf --height=80% --reverse --border --prompt="SSH > " --header="Select SSH Server")
+[[ "$selected" == "="* ]] && exit 0
+
+if [[ -n "$selected" ]]; then
+  cmd=$(echo "$selected" | cut -d':' -f2-)
+  eval "$cmd"
+fi
