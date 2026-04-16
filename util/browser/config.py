@@ -50,14 +50,23 @@ c.session.lazy_restore = True    # 느리게 복원 (안정적)
 
 c.messages.timeout = 10000
 
+# 클릭 시 자동 insert 모드 진입
+c.input.insert_mode.auto_enter = True
+
+# 페이지 로드 후 editable 요소 포커스 시 자동 insert
+c.input.insert_mode.auto_load = True
+
+# 비편집 요소 클릭 시 자동 normal 모드로 복귀
+c.input.insert_mode.auto_leave = True
 
 # 히스토리를 방향키로 변경
 config.bind('a', 'back')
 config.bind('s', 'forward')
 
 # 스크롤
-config.bind('e', 'scroll up')
-config.bind('d', 'scroll down')
+config.bind('e', 'scroll-px 0 -300')   # 위로 100px
+config.bind('d', 'scroll-px 0 300')    # 아래로 100px
+
 # 화면 위/아래 이동 추가
 config.bind('E', 'scroll top')  # 맨 위
 config.bind('D', 'scroll bottom')    # 맨 아래
@@ -79,6 +88,13 @@ config.bind('v', 'tab-move +')           # 탭 오른쪽 이동
 # 현재 탭 복사 (새 탭으로)
 config.bind('t', 'tab-clone')     # 배경 탭으로 복사
 
+# passthrough 모드 진입
+config.bind('<Ctrl-i>', 'mode-enter passthrough')
+
+# passthrough 모드에서 Ctrl+i로 탈출
+config.bind('<Ctrl-i>', 'mode-leave', mode='passthrough')
+
+config.unbind('<Ctrl-v>')
 
 # 탭이동
 config.bind('q', 'tab-prev')
